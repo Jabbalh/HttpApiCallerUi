@@ -1,1 +1,55 @@
 // app global css in SCSS form
+@import "layout-border";
+
+.bg-header {
+  background-color: var(--q-header);
+  color: var(--q-selected-text);
+}
+
+
+.w-screen {
+  width: 100vw;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.bg-dark {
+  background-color: $dark-page!important;
+  color: white;
+}
+
+.bg-white {
+  background-color: rgb(255,255,255);
+  color: black;
+}
+
+.header-style {
+  height: 50px;
+  border-width: 0 0 0 0;
+  border-bottom: $thickness;
+  border-style: solid;
+  border-color: var(--q-divider-color)!important;
+}
+
+.footer-style {
+  height: 45px;
+  border-width: 0 0 0 0;
+  border-top: $thickness;
+  border-style: solid;
+  border-color: var(--q-divider-color)!important;
+  padding: 8px 8px 8px 8px;
+}
+
+.full-height-page {
+  height: calc(100vh - 50px - 45px);
+}
+
+.full-width-page {
+  width: calc(100vw - 100px);
+}
+
+.inside-menu-left-width {
+  width: 50px;
+}
