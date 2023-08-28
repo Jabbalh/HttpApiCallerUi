@@ -1,12 +1,12 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header class="bg-header header-style">
+    <q-header
+      class="bg-header header-style"
+      >
       <q-toolbar>
-
         <q-toolbar-title>
           HttpApiCaller
         </q-toolbar-title>
-
         <div><q-icon :name="iconMode" @click="toogleDarkMode" size="md" /></div>
       </q-toolbar>
     </q-header>
@@ -17,7 +17,6 @@
       v-model="menuLeft"
       :width="100"
       class="bg-header"
-
     >
       <q-scroll-area class="fit border-tab-right">
         <q-tabs
@@ -25,9 +24,8 @@
           switch-indicator
           indicator-color="deep-purple-8"
         >
-          <q-route-tab icon="bi-code" label="REST" to="/"  :ripple="false" content-class="material-symbols-outlined tab-icon"/>
+          <q-route-tab icon="bi-code" label="REST" to="/"  :ripple="false" />
           <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false"/>
-
         </q-tabs>
       </q-scroll-area>
 

@@ -43,24 +43,35 @@
         </template>
 
         <template v-slot:after>
-          <q-splitter
-            v-model="splitterSecondModel"
-            horizontal
-            separator-class="bg-splitter-sep splitter-sep-horizontal"
-            :limits="[10,Infinity]"
-            unit="%">
-            <template v-slot:before>
-              <div class="q-ma-md">
-                Request
-              </div>
-            </template>
+          <q-tabs
+            v-model="selectRestTab"
+            switch-indicator
+            align="left"
+            inline-label
+            outside-arrows
+            mobile-arrows
+            indicator-color="deep-purple-8"
+            class="rest-tabs"
 
-            <template v-slot:after>
-              <div class="q-ma-md">
-                Response <q-input rounded v-model="inputResponse" />
-              </div>
-            </template>
-          </q-splitter>
+          >
+            <RestTab :alert="true"
+                     :alert-icon="alertIconRef"
+                     name="mails"
+                     label="Mailssssssssssssaaaaaaa"  />
+<!--            <q-tab name="mails"-->
+<!--                   :ripple="false"-->
+<!--                   label="Mailssssssssssssaaaaaaa"-->
+<!--                   :alert="true"-->
+<!--                   :alert-icon="alertIconRef"-->
+<!--                   @mouseover="onEnter"-->
+<!--                   @mouseleave="onLeave"-->
+<!--                   />-->
+            <q-tab name="alarms" :ripple="false" label="Alarms">
+              test
+            </q-tab>
+            <q-tab name="movies" :ripple="false" label="Movies" :alert="true" alert-icon="bi-x-circle"/>
+          </q-tabs>
+          <RestHttpContainer />
         </template>
       </q-splitter>
     </div>
@@ -71,20 +82,27 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import Collection from "components/httpRest/RestCollection.vue";
-import Environnement from "components/httpRest/RestEnvironnement.vue";
-import History from "components/httpRest/RestHistory.vue";
+import Collection from 'components/httpRest/RestCollection.vue';
+import Environnement from 'components/httpRest/RestEnvironnement.vue';
+import History from 'components/httpRest/RestHistory.vue';
+import useHoverTabs from "src/composables/HoverTabs";
+import RestHttpContainer from "components/httpRest/RestHttpContainer.vue";
+import RestTab from "components/commun/RestTab.vue";
+
 export default defineComponent({
   name: 'HttpRest',
   components: {
+    RestTab,
+    RestHttpContainer,
     Collection, Environnement, History
   },
   setup(){
     return {
       splitterModel: ref(20),
-      splitterSecondModel: ref(50),
       selectedMainTab: ref("Collection"),
-      inputResponse: ref("")
+      inputResponse: ref(""),
+      selectRestTab: ref(""),
+      ...useHoverTabs()
     }
   }
 });

@@ -1,0 +1,22 @@
+.rest-tabs {
+  .q-tab__content {
+    width: 150px;
+    padding-left: 8px;
+    padding-right: 8px;
+
+    .q-tab__label {
+      overflow: hidden;
+      -o-text-overflow: ellipsis;
+      text-overflow: ellipsis;
+      white-space:nowrap;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+    .q-tab__alert-icon {
+      padding-top: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 14px;
+    }
+  }
+
+}
