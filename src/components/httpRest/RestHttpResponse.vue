@@ -10,6 +10,9 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'RestHttpResponse',
+  props: {
+    httpRequest: Object
+  }
 
 })
 

@@ -6,7 +6,7 @@
     tabindex="0"
     role="tab"
     aria-selected="true">
-      <div class="q-focus-helper" tabindex="-1"></div>
+    <div class="q-focus-helper" tabindex="-1"></div>
       <div class="q-tab__content self-stretch flex-center relative-position
                   q-anchor--skip non-selectable row no-wrap q-tab__content--inline">
         <div class="q-tab__label">{{label}}</div>

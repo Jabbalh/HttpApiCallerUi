@@ -7,6 +7,7 @@ const useTheme = function() {
     setCssVar('header', '#ffffff');
     setCssVar('selected-text', '#3b3a3a');
     setCssVar('divider-color', '#dcdada');
+    setCssVar('bg-rest-onglet', '#F9FAFB')
     q$.dark.set(false);
     q$.localStorage.set('theme', 'default');
   }
@@ -14,6 +15,7 @@ const useTheme = function() {
     setCssVar('header', '#181818');
     setCssVar('selected-text', '#ffffff');
     setCssVar('divider-color', '#262626');
+    setCssVar('bg-rest-onglet', '#1C1C1E')
     q$.dark.set(true);
     q$.localStorage.set('theme', 'dark');
   }

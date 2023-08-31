@@ -7,7 +7,7 @@
     unit="%">
     <template v-slot:before>
       <div class="q-ma-md">
-        <RestHttpRequest />
+        <RestHttpRequest :http-request="httpRequest" />
       </div>
     </template>
 
@@ -28,6 +28,9 @@ import RestHttpResponse from "components/httpRest/RestHttpResponse.vue";
 export default defineComponent({
   name: 'RestHttpContainer',
   components: {RestHttpResponse, RestHttpRequest},
+  props: {
+    httpRequest: Object
+  },
   setup(){
     return {
       splitterSecondModel: ref(50),
