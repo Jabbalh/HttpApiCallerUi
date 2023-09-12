@@ -1,10 +1,17 @@
 <template>
-  Environnement
+  Hello env
 
 </template>
+<script lang='ts'>
+import {defineComponent} from 'vue';
 
-<script lang="ts" setup>
+export default defineComponent({
+  name: 'RestEnvironnement',
+  setup(){
+    return {
 
-
+    }
+  }
+});
 
 </script>

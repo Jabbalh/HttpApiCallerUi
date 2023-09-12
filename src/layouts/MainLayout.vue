@@ -1,31 +1,28 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header
-      class="bg-header header-style"
+      class=""
       >
       <q-toolbar>
         <q-toolbar-title>
           HttpApiCaller
         </q-toolbar-title>
-        <div><q-icon :name="iconMode" @click="toogleDarkMode" size="md" /></div>
       </q-toolbar>
     </q-header>
-    <q-footer :class="bgClass" class="footer-style">
+    <q-footer>
       Footer
     </q-footer>
     <q-drawer
       v-model="menuLeft"
       :width="100"
-      class="bg-header"
     >
-      <q-scroll-area class="fit border-tab-right">
+      <q-scroll-area class="fit">
         <q-tabs
           vertical
           switch-indicator
-          indicator-color="deep-purple-8"
         >
-          <q-route-tab icon="bi-code" label="REST" to="/"  :ripple="false" />
-          <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false"/>
+          <q-route-tab icon="bi-code" label="REST" to="/rest"  :ripple="false" content-class="tabs-side-font-bold" />
+          <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false" content-class="tabs-side-font-bold"/>
         </q-tabs>
       </q-scroll-area>
 
@@ -82,3 +79,7 @@ export default defineComponent({
   }
 });
 </script>
+
+<style lang="scss">
+
+</style>
