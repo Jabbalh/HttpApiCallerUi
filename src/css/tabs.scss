@@ -1,0 +1,83 @@
+.tabs-side-font {
+  i {
+    font-size: 1.5em;
+    //font-weight: bold;
+  }
+  div {
+    font-size: 12px;
+    //font-weight: bold;
+  }
+}
+
+.tabs-side-font-bold {
+  i {
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  div {
+    font-size: 12px;
+    font-weight: bold;
+  }
+}
+
+.layout-border-right {
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: $panel-border-light!important;
+}
+
+.layout-border-bottom {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: $panel-border-light!important;
+}
+
+.layout-border-top {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: $panel-border-light!important;
+}
+
+.body--dark .layout-border-right {
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: $panel-border-dark!important;
+}
+
+.body--dark .layout-border-bottom {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: $panel-border-dark!important;
+}
+
+.body--dark .layout-border-top {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: $panel-border-dark!important;
+}
+
+
+
+.sidebar-tab {
+  display: flex;
+  width: 50px;
+}
+
+.rest-container {
+  width: calc(100vw - 150px);
+}
+
+
+.body--dark .splitter-separator {
+  background-color: $panel-border-dark;
+}
+.splitter-separator {
+  background-color: $panel-border-light;
+  &:hover, &:active {
+    background-color: $accent;
+    width: 2px;
+    filter: drop-shadow(0 0 0.75rem crimson);
+  }
+}
+
+

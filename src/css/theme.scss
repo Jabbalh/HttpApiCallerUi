@@ -1,0 +1,17 @@
+.panel-secondary {
+  background-color: $panel-secondary-light;
+}
+
+.body--dark .panel-secondary {
+  background-color: $panel-secondary-dark;
+}
+
+.panel-primary {
+  background-color: $panel-primary-light;
+  color: black;
+}
+
+.body--dark .panel-primary {
+  background-color: $panel-primary-dark;
+  color: white;
+}

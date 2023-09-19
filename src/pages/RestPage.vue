@@ -1,22 +1,21 @@
 <template>
   <q-page class="">
-    <HttpRest class="full-height-page full-width-page"/>
+    <RestSidebare  />
 
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import HttpRest from 'components/httpRest/RestHttp.vue';
+import { defineComponent } from 'vue';
+import RestSidebare from 'components/httpRest/RestSidebar.vue';
 
 
 export default defineComponent({
   name: 'RestPage',
-  components: {HttpRest },
+  components: {RestSidebare},
   setup () {
 
     return {
-      selectedMainTab: ref('http')
     };
   }
 });
