@@ -1,8 +1,11 @@
 <template>
+  <div class="row">
   <q-tabs
     v-model="sidebarSelected"
     vertical
     indicator-color="transparent"
+    active-color="accent"
+    class="sidebar-tab layout-border-right panel-secondary"
   >
     <q-tab name="collections" icon="o_folder" class="tabs-side-font" />
     <q-tab name="environnement" icon="o_layers" class="tabs-side-font" />
@@ -11,11 +14,18 @@
   </q-tabs>
   <q-splitter
     v-model="splitterModel"
-    style="height: 400px"
+    class="rest-container"
+    separator-class="splitter-separator"
+    unit="px"
+    :limits="[250, 450]"
+    before-class="panel-secondary"
+    after-class="panel-primary"
   >
-
     <template v-slot:before>
-      <q-tab-panels v-model="sidebarSelected" animated class="shadow-2 rounded-borders">
+      <q-tab-panels v-model="sidebarSelected"
+                    animated
+
+                    class="shadow-2 rounded-borders full-height bg-transparent">
         <q-tab-panel name="collections">
           <RestCollection />
         </q-tab-panel>
@@ -33,32 +43,31 @@
     </template>
 
     <template v-slot:after>
-      <div class="q-pa-md">
-        <div class="text-h4 q-mb-md">After</div>
-        <div v-for="n in 20" :key="n" class="q-my-md">{{ n }}. Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</div>
-      </div>
+      <RestHttp />
     </template>
 
   </q-splitter>
-
+  </div>
 </template>
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import RestCollection from 'components/httpRest/RestCollection.vue';
-import RestEnvironnement from "components/httpRest/RestEnvironnement.vue";
+import RestEnvironnement from 'components/httpRest/RestEnvironnement.vue';
 import RestHistory from 'components/httpRest/RestHistory.vue';
-import RestTestPlan from "components/httpRest/RestTestPlan.vue";
+import RestTestPlan from 'components/httpRest/RestTestPlan.vue';
+import RestHttp from "components/httpRest/RestHttp.vue";
 
 export default defineComponent({
   name: 'RestSidebar',
-  components: {RestTestPlan, RestEnvironnement, RestCollection, RestHistory},
+  components: {RestHttp, RestTestPlan, RestEnvironnement, RestCollection, RestHistory},
   setup(){
     return {
-      sidebarSelected: ref("collections"),
-      splitterModel: ref(30)
+      sidebarSelected: ref('collections'),
+      splitterModel: ref(300)
     }
   }
 });
 
 
 </script>
+

@@ -1,12 +1,12 @@
 <template>
   <q-page class="">
-    <RestSidebare />
+    <RestSidebare  />
 
   </q-page>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import RestSidebare from 'components/httpRest/RestSidebar.vue';
 
 

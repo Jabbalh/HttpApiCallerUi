@@ -1,25 +1,30 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header
-      class=""
+      class="panel-primary layout-border-bottom"
       >
       <q-toolbar>
         <q-toolbar-title>
           HttpApiCaller
         </q-toolbar-title>
+        <q-space />
+        <q-btn label="dark" @click="toggleDark" />
       </q-toolbar>
     </q-header>
-    <q-footer>
+    <q-footer class="panel-primary layout-border-top">
       Footer
     </q-footer>
     <q-drawer
       v-model="menuLeft"
+      class="layout-border-right panel-secondary"
       :width="100"
     >
       <q-scroll-area class="fit">
         <q-tabs
           vertical
           switch-indicator
+          indicator-color="accent"
+          content-class="tabs-content"
         >
           <q-route-tab icon="bi-code" label="REST" to="/rest"  :ripple="false" content-class="tabs-side-font-bold" />
           <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false" content-class="tabs-side-font-bold"/>
@@ -61,6 +66,7 @@ export default defineComponent({
     const quasar = useQuasar();
     const theme = useTheme();
     theme.initTheme();
+    //quasar.dark.toggle();
     const toogleDarkMode = () => {
       if (quasar.dark.isActive ){
         theme.defaultTheme();
@@ -70,6 +76,7 @@ export default defineComponent({
     };
 
     return {
+      toggleDark: () => quasar.dark.toggle(),
       bgClass: computed(() => quasar.dark.isActive ? 'bg-dark' : 'bg-white'),
       iconMode: computed(() => quasar.dark.isActive ? 'light_mode' : 'dark_mode'),
       toogleDarkMode,
