@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {defineComponent, ref, watch} from 'vue';
 import {useQuasar} from 'quasar';
 import {RestCollection} from 'src/models/model';
 import { uid } from 'quasar'
@@ -39,17 +39,28 @@ export default defineComponent({
         }
       ]
     }]);
-    if (q$.localStorage.has('mock')){
-      mock.value = q$.localStorage.getItem<RestCollection[]>('mock') ?? mock.value;
+
+    if (q$.localStorage.has('REST_STATE')){
+      const state = q$.localStorage.getItem<string>('REST_STATE');
+      if (state){
+        appStore.$patch(JSON.parse(state));
+      }
+
     } else {
-      //q$.localStorage.set('mock', mock.value);
+      appStore.$patch({
+        restCollection: mock.value,
+        currentRestCollection:  mock.value[0]
+      });
     }
 
-    appStore.$patch({
-      restCollection: mock.value,
-      currentRestCollection:  mock.value[0]
-    });
-
+    watch(appStore.$state,
+      (state) => {
+        localStorage.setItem('REST_STATE',JSON.stringify(state));
+      },
+      {
+        deep: true
+      }
+    )
 
   }
 });
