@@ -8,18 +8,47 @@
     active-class="rest-http-onglets-active"
     class="rest-http-onglets"
   >
-    <q-tab name="id-0" label="Mails" class="rest-http-onglet layout-border-right" />
-    <q-tab name="id-1" label="Alarms" class="rest-http-onglet layout-border-right" />
-    <q-tab name="id-3" label="Movies" class="rest-http-onglet layout-border-right" />
+    <q-tab v-for="(item, index) of onglets"
+           :key="index"
+           :name="item.id"
+           class="rest-http-onglet layout-border-right"
+           :ripple="false">
+      <SmartTab :label="item.name" :id="item.id" @onClose="closeTab" />
+    </q-tab>
   </q-tabs>
 </template>
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import {computed, defineComponent } from 'vue';
+import SmartTab from 'components/commun/SmartTab.vue';
+import {useAppStore} from 'stores/appStore';
+import {RestRequest} from "src/models/model";
+
 export default defineComponent({
   name:'RestHttpOnglets',
+  components: {SmartTab},
   setup(){
+    const appStore = useAppStore();
+
+    const currenCollection = computed(() => appStore.currentRestCollection);
+
+    const onglets = computed(() => currenCollection.value?.requests.filter(x => x.isOpen) ?? []);
+    const closeTab = (value:RestRequest) => {
+      const item = onglets.value.find(x => x.id == value.id);
+      if (item){
+        item.isOpen = false;
+      }
+    };
+
+    const httpOnglets = computed({
+      get: () => appStore.activeRestRequest,
+      set: (value: string) => appStore.$patch({activeRestRequest: value})
+    });
+
     return {
-      httpOnglets: ref('id-0')
+      currenCollection,
+      onglets,
+      httpOnglets,
+      closeTab,
     }
   }
 });
