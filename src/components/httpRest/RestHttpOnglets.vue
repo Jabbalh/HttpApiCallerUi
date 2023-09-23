@@ -12,7 +12,7 @@
            :key="index"
            :name="item.id"
            class="rest-http-onglet layout-border-right"
-           :ripple="false">
+           :ripple="false" content-class="rest-tab-with">
       <SmartTab :label="item.name" :id="item.id" @onClose="closeTab" />
     </q-tab>
   </q-tabs>
@@ -29,14 +29,9 @@ export default defineComponent({
   setup(){
     const appStore = useAppStore();
 
-    const currenCollection = computed(() => appStore.currentRestCollection);
-
-    const onglets = computed(() => currenCollection.value?.requests.filter(x => x.isOpen) ?? []);
+    const onglets = computed(() => appStore.openedRestRequest);
     const closeTab = (value:RestRequest) => {
-      const item = onglets.value.find(x => x.id == value.id);
-      if (item){
-        item.isOpen = false;
-      }
+      appStore.closeRequest(value);
     };
 
     const httpOnglets = computed({
@@ -45,7 +40,6 @@ export default defineComponent({
     });
 
     return {
-      currenCollection,
       onglets,
       httpOnglets,
       closeTab,
@@ -55,13 +49,19 @@ export default defineComponent({
 
 </script>
 <style lang="scss">
+.rest-tab-with {
+  width: 100%;
+  height: 100%;
+}
   .rest-http-onglets {
     height: 40px;
     background-color: $panel-secondary-light;
+
   }
 
   .body--dark .rest-http-onglets {
     background-color: $panel-secondary-dark;
+    filter: brightness(95%);
   }
 
   .rest-http-onglets-active {

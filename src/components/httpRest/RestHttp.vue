@@ -1,5 +1,9 @@
 <template>
+  <div style="display: flex">
     <RestHttpOnglets />
+    <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat/>
+<!--    <q-icon name="add" size="md" class="q-mt-xs q-ml-md" />-->
+  </div>
     <RestHttpContainer />
 </template>
 <script lang="ts">
