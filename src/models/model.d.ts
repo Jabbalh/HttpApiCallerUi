@@ -1,6 +1,7 @@
 export interface RestCollection {
   id: string,
   name: string,
+  isSaved: boolean,
   childs: RestCollection[],
   isLocal: boolean
   requests: RestRequest[]
@@ -12,6 +13,7 @@ export interface RestRequest {
   method: string,
   url: string,
   isOpen: boolean,
+  isSaved: boolean,
   parameter: RestParameters
 }
 

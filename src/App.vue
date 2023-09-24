@@ -19,6 +19,7 @@ export default defineComponent({
       isLocal: true,
       id: uid(),
       name: 'Ma collection',
+      isSaved: true,
       childs: [],
       requests: [
         {
@@ -27,6 +28,7 @@ export default defineComponent({
           method: 'GET',
           url: 'https://echo.hoppscotch.io',
           isOpen: true,
+          isSaved: true,
           parameter: {}
         },
         {
@@ -35,6 +37,7 @@ export default defineComponent({
           method: 'POST',
           url: 'https://test.fr',
           isOpen: false,
+          isSaved: true,
           parameter: {}
         }
       ]

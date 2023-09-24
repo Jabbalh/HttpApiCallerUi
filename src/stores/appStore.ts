@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import {RestCollection, RestRequest} from "src/models/model";
+import {RestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash.remove';
+import {uid} from 'quasar';
 
 export interface IAppStore {
   restCollection: RestCollection[],
@@ -12,7 +13,7 @@ export const useAppStore = defineStore('app', {
     return {
       restCollection: [],
       openedRestRequest: [],
-      activeRestRequest: ""
+      activeRestRequest: ''
     }
   },
   actions: {
@@ -24,6 +25,24 @@ export const useAppStore = defineStore('app', {
     },
     closeRequest(value: RestRequest){
       remove(this.openedRestRequest, (x: RestRequest) => x.id == value.id);
+    },
+    addRestRequest(value: string){
+      const request: RestRequest = {
+        id: uid(),
+        name: value,
+        isOpen: true,
+        method: 'GET',
+        isSaved: false,
+        url: '',
+        parameter: {
+
+        }
+      }
+      this.openedRestRequest.push(request);
+      this.activeRestRequest = request.id;
+    },
+    addRequestOnCollection(request: RestRequest, collection: RestCollection){
+      collection.requests.push(request);
     }
   }
 
