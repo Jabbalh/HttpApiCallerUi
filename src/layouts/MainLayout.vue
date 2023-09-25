@@ -11,7 +11,7 @@
         <q-btn label="dark" @click="toggleDark" />
       </q-toolbar>
     </q-header>
-    <q-footer class="panel-primary layout-border-top">
+    <q-footer class="panel-primary layout-border-top" style="height: 35px">
       Footer
     </q-footer>
     <q-drawer

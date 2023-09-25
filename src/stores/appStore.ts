@@ -6,22 +6,28 @@ import {uid} from 'quasar';
 export interface IAppStore {
   restCollection: RestCollection[],
   openedRestRequest: RestRequest[],
-  activeRestRequest: string
+  activeRestRequest?: RestRequest
 }
 export const useAppStore = defineStore('app', {
   state: (): IAppStore => {
     return {
       restCollection: [],
       openedRestRequest: [],
-      activeRestRequest: ''
+      activeRestRequest: undefined
     }
   },
   actions: {
+    activeRequest(id: string){
+      const request = this.openedRestRequest.find(x => x.id == id);
+      if (request){
+        this.activeRestRequest = request;
+      }
+    },
     openRequest(value: RestRequest){
       if (!this.openedRestRequest.some(x => x.id == value.id)){
         this.openedRestRequest.push(value);
       }
-      this.activeRestRequest = value.id;
+      this.activeRestRequest = value;
     },
     closeRequest(value: RestRequest){
       remove(this.openedRestRequest, (x: RestRequest) => x.id == value.id);
@@ -35,11 +41,13 @@ export const useAppStore = defineStore('app', {
         isSaved: false,
         url: '',
         parameter: {
-
+        },
+        response: {
+          response: ''
         }
       }
       this.openedRestRequest.push(request);
-      this.activeRestRequest = request.id;
+      this.activeRestRequest = request;
     },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);

@@ -6,14 +6,15 @@
     align="left"
     dense
     active-class="rest-http-onglets-active"
-    class="rest-http-onglets"
+    class=""
   >
     <q-tab v-for="(item, index) of onglets"
+           no-caps
            :key="index"
            :name="item.id"
            class="rest-http-onglet layout-border-right"
            :ripple="false" content-class="rest-tab-with">
-      <SmartTab :label="item.name" :id="item.id" @onClose="closeTab" :saved="item.isSaved" />
+      <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeTab" :saved="item.isSaved" />
     </q-tab>
   </q-tabs>
 </template>
@@ -49,8 +50,8 @@ export default defineComponent({
     };
 
     const httpOnglets = computed({
-      get: () => appStore.activeRestRequest,
-      set: (value: string) => appStore.$patch({activeRestRequest: value})
+      get: () => appStore.activeRestRequest?.id ?? '',
+      set: (value: string) => appStore.activeRequest(value)
     });
 
     return {
@@ -77,7 +78,6 @@ export default defineComponent({
 
   .body--dark .rest-http-onglets {
     background-color: $panel-secondary-dark;
-    filter: brightness(95%);
   }
 
   .rest-http-onglets-active {

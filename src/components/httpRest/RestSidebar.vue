@@ -5,7 +5,7 @@
     vertical
     indicator-color="transparent"
     active-color="accent"
-    class="sidebar-tab layout-border-right panel-secondary"
+    class="sidebar-tab layout-border-right panel-secondary col"
   >
     <q-tab name="collections" icon="o_folder" class="tabs-side-font">
       <q-tooltip anchor="center end" self="center start" :class="tooltipColor">

@@ -81,3 +81,16 @@
 }
 
 
+.body--dark .splitter-separator-horizontal {
+  background-color: $panel-border-dark;
+}
+.splitter-separator-horizontal {
+  background-color: $panel-border-light;
+  &:hover, &:active {
+    background-color: $accent;
+    height: 2px;
+    filter: drop-shadow(0 0 0.75rem crimson);
+  }
+}
+
+

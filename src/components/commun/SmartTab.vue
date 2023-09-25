@@ -1,8 +1,6 @@
 <template>
-  <div style="width: 100%;
-    height: 100%;
-    padding-top: 8px" @mouseover="onHover" @mouseleave="onLeave">
-    <span>{{label}}</span>
+  <div class="rest-smart-onglet" @mouseover="onHover" @mouseleave="onLeave">
+    <div class="rest-method" :class="method">{{method.toUpperCase()}}</div> <div class="rest-method-name">{{label}}</div>
     <span style="    float: right;
     position: absolute;
     right: 0;" >
@@ -17,6 +15,7 @@ import {computed, ref} from 'vue';
 
 const props = defineProps({
   label: String,
+  method: String,
   id: String,
   saved: Boolean
 });

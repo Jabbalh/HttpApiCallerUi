@@ -1,10 +1,10 @@
 <template>
-  <div style="display: flex">
+  <div style="display: flex" class="rest-http-onglets">
     <RestHttpOnglets />
     <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addRequest"/>
 <!--    <q-icon name="add" size="md" class="q-mt-xs q-ml-md" />-->
   </div>
-    <RestHttpContainer />
+    <RestHttpContainer/>
 </template>
 <script lang="ts">
 import  {defineComponent} from 'vue';

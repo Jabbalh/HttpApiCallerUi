@@ -21,7 +21,7 @@
 
 </template>
 <script lang='ts'>
-import {computed, defineComponent, ref} from 'vue';
+import {computed, defineComponent} from 'vue';
 import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
 
@@ -39,8 +39,8 @@ export default defineComponent({
     };
 
     const selectedKey = computed({
-      get: () => appStore.activeRestRequest,
-      set: (value: string) => console.log("selectedKey")
+      get: () => appStore.activeRestRequest?.id ?? '',
+      set: (_value: string) => console.log("selectedKey")
     });
 
     return {

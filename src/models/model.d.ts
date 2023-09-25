@@ -15,10 +15,19 @@ export interface RestRequest {
   url: string,
   isOpen: boolean,
   isSaved: boolean,
-  parameter: RestParameters
+  parameter: RestRequestParameters
+  response: RestResponse
 }
 
-export interface RestParameters {
+export interface RestRequestParameters {
+
+}
+
+export interface  RestResponse {
+  response: string
+}
+
+export interface  RestResponseParametre {
 
 }
 
