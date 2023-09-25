@@ -12,6 +12,7 @@
            no-caps
            :key="index"
            :name="item.id"
+
            class="rest-http-onglet layout-border-right"
            :ripple="false" content-class="rest-tab-with">
       <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeTab" :saved="item.isSaved" />
@@ -22,9 +23,9 @@
 import {computed, defineComponent } from 'vue';
 import SmartTab from 'components/commun/SmartTab.vue';
 import {useAppStore} from 'stores/appStore';
-import {RestRequest} from "src/models/model";
-import {useQuasar} from "quasar";
-import {useI18n} from "vue-i18n";
+import {RestRequest} from 'src/models/model';
+import {useQuasar} from 'quasar';
+import {useI18n} from 'vue-i18n';
 
 export default defineComponent({
   name:'RestHttpOnglets',

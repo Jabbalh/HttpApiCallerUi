@@ -17,8 +17,8 @@ import {RestRequest} from 'src/models/model';
 import {useI18n} from 'vue-i18n';
 import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
-import {mapWritableState} from "pinia";
-import {useSendHttpRequest} from "src/composables/SendHttpRequest";
+import {mapWritableState} from 'pinia';
+import {useSendHttpRequest} from 'src/composables/SendHttpRequest';
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
@@ -28,7 +28,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ["update:loading"],
+  emits: ['update:loading'],
   setup(props, { emit }){
     const i18n = useI18n();
     const { sendRequest } = useSendHttpRequest() ;

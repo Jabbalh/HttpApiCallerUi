@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {RestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash.remove';
+import cloneDeep from 'lodash.cloneDeep';
 import {uid} from 'quasar';
 
 export interface IAppStore {
@@ -24,10 +25,11 @@ export const useAppStore = defineStore('app', {
       }
     },
     openRequest(value: RestRequest){
-      if (!this.openedRestRequest.some(x => x.id == value.id)){
-        this.openedRestRequest.push(value);
+      const request = this.openedRestRequest.find(x => x.id == value.id);
+      if (!request){
+        this.cloneAndAddToOpenedRequest(value);
       }
-      this.activeRestRequest = value;
+      this.activeRestRequest = request;
     },
     closeRequest(value: RestRequest){
       remove(this.openedRestRequest, (x: RestRequest) => x.id == value.id);
@@ -46,11 +48,17 @@ export const useAppStore = defineStore('app', {
           response: ''
         }
       }
-      this.openedRestRequest.push(request);
+      this.cloneAndAddToOpenedRequest(request);
       this.activeRestRequest = request;
     },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
+    },
+    cloneAndAddToOpenedRequest(value: RestRequest){
+      this.openedRestRequest.push(cloneDeep(value));
+    },
+    saveRequest(value: RestRequest){
+      console.log("saveRequest", value);
     }
   }
 

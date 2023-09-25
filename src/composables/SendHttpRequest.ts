@@ -1,9 +1,13 @@
 import {RestRequest} from "src/models/model";
 import axios from "axios";
 
+/**
+ * Permet d'envoyer une requete Http
+ */
 const useSendHttpRequest = function() {
   const sendRequest = async (request: RestRequest) => {
     try {
+      // COntrcution et paramétrage de l'instance axios pour l'envoie de la requete
       const axiosRequest = axios.create();
       const result = await axiosRequest.request({
         url: request.url,
