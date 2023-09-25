@@ -3835,6 +3835,11 @@ vue-router@^4.0.0:
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
+vue-tree-list@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/vue-tree-list/-/vue-tree-list-1.5.0.tgz#aa596dc63597ea23d0aee9e6955cfa43bef58501"
+  integrity sha512-qHRJtPMmjCYA9I9kpHgIT6F1H7leR1ZxcNETrP2r97otSHYdHdK42qt12t4glf2mNvI+wBpY2fLClUGcaQJnpg==
+
 vue@^3.0.0:
   version "3.3.4"
   resolved "https://registry.npmjs.org/vue/-/vue-3.3.4.tgz"

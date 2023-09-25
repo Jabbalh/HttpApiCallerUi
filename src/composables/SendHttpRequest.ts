@@ -1,5 +1,5 @@
-import {RestRequest} from "src/models/model";
-import axios from "axios";
+import {RestRequest} from 'src/models/model';
+import axios from 'axios';
 
 /**
  * Permet d'envoyer une requete Http
@@ -13,9 +13,9 @@ const useSendHttpRequest = function() {
         url: request.url,
         method: request.method.toLowerCase()
       });
-      console.log("result", result);
+      console.log('result', result);
       request.response.response = JSON.stringify(result);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log('sendRequest error', error);
       request.response.response = 'ERROR';
     }

@@ -71,9 +71,9 @@ import RestCollection from 'components/httpRest/RestCollection.vue';
 import RestEnvironnement from 'components/httpRest/RestEnvironnement.vue';
 import RestHistory from 'components/httpRest/RestHistory.vue';
 import RestTestPlan from 'components/httpRest/RestTestPlan.vue';
-import RestHttp from "components/httpRest/RestHttp.vue";
-import {useI18n} from "vue-i18n";
-import {useQuasar} from "quasar";
+import RestHttp from 'components/httpRest/RestHttp.vue';
+import {useI18n} from 'vue-i18n';
+import {useQuasar} from 'quasar';
 
 export default defineComponent({
   name: 'RestSidebar',

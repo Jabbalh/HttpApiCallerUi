@@ -48,14 +48,17 @@ export const useAppStore = defineStore('app', {
           response: ''
         }
       }
-      this.cloneAndAddToOpenedRequest(request);
-      this.activeRestRequest = request;
+
+      this.activeRestRequest = this.cloneAndAddToOpenedRequest(request);
+      return request;
     },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
     },
     cloneAndAddToOpenedRequest(value: RestRequest){
-      this.openedRestRequest.push(cloneDeep(value));
+      const request = cloneDeep(value);
+      this.openedRestRequest.push(request);
+      return request;
     },
     saveRequest(value: RestRequest){
       console.log("saveRequest", value);

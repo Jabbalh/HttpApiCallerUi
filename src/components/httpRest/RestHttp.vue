@@ -10,34 +10,14 @@
 import  {defineComponent} from 'vue';
 import RestHttpOnglets from 'components/httpRest/RestHttpOnglets.vue';
 import RestHttpContainer from 'components/httpRest/RestHttpContainer.vue';
-import {useAppStore} from 'stores/appStore';
-import {useQuasar} from "quasar";
-import {useI18n} from "vue-i18n";
+import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name:'RestHttp',
   components: {RestHttpContainer, RestHttpOnglets },
   setup() {
-    const appStore = useAppStore();
-    const q$ = useQuasar();
-    const i18n = useI18n();
-    const addRequest = () => {
-      q$.dialog({
-        title:i18n.t('REST.ADD_REQUEST_TITLE'),
-        prompt: {
-         type:'text',
-          model: '',
-          outlined: true,
-          label: i18n.t('REST.ADD_REQUEST_PLACEHOLDER')
-        },
-        cancel: true
-      }).onOk((x: string) => {
-        appStore.addRestRequest(x);
-      })
-    }
-
     return {
-      addRequest
+      ...useRequestUtils()
     }
   }
 
