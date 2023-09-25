@@ -1,7 +1,7 @@
 import {useI18n} from 'vue-i18n';
 import {useQuasar} from 'quasar';
 import {useAppStore} from 'stores/appStore';
-import {RestCollection, RestRequest} from "src/models/model";
+import {RestCollection, RestRequest} from 'src/models/model';
 
 const useRequestUtils = function() {
   const i18n = useI18n();
