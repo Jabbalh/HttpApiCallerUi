@@ -1,5 +1,6 @@
 export interface RestCollection {
   id: string,
+  isCollection: boolean,
   name: string,
   isSaved: boolean,
   childs: RestCollection[],

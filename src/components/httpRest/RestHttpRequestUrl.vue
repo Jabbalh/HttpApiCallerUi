@@ -1,22 +1,20 @@
 <template>
-  <div class="row">
-    <RestHttpRequestUrl />
-
-  </div>
+  {{activeRequest}}
 </template>
+
 <script lang="ts">
+
 import {defineComponent} from 'vue';
-import RestHttpRequestUrl from 'components/httpRest/RestHttpRequestUrl.vue';
 import useActiveRequest from 'src/composables/ActiveRequest';
+
 export default defineComponent({
-  name:'RestHttpRequest',
-  components: {RestHttpRequestUrl},
+  name:'RestHttpRequestUrl',
   setup(){
     return {
       ...useActiveRequest()
     }
   }
 
-});
+})
 
 </script>

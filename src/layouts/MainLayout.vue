@@ -22,6 +22,7 @@
       <q-scroll-area class="fit">
         <q-tabs
           vertical
+          v-model="selectedMainTab"
           switch-indicator
           indicator-color="accent"
           content-class="tabs-content"
@@ -81,7 +82,7 @@ export default defineComponent({
       iconMode: computed(() => quasar.dark.isActive ? 'light_mode' : 'dark_mode'),
       toogleDarkMode,
       menuLeft: ref(true),
-      selectedMainTab: ref('rest')
+      selectedMainTab: ref('REST')
     }
   }
 });

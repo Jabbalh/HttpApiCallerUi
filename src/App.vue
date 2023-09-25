@@ -16,6 +16,7 @@ export default defineComponent({
     const appStore = useAppStore();
 
     let mock = ref<RestCollection[]>([{
+      isCollection: true,
       isLocal: true,
       id: uid(),
       name: 'Ma collection',
@@ -51,9 +52,9 @@ export default defineComponent({
 
     } else {
       appStore.$patch({
-        restCollection: mock.value,
-        currentRestCollection:  mock.value[0]
-      });
+        restCollection: mock,
+
+      })
     }
 
     watch(appStore.$state,

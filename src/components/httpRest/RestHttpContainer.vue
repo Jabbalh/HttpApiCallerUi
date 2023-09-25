@@ -1,18 +1,29 @@
 <template>
   <div>
-    <RestHttpUrl />
-    <RestHttpRequest />
-    <RestHttpResponse />
+    <HttpRequestCollection v-if="isCollection" />
+    <RestHttpRequest v-if="!isCollection"/>
+    <RestHttpResponse v-if="!isCollection"/>
   </div>
 </template>
 <script lang="ts">
-import {defineComponent} from 'vue';
-import RestHttpUrl from 'components/httpRest/RestHttpUrl.vue';
+import {computed, defineComponent} from 'vue';
 import RestHttpResponse from 'components/httpRest/RestHttpResponse.vue';
 import RestHttpRequest from 'components/httpRest/RestHttpRequest.vue';
+import useActiveRequest from 'src/composables/ActiveRequest';
+import HttpRequestCollection from "components/httpRest/HttpRequestCollection.vue";
 export default defineComponent({
   name:'RestHttpContainer',
-  components: {RestHttpRequest, RestHttpResponse, RestHttpUrl},
+  components: {HttpRequestCollection, RestHttpRequest, RestHttpResponse},
+  setup(){
+    const { activeRequest } = useActiveRequest();
+    const isCollection = computed(() => {
+      return !!(activeRequest?.value && 'isCollection' in activeRequest.value);
+    })
+    return {
+      activeRequest,
+      isCollection
+    }
+  }
 
 });
 

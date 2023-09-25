@@ -70,7 +70,9 @@ export default defineComponent({
   .rest-http-onglets {
     height: 40px;
     background-color: $panel-secondary-light;
-
+    .q-tab {
+      padding: 0;
+    }
   }
 
   .body--dark .rest-http-onglets {
