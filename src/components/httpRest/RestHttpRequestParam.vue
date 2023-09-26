@@ -5,7 +5,7 @@
     narrow-indicator
     align="left"
     dense
-    class="col-12 rest-onglet-param"
+    class="col-12 rest-onglet-param sticky-tabs z-index-10 top-secondary"
   >
     <q-tab name="PARAMETERS" :label="i18n.t('REST.PARAM_ONGLET_PARAM')" no-caps  :ripple="false" />
     <q-tab name="BODY" no-caps :label="i18n.t('REST.PARAM_ONGLET_BODY')" :ripple="false" />

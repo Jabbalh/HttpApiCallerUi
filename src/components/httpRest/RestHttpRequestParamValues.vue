@@ -35,7 +35,6 @@
       </div>
     </template>
   </draggable>
-
 </template>
 
 <script lang="ts" setup>
@@ -50,6 +49,11 @@
   const workingParams = ref([
     {id: 1, entry: {key: 'key 1', value: 'value 1'} },
     {id: 2, entry: {key: 'key 2', value: 'value 2'} },
+    {id: 3, entry: {key: 'key 3', value: 'value 3'} },
+    {id: 3, entry: {key: 'key 3', value: 'value 3'} },
+    {id: 3, entry: {key: 'key 3', value: 'value 3'} },
+    {id: 3, entry: {key: 'key 3', value: 'value 3'} },
+    {id: 3, entry: {key: 'key 3', value: 'value 3'} },
     {id: 3, entry: {key: 'key 3', value: 'value 3'} },
   ])
 
