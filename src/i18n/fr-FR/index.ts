@@ -16,7 +16,13 @@ export default {
     MENU_COL_EXPORTER: 'Exporter',
     MENU_REQ_EDITER: 'Editer',
     MENU_REQ_SUPPRIMER: 'Supprimer',
-    MENU_REQ_CLONE: 'Dupliquer'
+    MENU_REQ_CLONE: 'Dupliquer',
+    PARAM_ONGLET_PARAM: 'Paramètres',
+    PARAM_ONGLET_BODY: 'Corps',
+    PARAM_ONGLET_HEADERS: 'En-têtes',
+    PARAM_ONGLET_AUTH: 'Authorisation',
+    PARAM_ONGLET_PRE_REQ: 'Script de pré-requète',
+    PARAM_ONGLET_TESTS: 'Tests',
   }
 
 }

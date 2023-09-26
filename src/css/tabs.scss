@@ -56,17 +56,14 @@
   border-top-color: $panel-border-dark!important;
 }
 
-
-
 .sidebar-tab {
   display: flex;
   width: 50px;
 }
 
 .rest-container {
-  width: calc(100vw - 150px);
+  width: calc(100vw - 130px);
 }
-
 
 .body--dark .splitter-separator {
   background-color: $panel-border-dark;
@@ -80,7 +77,6 @@
   }
 }
 
-
 .body--dark .splitter-separator-horizontal {
   background-color: $panel-border-dark;
 }
@@ -92,5 +88,3 @@
     filter: drop-shadow(0 0 0.75rem crimson);
   }
 }
-
-

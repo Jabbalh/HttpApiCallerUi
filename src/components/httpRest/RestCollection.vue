@@ -31,14 +31,15 @@
 import {computed, defineComponent} from 'vue';
 import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
-import { isCollection } from "src/composables/ActiveRequest";
-import PopinMenuDirectory from "components/httpRest/PopinMenuDirectory.vue";
-import PopinMenuRequest from "components/httpRest/PopinMenuRequest.vue";
+import { isCollection } from 'src/composables/ActiveRequest';
+import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
+import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
 
 export default defineComponent({
   name: 'RestCollection',
   components: { PopinMenuDirectory, PopinMenuRequest },
   setup(){
+    console.log('RestCollection')
     const appStore = useAppStore();
     const collections = computed<RestCollection[]>(() => appStore.restCollection );
     const openItem = (x: RestRequest) => {
@@ -48,10 +49,10 @@ export default defineComponent({
 
     const selectedKey = computed({
       get: () => appStore.activeRestRequest?.id ?? '',
-      set: (_value: string) => console.log("selectedKey")
+      set: (_value: string) => console.log('selectedKey', _value)
     });
 
-    const openNodeMenu = () => console.log("open menu node");
+    const openNodeMenu = () => console.log('open menu node');
 
     return {
       collections,

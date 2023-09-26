@@ -1,31 +1,84 @@
-.rest-tabs {
-  background-color: var(--q-bg-rest-onglet);
-  .q-tab.q-tab--inactive {
-    background-color: var(--q-bg-rest-onglet);
-  }
+.rest-http-header {
+  flex: none;
+  height: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid;
+  border-bottom-color: $panel-border-light;
+  background-color: $panel-secondary-light;
+}
+
+.body--dark .rest-http-header {
+  background-color: $panel-secondary-dark;
+  border-bottom-color: $panel-border-dark;
+}
+
+.rest-http-wrapper {
+  display: flex;
+  //flex: 1;
+  position: relative;
+  min-width: 0;
+  height: 39px;
+}
+
+.rest-http-container {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+}
+
+
+.rest-tab-with {
+  width: 100%;
+  height: 100%;
+}
+.rest-http-onglets {
+  height: 40px;
+  width: 100%;
+  background-color: $panel-secondary-light;
   .q-tab {
-    background-color: $dark;
+    padding: 0;
+  }
+}
 
-    .q-tab__content {
-      width: 150px;
-      padding-left: 8px;
-      padding-right: 8px;
+.body--dark .rest-http-onglets {
+  background-color: $panel-secondary-dark;
+}
 
+.rest-http-onglets-active {
+  background-color: $panel-primary-light;
+  border-bottom: none!important; ;
+}
 
-      .q-tab__label {
-        overflow: hidden;
-        -o-text-overflow: ellipsis;
-        text-overflow: ellipsis;
-        white-space:nowrap;
-        padding-left: 0.5rem;
-        padding-right: 0.5rem;
-      }
-      .q-tab__alert-icon {
-        padding-top: 0.5rem;
-        padding-right: 0.5rem;
-        font-size: 14px;
-      }
-    }
+.body--dark .rest-http-onglets-active {
+  background-color: $panel-primary-dark;
+  border-bottom: none!important;
+}
+
+.rest-http-onglet {
+  width: 172px;
+  min-width: 172px;
+  border-bottom: 1px solid;
+  border-bottom-color: $panel-border-light;
+}
+
+.body--dark .rest-http-onglet {
+  border-bottom-color: $panel-border-dark;
+}
+
+.rest-http-onglet-action {
+  height: 39px;
+  width: auto;
+}
+
+.rest-http-onglet-env {
+  border-left: 1px solid;
+  border-left-color: $panel-border-light;
+  .select {
+    width: 200px;
+    min-width: 200px;
   }
 
 

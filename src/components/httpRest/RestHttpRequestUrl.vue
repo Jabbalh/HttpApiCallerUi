@@ -1,8 +1,19 @@
 <template>
     <div class="request-url-input">
-      <q-select v-model="activeRestRequest.method" borderless :options="REST_METHODS" dense class="select-method" dropdown-icon="expand_more" />
+      <q-select
+          v-model="activeRestRequest.method"
+          borderless :options="REST_METHODS"
+          dense
+          class="select-method"
+          dropdown-icon="expand_more"
+          @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
       <q-separator vertical inset />
-      <q-input borderless dense class="input-url" v-model="activeRestRequest.url"/>
+      <q-input
+        borderless
+        dense
+        class="input-url"
+        v-model="activeRestRequest.url"
+        @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
     </div>
     <div class="request-url-action">
       <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated class="q-ml-md" no-caps @click="sendRestRequest(activeRestRequest)" />
@@ -32,14 +43,21 @@ export default defineComponent({
   setup(props, { emit }){
     const i18n = useI18n();
     const { sendRequest } = useSendHttpRequest() ;
+    const appStore = useAppStore();
     const sendRestRequest = (value: RestRequest) => {
-      emit("update:loading", true);
-      sendRequest(value).finally(() => emit("update:loading", false))
+      emit('update:loading', true);
+      sendRequest(value).finally(() => emit('update:loading', false))
     };
     return {
       sendRestRequest,
       REST_METHODS,
       i18n,
+      appStore
+    }
+  },
+  methods: {
+    updateSaveAttribute(request: RestRequest){
+      this.appStore.updateSaveAttribute(request, false);
     }
   },
   computed: {

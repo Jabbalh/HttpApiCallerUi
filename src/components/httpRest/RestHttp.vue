@@ -1,26 +1,27 @@
 <template>
-  <div style="display: flex" class="rest-http-onglets">
-    <RestHttpOnglets />
-    <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addRequest"/>
-<!--    <q-icon name="add" size="md" class="q-mt-xs q-ml-md" />-->
+  <div class="rest-http-header" >
+    <div class="rest-http-wrapper">
+      <RestHttpOnglets />
+    </div>
+    <div class="rest-http-onglet-env ">
+      <q-select borderless :options="['DEV', 'PROD']" v-model="envModel" dense dropdown-icon="expand_more" class="select" />
+    </div>
   </div>
     <RestHttpContainer/>
 </template>
 <script lang="ts">
-import  {defineComponent} from 'vue';
+import {defineComponent, ref} from 'vue';
 import RestHttpOnglets from 'components/httpRest/RestHttpOnglets.vue';
 import RestHttpContainer from 'components/httpRest/RestHttpContainer.vue';
-import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name:'RestHttp',
   components: {RestHttpContainer, RestHttpOnglets },
-  setup() {
+  setup(){
     return {
-      ...useRequestUtils()
+      envModel: ref('')
     }
   }
-
 });
 
 </script>

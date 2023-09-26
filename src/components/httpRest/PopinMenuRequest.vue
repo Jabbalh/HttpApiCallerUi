@@ -17,9 +17,9 @@
   import {PropType} from 'vue/dist/vue';
   import {RestCollection, RestRequest} from 'src/models/model';
   import {useQuasar} from 'quasar';
-  import {useAppStore} from "stores/appStore";
+  import {useAppStore} from 'stores/appStore';
   import remove from 'lodash.remove';
-  import useRequestUtils from "src/composables/RequestUtils";
+  import useRequestUtils from 'src/composables/RequestUtils';
 
   const props = defineProps({
     modelValue: {
@@ -27,7 +27,6 @@
       required: true
     }
   });
-  const emit = defineEmits(['update:modelValue']);
   const i18n = useI18n();
   const q$ = useQuasar();
   const appStore = useAppStore();

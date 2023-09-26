@@ -17,7 +17,7 @@
         {{i18n.t('REST.TAB_ENVIRONNEMENT')}}
       </q-tooltip>
     </q-tab>
-    <q-tab name="history" icon="o_timeline" class="tabs-side-font">
+    <q-tab name="history" icon="o_history" class="tabs-side-font">
       <q-tooltip anchor="center end" self="center start" :class="tooltipColor">
         {{i18n.t('REST.TAB_HISTORY')}}
       </q-tooltip>

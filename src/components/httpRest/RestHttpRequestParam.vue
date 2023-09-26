@@ -1,13 +1,61 @@
 <template>
-
+  <q-tabs
+    v-model="restParamOnglet"
+    indicator-color="accent"
+    narrow-indicator
+    align="left"
+    dense
+    class="col-12 rest-onglet-param"
+  >
+    <q-tab name="PARAMETERS" :label="i18n.t('REST.PARAM_ONGLET_PARAM')" no-caps  :ripple="false" />
+    <q-tab name="BODY" no-caps :label="i18n.t('REST.PARAM_ONGLET_BODY')" :ripple="false" />
+    <q-tab name="HEADERS" no-caps :label="i18n.t('REST.PARAM_ONGLET_HEADERS')" :ripple="false" />
+    <q-tab name="AUTH" no-caps :label="i18n.t('REST.PARAM_ONGLET_AUTH')" :ripple="false" />
+    <q-tab name="PREREQUEST" no-caps :label="i18n.t('REST.PARAM_ONGLET_PRE_REQ')" :ripple="false" />
+    <q-tab name="TESTS" no-caps :label="i18n.t('REST.PARAM_ONGLET_TESTS')" :ripple="false" />
+  </q-tabs>
+  <q-tab-panels
+    v-model="restParamOnglet"
+    class="col-12"
+    >
+    <q-tab-panel name="PARAMETERS">
+      <RestHttpRequestParamValues />
+    </q-tab-panel>
+    <q-tab-panel name="BODY">
+        Body
+    </q-tab-panel>
+    <q-tab-panel name="HEADERS">
+      Headers
+    </q-tab-panel>
+    <q-tab-panel name="AUTH">
+      Auth
+    </q-tab-panel>
+    <q-tab-panel name="PREREQUEST">
+      Prerequest
+    </q-tab-panel>
+    <q-tab-panel name="TESTS">
+      Tests
+    </q-tab-panel>
+  </q-tab-panels>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+  import {ref} from "vue";
+  import {useI18n} from "vue-i18n";
+  import RestHttpRequestParamValues from "components/httpRest/RestHttpRequestParamValues.vue";
 
-import {defineComponent} from 'vue';
-
-export default defineComponent({
-  name:'RestHttpRequestParam'
-})
+  const restParamOnglet = ref('PARAMETERS');
+  const i18n = useI18n();
 
 </script>
+<style lang="scss">
+  .rest-onglet-param {
+    border-bottom: 1px solid;
+    border-color: $panel-border-light;
+  }
+
+  .body--dark .rest-onglet-param {
+    border-color: $panel-border-dark;
+  }
+
+</style>

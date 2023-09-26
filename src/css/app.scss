@@ -1,8 +1,8 @@
 // app global css in SCSS form
 @import 'tabs';
 @import 'theme';
-@import "rest.methods";
-
+@import 'rest.methods';
+@import 'rest-tabs';
 .wrap-word {
   white-space: break-spaces;
   word-break: break-word;

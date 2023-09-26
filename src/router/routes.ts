@@ -1,4 +1,8 @@
 import { RouteRecordRaw } from 'vue-router';
+import restPage from 'pages/RestPage.vue';
+import testPage from 'pages/TestPage.vue';
+import settingsPage from 'pages/SettingsPage.vue';
+
 
 const routes: RouteRecordRaw[] = [
   {
@@ -6,8 +10,9 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'rest', component: () => import('pages/RestPage.vue') },
-      { path: 'test', component: () => import('pages/TestPage.vue') }
+      { path: 'rest', component: restPage},
+      { path: 'test', component: testPage },
+      { path: 'settings', component: settingsPage }
     ],
   },
 

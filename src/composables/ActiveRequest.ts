@@ -1,6 +1,6 @@
 import {useAppStore} from 'stores/appStore';
-import {computed} from "vue";
-import {RestCollection, RestRequest} from "src/models/model";
+import {computed} from 'vue';
+import {RestCollection, RestRequest} from 'src/models/model';
 
 /**
  * Renvois un compute sur la request active

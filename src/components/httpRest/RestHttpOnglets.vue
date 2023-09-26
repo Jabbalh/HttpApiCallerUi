@@ -6,49 +6,39 @@
     align="left"
     dense
     active-class="rest-http-onglets-active"
-    class=""
+    class="rest-http-onglets"
+    inline-label
+    outside-arrows
+    mobile-arrows
   >
-    <q-tab v-for="(item, index) of onglets"
+    <q-tab v-for="(item, index) of openedRestRequest"
            no-caps
            :key="index"
            :name="item.id"
-
            class="rest-http-onglet layout-border-right"
-           :ripple="false" content-class="rest-tab-with">
-      <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeTab" :saved="item.isSaved" />
+           :ripple="false" content-class="rest-tab-with"
+           >
+      <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeRequest(item)" :saved="item.isSaved" />
     </q-tab>
+    <div class="rest-http-onglet rest-http-onglet-action">
+      <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addRequest"/>
+    </div>
   </q-tabs>
 </template>
 <script lang="ts">
 import {computed, defineComponent } from 'vue';
 import SmartTab from 'components/commun/SmartTab.vue';
 import {useAppStore} from 'stores/appStore';
-import {RestRequest} from 'src/models/model';
-import {useQuasar} from 'quasar';
-import {useI18n} from 'vue-i18n';
+import {mapWritableState} from 'pinia';
+import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name:'RestHttpOnglets',
   components: {SmartTab},
   setup(){
     const appStore = useAppStore();
-    const q$ = useQuasar();
-    const i18n = useI18n();
-
-    const onglets = computed(() => appStore.openedRestRequest);
-    const closeTab = (value:RestRequest) => {
-      if (!value.isSaved){
-        q$.dialog({
-          title: i18n.t('REST.REQUEST_NOT_SAVED_TITLE'),
-          message: i18n.t('REST.REQUEST_NOT_SAVED_MESSAGE'),
-          cancel: true
-        }).onOk(() => {
-          appStore.closeRequest(value);
-          value.isSaved = true;
-        }).onCancel(() => appStore.closeRequest(value));
-      }
-
-    };
+    const { useCloseRequest, addRequest } = useRequestUtils();
+    const { closeRequest } = useCloseRequest();
 
     const httpOnglets = computed({
       get: () => appStore.activeRestRequest?.id ?? '',
@@ -56,41 +46,15 @@ export default defineComponent({
     });
 
     return {
-      onglets,
       httpOnglets,
-      closeTab,
+      closeRequest,
+      addRequest
     }
+  },
+  computed: {
+    ...mapWritableState(useAppStore, ['openedRestRequest'])
   }
 });
 
 </script>
-<style lang="scss">
-.rest-tab-with {
-  width: 100%;
-  height: 100%;
-}
-  .rest-http-onglets {
-    height: 40px;
-    background-color: $panel-secondary-light;
-    .q-tab {
-      padding: 0;
-    }
-  }
 
-  .body--dark .rest-http-onglets {
-    background-color: $panel-secondary-dark;
-  }
-
-  .rest-http-onglets-active {
-    background-color: $panel-primary-light;
-  }
-
-  .body--dark .rest-http-onglets-active {
-    background-color: $panel-primary-dark;
-  }
-
-  .rest-http-onglet {
-    width: 172px;
-  }
-
-</style>

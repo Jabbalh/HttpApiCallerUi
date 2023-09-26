@@ -17,18 +17,20 @@
     <q-drawer
       v-model="menuLeft"
       class="layout-border-right panel-secondary"
-      :width="100"
+      :width="80"
     >
       <q-scroll-area class="fit">
         <q-tabs
           vertical
           v-model="selectedMainTab"
           switch-indicator
+          active-color="accent"
           indicator-color="accent"
           content-class="tabs-content"
         >
           <q-route-tab icon="bi-code" label="REST" to="/rest"  :ripple="false" content-class="tabs-side-font-bold" />
           <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false" content-class="tabs-side-font-bold"/>
+          <q-route-tab icon="tune" label="SETTINGS" to="/settings" :ripple="false" content-class="tabs-side-font-bold"/>
         </q-tabs>
       </q-scroll-area>
 
