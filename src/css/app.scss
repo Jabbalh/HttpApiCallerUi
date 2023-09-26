@@ -8,3 +8,11 @@
   word-break: break-word;
   overflow-wrap: anywhere;
 }
+
+.cursor-grabbing { cursor: grabbing; }
+.cursor-move { cursor: move; }
+.cursor-drag { cursor: grab; }
+
+.bg-shadow-panel {
+  background-color: $panel-secondary-light !important;
+}
