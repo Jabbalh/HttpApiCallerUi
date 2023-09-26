@@ -14,5 +14,9 @@
 .cursor-drag { cursor: grab; }
 
 .bg-shadow-panel {
-  background-color: $panel-secondary-light !important;
+  background-color: var(--q-panel-secondary)!important;
+}
+
+body {
+  color: var(--q-panel-color-font);
 }

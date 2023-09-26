@@ -23,37 +23,19 @@
 .layout-border-right {
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: $panel-border-light!important;
+  border-right-color: var(--q-panel-border)!important;
 }
 
 .layout-border-bottom {
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: $panel-border-light!important;
+  border-bottom-color: var(--q-panel-border)!important;
 }
 
 .layout-border-top {
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: $panel-border-light!important;
-}
-
-.body--dark .layout-border-right {
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-right-color: $panel-border-dark!important;
-}
-
-.body--dark .layout-border-bottom {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: $panel-border-dark!important;
-}
-
-.body--dark .layout-border-top {
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: $panel-border-dark!important;
+  border-top-color: var(--q-panel-border)!important;
 }
 
 .sidebar-tab {
@@ -65,11 +47,8 @@
   width: calc(100vw - 130px);
 }
 
-.body--dark .splitter-separator {
-  background-color: $panel-border-dark;
-}
 .splitter-separator {
-  background-color: $panel-border-light;
+  background-color: var(--q-panel-border);
   &:hover, &:active {
     background-color: $accent;
     width: 2px;
@@ -77,11 +56,8 @@
   }
 }
 
-.body--dark .splitter-separator-horizontal {
-  background-color: $panel-border-dark;
-}
 .splitter-separator-horizontal {
-  background-color: $panel-border-light;
+  background-color: var(--q-panel-border);
   &:hover, &:active {
     background-color: $accent;
     height: 2px;

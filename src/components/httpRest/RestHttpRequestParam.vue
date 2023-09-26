@@ -51,11 +51,6 @@
 <style lang="scss">
   .rest-onglet-param {
     border-bottom: 1px solid;
-    border-color: $panel-border-light;
+    border-color: var(--q-panel-border);
   }
-
-  .body--dark .rest-onglet-param {
-    border-color: $panel-border-dark;
-  }
-
 </style>

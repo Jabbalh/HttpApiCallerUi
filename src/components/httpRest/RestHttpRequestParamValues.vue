@@ -59,7 +59,7 @@
     background-color: transparent;
     font-size: 0.8rem;
     border-bottom: 1px solid;
-    border-bottom-color: $panel-border-light;
+    border-bottom-color: var(--q-panel-border);
     margin-bottom: 8px;
     margin-top: 8px;
     padding-bottom: 6px;

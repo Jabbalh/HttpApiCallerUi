@@ -8,7 +8,7 @@
           HttpApiCaller
         </q-toolbar-title>
         <q-space />
-        <q-btn label="dark" @click="toggleDark" />
+        <q-btn label="dark" @click="toogleDarkMode" />
       </q-toolbar>
     </q-header>
     <q-footer class="panel-primary layout-border-top" style="height: 35px">
@@ -79,7 +79,6 @@ export default defineComponent({
     };
 
     return {
-      toggleDark: () => quasar.dark.toggle(),
       bgClass: computed(() => quasar.dark.isActive ? 'bg-dark' : 'bg-white'),
       iconMode: computed(() => quasar.dark.isActive ? 'light_mode' : 'dark_mode'),
       toogleDarkMode,

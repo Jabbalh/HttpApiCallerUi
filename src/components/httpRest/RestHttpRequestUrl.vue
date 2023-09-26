@@ -69,15 +69,12 @@ export default defineComponent({
 
 </script>
 <style lang="scss">
-.body--dark .request-url-input {
-  background-color: $panel-secondary-dark;
-}
 .request-url-input {
   border-radius: 5px;
   border: 1px solid grey;
   width: calc(100% - 260px);
   display: inline-flex;
-  background-color: $panel-secondary-light;
+  background-color: var(--q-panel-secondary);
 
   .select-method {
     margin-left: 16px;
