@@ -21,4 +21,13 @@
 
 body {
   color: var(--q-panel-color-font);
+  font-size: 12px;
+  .q-tab__label, .q-btn, .q-field{
+    font-size: 12px;
+  }
+  .q-toolbar__title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
 }

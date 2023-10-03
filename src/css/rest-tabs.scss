@@ -15,6 +15,7 @@
   position: relative;
   min-width: 0;
   height: 39px;
+  width: calc(100% - 150px);
 }
 
 .rest-http-container {
@@ -58,9 +59,10 @@
 .rest-http-onglet-env {
   border-left: 1px solid;
   border-left-color: var(--q-panel-border);
+  margin-right: 16px;
   .select {
-    width: 200px;
-    min-width: 200px;
+    width: 150px;
+    min-width: 150px;
   }
 
 

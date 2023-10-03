@@ -15,12 +15,16 @@ export interface RestRequest {
   url: string,
   isOpen: boolean,
   isSaved: boolean,
-  parameter: RestRequestParameters
+  parameter: RestRequestParameters[]
   response: RestResponse
 }
 
 export interface RestRequestParameters {
-
+  id: number,
+  entry: {
+    key: string,
+    value: string
+  }
 }
 
 export interface  RestResponse {

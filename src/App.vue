@@ -31,7 +31,7 @@ export default defineComponent({
           url: 'https://echo.hoppscotch.io',
           isOpen: true,
           isSaved: true,
-          parameter: {},
+          parameter: [],
           response: {
             response: ''
           }
@@ -43,7 +43,7 @@ export default defineComponent({
           url: 'https://test.fr',
           isOpen: false,
           isSaved: true,
-          parameter: {},
+          parameter: [],
           response: {
             response: ''
           }

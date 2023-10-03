@@ -16,7 +16,7 @@
         @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
     </div>
     <div class="request-url-action">
-      <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated class="q-ml-md" no-caps @click="sendRestRequest(activeRestRequest)" />
+      <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
       <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps/>
     </div>
 </template>
@@ -72,14 +72,14 @@ export default defineComponent({
 .request-url-input {
   border-radius: 5px;
   border: 1px solid grey;
-  width: calc(100% - 260px);
+  width: calc(100% - 208px);
   display: inline-flex;
   background-color: var(--q-panel-secondary);
 
   .select-method {
     margin-left: 16px;
     margin-right: 16px;
-    width: 100px;
+    min-width: 80px;
   }
 
   .input-separator {
@@ -88,11 +88,13 @@ export default defineComponent({
 
   .input-url {
     margin-left: 16px;
-    width: calc(100% - 105px);
+    width: calc(100% - 80px);
   }
 }
 .request-url-action {
-  width: 260px;
+  width: 208px;
+  display: flex;
+  justify-content: flex-end;
   button {
     padding-top: 0!important;
     padding-bottom: 0!important;

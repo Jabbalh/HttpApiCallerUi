@@ -16,7 +16,7 @@
   </q-tabs>
   <q-tab-panels
     v-model="restParamOnglet"
-    class="col-12"
+    class="" style="width: 100%"
     >
     <q-tab-panel name="PARAMETERS">
       <RestHttpRequestParamValues />

@@ -46,8 +46,7 @@ export const useAppStore = defineStore('app', {
         method: 'GET',
         isSaved: false,
         url: '',
-        parameter: {
-        },
+        parameter: [],
         response: {
           response: ''
         }

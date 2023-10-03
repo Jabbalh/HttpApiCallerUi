@@ -9,9 +9,18 @@ const useSendHttpRequest = function() {
     try {
       // COntrcution et paramétrage de l'instance axios pour l'envoie de la requete
       const axiosRequest = axios.create();
+      const params = {};
+      for (const item of request.parameter){
+        Object.defineProperty(params, item.entry.key, {
+          value: item.entry.value,
+          writable: false,
+        });
+      }
+      console.log('params', params);
       const result = await axiosRequest.request({
         url: request.url,
-        method: request.method.toLowerCase()
+        method: request.method.toLowerCase(),
+        params: {...params}
       });
       console.log('result', result);
       request.response.response = JSON.stringify(result);
