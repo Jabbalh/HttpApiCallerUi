@@ -32,6 +32,7 @@ export default defineComponent({
           isOpen: true,
           isSaved: true,
           parameter: [],
+          body: '',
           response: {
             response: ''
           }
@@ -44,6 +45,7 @@ export default defineComponent({
           isOpen: false,
           isSaved: true,
           parameter: [],
+          body: '',
           response: {
             response: ''
           }

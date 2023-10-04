@@ -3,8 +3,8 @@
     <div class="row rest-parameter-container sticky-tabs top-tertiary" >
       <div class="rest-parametre-titre">Paramètres de la requète</div>
       <div class="rest-parametre-width-icon">
-        <span class="material-icons cursor-pointer rest-parameter-icon" @click="addParameter">add</span>
-        <span class="material-icons cursor-pointer rest-parameter-icon" @click="deleteAllParameter">delete</span>
+        <span class="material-icons cursor-pointer rest-parameter-icon text-primary" @click="addParameter">add</span>
+        <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">delete</span>
       </div>
     </div>
     <draggable
@@ -24,14 +24,22 @@
             <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput v-model="entry.key" />
+            <SmartInput v-model="entry.key" @update:modelValue="onUpdate" />
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput v-model="entry.value" />
+            <SmartInput v-model="entry.value" @update:modelValue="onUpdate"/>
           </div>
           <div class="rest-parametre-width-icon">
-            <span class="material-icons cursor-pointer rest-parameter-icon" @click="addParameter">add</span>
-            <span class="material-icons cursor-pointer rest-parameter-icon" @click="deleteAllParameter">delete</span>
+            <span
+              class="material-icons cursor-pointer rest-parameter-icon"
+              @click="toogleActive(entry)"
+              :class="entry.active ? 'text-positive' : 'text-negative'"
+            >
+              {{activeBouton(entry.active)}}
+            </span>
+            <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">
+              delete
+            </span>
           </div>
         </div>
       </template>
@@ -40,30 +48,40 @@
 </template>
 
 <script lang="ts" setup>
-  import {ref} from "vue";
+import {computed} from "vue";
   import draggable from "vuedraggable-es"
   import SmartInput from "components/commun/SmartInput.vue";
   import {useAppStore} from "stores/appStore";
   import maxBy from 'lodash/maxBy';
 
-
   const appState = useAppStore();
+  const workingParams = computed(() => appState.activeRestRequest?.parameter);
 
-  const currentRequest = appState.activeRestRequest;
-  const workingParams = currentRequest!.parameter;
-
-
-  const addParameter = () => {
-    const last = maxBy(workingParams, x => x.id);
-   workingParams.push({
+/**
+ * Ajout d'un paramètre
+ */
+const addParameter = () => {
+    const last = maxBy(workingParams.value, x => x.id);
+   workingParams.value?.push({
      id: (last?.id ?? 0) + 1,
-     entry: {
-       key: '',
-       value: ''
-     }
+     entry: { key: '',  value: '', active: true }
    });
   };
-  const deleteAllParameter = () => console.log('Supprimr tous les paramètres');
+
+const onUpdate = () => {
+  console.log("onUpdate param");
+  if (appState.activeRestRequest){
+    appState.updateSaveAttribute(appState.activeRestRequest, false);
+  }
+}
+
+const deleteAllParameter = () => {
+  appState.activeRestRequest!.parameter = [];
+  onUpdate()
+}
+
+const activeBouton = (value: boolean) => value ? 'radio_button_checked' : 'radio_button_unchecked';
+const toogleActive = (value: {active: boolean}) => value.active = !value.active;
 
 </script>
 <style lang="scss">
