@@ -23,10 +23,11 @@ import {computed, onMounted, ref } from "vue";
 import { clone } from "lodash";
 //import {EditorView } from "codemirror";
 
-import { oneDark } from "@codemirror/theme-one-dark";
+
 import { espresso } from 'thememirror';
 import useTheme from "src/composables/Themes";
 import { EditorView} from "@codemirror/view";
+import { oneDark } from '../commun/apiCallerDarkTheme'
 
 const props = defineProps<{response: string}>();
 const currentTheme = useTheme();
