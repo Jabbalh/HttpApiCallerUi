@@ -40,9 +40,9 @@
 </template>
 
 <script lang="ts" setup>
-  import {ref} from "vue";
-  import {useI18n} from "vue-i18n";
-  import RestHttpRequestParamValues from "components/httpRest/RestHttpRequestParamValues.vue";
+  import {ref} from 'vue';
+  import {useI18n} from 'vue-i18n';
+  import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParamValues.vue';
 
   const restParamOnglet = ref('PARAMETERS');
   const i18n = useI18n();

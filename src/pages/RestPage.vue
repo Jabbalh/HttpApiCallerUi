@@ -8,7 +8,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RestSidebare from 'components/httpRest/RestSidebar.vue';
-import useRequestUtils from "src/composables/RequestUtils";
+import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name: 'RestPage',

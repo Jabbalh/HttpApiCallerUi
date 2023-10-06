@@ -4,18 +4,9 @@
            class="smart-input"
            :value="modelValue" @input="onUpdate"  />
   </div>
-
-<!--  <q-input  dense-->
-<!--            borderless-->
-<!--            :value="modelValue"-->
-<!--            @input="onUpdate"-->
-<!--            class="q-ma-none q-pa-none"-->
-<!--            input-style="height:20px"-->
-<!--            hide-bottom-space-->
-<!--            />-->
 </template>
 <script lang="ts" setup>
-  const props = defineProps({
+  defineProps({
     modelValue: String,
   });
   const emits = defineEmits(['update:modelValue']);

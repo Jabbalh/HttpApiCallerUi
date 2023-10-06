@@ -13,7 +13,7 @@
 </template>
 <script lang="ts">
 import {defineComponent, PropType} from 'vue';
-import {RestResponse} from "src/models/model";
+import {RestResponse} from 'src/models/model';
 import SmartResponse from '../commun/SmartResponse.vue';
 
 

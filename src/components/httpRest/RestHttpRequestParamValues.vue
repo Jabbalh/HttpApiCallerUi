@@ -48,10 +48,10 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from "vue";
-  import draggable from "vuedraggable-es"
-  import SmartInput from "components/commun/SmartInput.vue";
-  import {useAppStore} from "stores/appStore";
+import {computed} from 'vue';
+  import draggable from 'vuedraggable-es'
+  import SmartInput from 'components/commun/SmartInput.vue';
+  import {useAppStore} from 'stores/appStore';
   import maxBy from 'lodash/maxBy';
 
   const appState = useAppStore();
@@ -69,7 +69,6 @@ const addParameter = () => {
   };
 
 const onUpdate = () => {
-  console.log("onUpdate param");
   if (appState.activeRestRequest){
     appState.updateSaveAttribute(appState.activeRestRequest, false);
   }
