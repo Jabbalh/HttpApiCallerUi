@@ -21,7 +21,7 @@
     </template>
     <template v-slot:after>
       <div class="row q-ma-md">
-        <RestHttpResponse :response="activeRequest?.response" :loading="loading" />
+        <RestHttpResponse :loading="loading" />
       </div>
     </template>
   </q-splitter>

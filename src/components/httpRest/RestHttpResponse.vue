@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading">
     <div class="row wrap-word" v-if="response">
-      <SmartResponse :response="response.response" />
+      <SmartJson v-model="response" :editable="false" />
     </div>
     <div v-else>
       Aucune réponse
@@ -12,24 +12,43 @@
   </div>
 </template>
 <script lang="ts">
-import {defineComponent, PropType} from 'vue';
-import {RestResponse} from 'src/models/model';
-import SmartResponse from '../commun/SmartResponse.vue';
-
+import {computed, defineComponent} from 'vue';
+import SmartJson from '../commun/SmartJson.vue';
+import {useAppStore} from "stores/appStore";
 
 export default defineComponent({
   name:'RestHttpResponse',
-  components: {SmartResponse},
+  components: {SmartJson},
   props: {
-    response: {
-      type: Object as PropType<RestResponse>
-    },
     loading: {
       type: Boolean,
       required: true
     }
-  }
+  },
+  setup(){
+    const appStore = useAppStore();
+    if (appStore.activeRestRequest && !appStore.activeRestRequest?.response){
+      appStore.activeRestRequest.response.response = '';
+    }
 
+    const response = computed({
+      get: () => {
+        const r = appStore.activeRestRequest?.response.response ?? '';
+        console.log('r', r);
+        return r;
+      },
+      set: (value: string) => {
+        if (appStore.activeRestRequest){
+          appStore.activeRestRequest.response.response = value;
+        }
+      }
+    });
+
+    return {
+      response
+    }
+
+  }
 });
 
 </script>
