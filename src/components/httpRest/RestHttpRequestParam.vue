@@ -5,7 +5,7 @@
     narrow-indicator
     align="left"
     dense
-    class="col-12 rest-onglet-param"
+    class="col-12 rest-onglet-param sticky-tabs z-index-10 top-secondary"
   >
     <q-tab name="PARAMETERS" :label="i18n.t('REST.PARAM_ONGLET_PARAM')" no-caps  :ripple="false" />
     <q-tab name="BODY" no-caps :label="i18n.t('REST.PARAM_ONGLET_BODY')" :ripple="false" />
@@ -16,7 +16,7 @@
   </q-tabs>
   <q-tab-panels
     v-model="restParamOnglet"
-    class="col-12"
+    class="" style="width: 100%"
     >
     <q-tab-panel name="PARAMETERS">
       <RestHttpRequestParamValues />
@@ -51,11 +51,6 @@
 <style lang="scss">
   .rest-onglet-param {
     border-bottom: 1px solid;
-    border-color: $panel-border-light;
+    border-color: var(--q-panel-border);
   }
-
-  .body--dark .rest-onglet-param {
-    border-color: $panel-border-dark;
-  }
-
 </style>

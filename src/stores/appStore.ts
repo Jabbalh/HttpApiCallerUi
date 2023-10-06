@@ -46,8 +46,8 @@ export const useAppStore = defineStore('app', {
         method: 'GET',
         isSaved: false,
         url: '',
-        parameter: {
-        },
+        body: '',
+        parameter: [],
         response: {
           response: ''
         }
@@ -69,6 +69,7 @@ export const useAppStore = defineStore('app', {
     },
     updateSaveAttribute(value: RestRequest, saveAttribute: boolean){
       value.isSaved = saveAttribute;
+
     }
   }
 

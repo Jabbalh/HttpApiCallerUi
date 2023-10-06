@@ -1,28 +1,117 @@
 <template>
-  <div class="row" style="background-color: transparent">
-    <div class="col">Paramètres de la requète</div>
-    <q-space />
-    <div class="col-auto">
-      <q-btn flat rounded icon="delete" size="sm" >
-        <q-tooltip>
-          Tout effacer
-        </q-tooltip>
-      </q-btn>
-      <q-btn flat rounded icon="add" size="sm">
-        <q-tooltip>
-          Ajouter un paramètre
-        </q-tooltip>
-      </q-btn>
+  <div style="position: relative;">
+    <div class="row rest-parameter-container sticky-tabs top-tertiary" >
+      <div class="rest-parametre-titre">Paramètres de la requète</div>
+      <div class="rest-parametre-width-icon">
+        <span class="material-icons cursor-pointer rest-parameter-icon text-primary" @click="addParameter">add</span>
+        <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">delete</span>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-1"><q-icon name="menu" /></div>
-    <div class="col-5">Argument</div>
-    <div class="col-5">Value</div>
-    <div class="col-1">A B</div>
+    <draggable
+      style="overflow: auto; "
+      v-model="workingParams"
+      item-key="id"
+      animation="250"
+      handle=".draggable-handle"
+      draggable=".draggable-content"
+      ghost-class="cursor-move"
+      chosen-class="bg-shadow-panel"
+      drag-class="cursor-grabbing"
+    >
+      <template #item="{ element: { entry } }">
+        <div class="row rest-parameter-container draggable-content">
+          <div class="rest-parameter-drag draggable-handle">
+            <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
+          </div>
+          <div class="rest-parameter-key-value">
+            <SmartInput v-model="entry.key" @update:modelValue="onUpdate" />
+          </div>
+          <div class="rest-parameter-key-value">
+            <SmartInput v-model="entry.value" @update:modelValue="onUpdate"/>
+          </div>
+          <div class="rest-parametre-width-icon">
+            <span
+              class="material-icons cursor-pointer rest-parameter-icon"
+              @click="toogleActive(entry)"
+              :class="entry.active ? 'text-positive' : 'text-negative'"
+            >
+              {{activeBouton(entry.active)}}
+            </span>
+            <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">
+              delete
+            </span>
+          </div>
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 
 <script lang="ts" setup>
+import {computed} from "vue";
+  import draggable from "vuedraggable-es"
+  import SmartInput from "components/commun/SmartInput.vue";
+  import {useAppStore} from "stores/appStore";
+  import maxBy from 'lodash/maxBy';
+
+  const appState = useAppStore();
+  const workingParams = computed(() => appState.activeRestRequest?.parameter);
+
+/**
+ * Ajout d'un paramètre
+ */
+const addParameter = () => {
+    const last = maxBy(workingParams.value, x => x.id);
+   workingParams.value?.push({
+     id: (last?.id ?? 0) + 1,
+     entry: { key: '',  value: '', active: true }
+   });
+  };
+
+const onUpdate = () => {
+  console.log("onUpdate param");
+  if (appState.activeRestRequest){
+    appState.updateSaveAttribute(appState.activeRestRequest, false);
+  }
+}
+
+const deleteAllParameter = () => {
+  appState.activeRestRequest!.parameter = [];
+  onUpdate()
+}
+
+const activeBouton = (value: boolean) => value ? 'radio_button_checked' : 'radio_button_unchecked';
+const toogleActive = (value: {active: boolean}) => value.active = !value.active;
 
 </script>
+<style lang="scss">
+  .rest-parameter-container {
+    background-color: transparent;
+    font-size: 0.8rem;
+    border-bottom: 1px solid;
+    border-bottom-color: var(--q-panel-border);
+    margin-bottom: 8px;
+    margin-top: 8px;
+    padding-bottom: 6px;
+  }
+  .rest-parameter-icon {
+    font-size: 1.2rem;
+    padding: 0 5px 0 5px;
+  }
+
+  .rest-parametre-titre {
+    width: calc(100% - 64px);
+  }
+  .rest-parameter-drag {
+    width: 30px;
+  }
+  .rest-parameter-key-value {
+    width: calc(50% - 32px - 15px);
+  }
+
+  .rest-parametre-width-icon {
+    width: 64px;
+  }
+
+
+</style>

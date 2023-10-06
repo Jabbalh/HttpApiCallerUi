@@ -15,6 +15,7 @@ export default defineComponent({
     const q$ = useQuasar();
     const appStore = useAppStore();
 
+
     let mock = ref<RestCollection[]>([{
       isCollection: true,
       isLocal: true,
@@ -30,7 +31,8 @@ export default defineComponent({
           url: 'https://echo.hoppscotch.io',
           isOpen: true,
           isSaved: true,
-          parameter: {},
+          parameter: [],
+          body: '',
           response: {
             response: ''
           }
@@ -42,7 +44,8 @@ export default defineComponent({
           url: 'https://test.fr',
           isOpen: false,
           isSaved: true,
-          parameter: {},
+          parameter: [],
+          body: '',
           response: {
             response: ''
           }

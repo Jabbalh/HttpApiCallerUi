@@ -1,17 +1,8 @@
 .panel-secondary {
-  background-color: $panel-secondary-light;
-}
-
-.body--dark .panel-secondary {
-  background-color: $panel-secondary-dark;
+  background-color: var(--q-panel-secondary);
 }
 
 .panel-primary {
-  background-color: $panel-primary-light;
-  color: black;
-}
-
-.body--dark .panel-primary {
-  background-color: $panel-primary-dark;
-  color: white;
+  background-color: var(--q-panel-primary);
+  color: var(--q-panel-color-font);
 }

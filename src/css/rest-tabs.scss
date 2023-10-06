@@ -5,13 +5,8 @@
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid;
-  border-bottom-color: $panel-border-light;
-  background-color: $panel-secondary-light;
-}
-
-.body--dark .rest-http-header {
-  background-color: $panel-secondary-dark;
-  border-bottom-color: $panel-border-dark;
+  border-bottom-color: var(--q-panel-border);
+  background-color: var(--q-panel-secondary);
 }
 
 .rest-http-wrapper {
@@ -20,6 +15,7 @@
   position: relative;
   min-width: 0;
   height: 39px;
+  width: calc(100% - 150px);
 }
 
 .rest-http-container {
@@ -37,35 +33,22 @@
 .rest-http-onglets {
   height: 40px;
   width: 100%;
-  background-color: $panel-secondary-light;
+  background-color: var(--q-panel-secondary);
   .q-tab {
     padding: 0;
   }
 }
 
-.body--dark .rest-http-onglets {
-  background-color: $panel-secondary-dark;
-}
-
 .rest-http-onglets-active {
-  background-color: $panel-primary-light;
+  background-color: var(--q-panel-primary);
   border-bottom: none!important; ;
-}
-
-.body--dark .rest-http-onglets-active {
-  background-color: $panel-primary-dark;
-  border-bottom: none!important;
 }
 
 .rest-http-onglet {
   width: 172px;
   min-width: 172px;
   border-bottom: 1px solid;
-  border-bottom-color: $panel-border-light;
-}
-
-.body--dark .rest-http-onglet {
-  border-bottom-color: $panel-border-dark;
+  border-bottom-color: var(--q-panel-border);
 }
 
 .rest-http-onglet-action {
@@ -75,10 +58,11 @@
 
 .rest-http-onglet-env {
   border-left: 1px solid;
-  border-left-color: $panel-border-light;
+  border-left-color: var(--q-panel-border);
+  margin-right: 16px;
   .select {
-    width: 200px;
-    min-width: 200px;
+    width: 150px;
+    min-width: 150px;
   }
 
 

@@ -3,8 +3,31 @@
 @import 'theme';
 @import 'rest.methods';
 @import 'rest-tabs';
+@import 'sticky-helper';
+
 .wrap-word {
   white-space: break-spaces;
   word-break: break-word;
   overflow-wrap: anywhere;
+}
+
+.cursor-grabbing { cursor: grabbing; }
+.cursor-move { cursor: move; }
+.cursor-drag { cursor: grab; }
+
+.bg-shadow-panel {
+  background-color: var(--q-panel-secondary)!important;
+}
+
+body {
+  color: var(--q-panel-color-font);
+  font-size: 12px;
+  .q-tab__label, .q-btn, .q-field{
+    font-size: 12px;
+  }
+  .q-toolbar__title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
 }

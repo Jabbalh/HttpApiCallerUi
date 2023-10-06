@@ -10,10 +10,12 @@
     after-class="panel-primary"
     >
     <template v-slot:before>
-      <div class="row q-ma-md">
-        <RestHttpRequestUrl v-model:loading="loading" />
+      <div class="sticky-tabs top-0 z-index-22">
+        <div class="row q-pa-md">
+          <RestHttpRequestUrl v-model:loading="loading" />
+        </div>
       </div>
-      <div class="row q-ma-md">
+      <div class="row q-pb-md">
         <RestHttpRequestParam />
       </div>
     </template>

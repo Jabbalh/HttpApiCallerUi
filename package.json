@@ -13,16 +13,31 @@
     "build": "quasar build"
   },
   "dependencies": {
+    "@codemirror/autocomplete": "^6.9.1",
+    "@codemirror/commands": "^6.2.5",
+    "@codemirror/lang-javascript": "^6.2.1",
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/lang-xml": "^6.0.2",
+    "@codemirror/language": "^6.9.1",
+    "@codemirror/legacy-modes": "^6.3.3",
+    "@codemirror/lint": "^6.4.2",
+    "@codemirror/search": "^6.5.4",
+    "@codemirror/state": "^6.2.1",
+    "@codemirror/theme-one-dark": "^6.1.2",
+    "@codemirror/view": "^6.20.2",
     "@quasar/cli": "^2.3.0",
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
+    "codemirror": "^6.0.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.remove": "^4.7.0",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
+    "thememirror": "^2.0.1",
     "vue": "^3.0.0",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.0.0"
+    "vue-router": "^4.0.0",
+    "vuedraggable-es": "^4.1.1"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.1",
