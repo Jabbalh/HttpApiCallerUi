@@ -14,7 +14,7 @@ import { espresso } from 'thememirror';
 import useTheme from "src/composables/Themes";
 import { EditorView, lineNumbers,highlightActiveLine} from "@codemirror/view";
 import { oneDark } from '../commun/apiCallerDarkTheme'
-import {Compartment, EditorState, Extension} from "@codemirror/state";
+import {Compartment, EditorState} from "@codemirror/state";
 import {search} from "@codemirror/search";
 
 const props = defineProps<{response: string}>();
