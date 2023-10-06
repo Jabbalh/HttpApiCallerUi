@@ -28,6 +28,7 @@ import { espresso } from 'thememirror';
 import useTheme from "src/composables/Themes";
 import { EditorView} from "@codemirror/view";
 import { oneDark } from '../commun/apiCallerDarkTheme'
+import {EditorState} from "@codemirror/state";
 
 const props = defineProps<{response: string}>();
 const currentTheme = useTheme();
@@ -42,12 +43,15 @@ const codeMirrorTheme = computed(() => {
 onMounted(() => {
   if (docResponse.value){
     new EditorView({
-      extensions: [
-        codeMirrorTheme.value,
-        json()
-      ],
+      state: EditorState.create({
+        doc: jsonResponse,
+        extensions: [
+          EditorView.lineWrapping,
+          codeMirrorTheme.value,
+          json()
+          ]
+      }),
       parent: docResponse.value,
-      doc: jsonResponse
     })
   }
 
