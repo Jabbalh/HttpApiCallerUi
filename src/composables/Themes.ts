@@ -36,10 +36,13 @@ const useTheme = function() {
     exec();
   }
 
+  const isDark = () => q$.dark.isActive;
+
   return {
     initTheme,
     defaultTheme,
-    darkTheme
+    darkTheme,
+    isDark
   }
 }
 
