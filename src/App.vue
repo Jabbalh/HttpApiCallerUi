@@ -23,8 +23,8 @@ export default defineComponent({
           name: 'DEV',
           values: [
             {
-              key: 'rootUrl',
-              value: 'http://'
+              key: 'user',
+              value: 'toto dev'
             }
           ]
         },
@@ -32,8 +32,8 @@ export default defineComponent({
           name: 'PROD',
           values: [
             {
-              key: 'rootUrl',
-              value: 'https://'
+              key: 'user',
+              value: 'toto prod'
             }
           ]
         }
