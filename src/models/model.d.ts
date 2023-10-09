@@ -37,3 +37,14 @@ export interface  RestResponseParametre {
 
 }
 
+
+export interface AppEnvironnement {
+  name: string,
+  values: AppEnvitonnementValue[]
+}
+
+export interface AppEnvitonnementValue {
+  key: string,
+  value: string,
+  active: boolean
+}

@@ -17,12 +17,12 @@
   <q-tab-panels
     v-model="restParamOnglet"
     class="" style="width: 100%"
-    >
+  >
     <q-tab-panel name="PARAMETERS">
       <RestHttpRequestParamValues />
     </q-tab-panel>
     <q-tab-panel name="BODY">
-        <RestHttpRequestBody />
+      <RestHttpRequestBody v-model="activeRestRequest.body" />
     </q-tab-panel>
     <q-tab-panel name="HEADERS">
       Headers
@@ -39,19 +39,36 @@
   </q-tab-panels>
 </template>
 
-<script lang="ts" setup>
-  import {ref} from 'vue';
-  import {useI18n} from 'vue-i18n';
-  import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParamValues.vue';
-  import RestHttpRequestBody from "components/httpRest/RestHttpRequestBody.vue";
+<script lang="ts">
+import { defineComponent, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParamValues.vue';
+import RestHttpRequestBody from 'components/httpRest/RestHttpRequestBody.vue';
+import {mapWritableState} from 'pinia';
+import {useAppStore} from 'stores/appStore';
 
-  const restParamOnglet = ref('PARAMETERS');
-  const i18n = useI18n();
+export default defineComponent({
+  name: 'RestHttpRequestParam',
+  components: { RestHttpRequestParamValues,RestHttpRequestBody  },
+  setup(){
+
+    return {
+      restParamOnglet: ref('PARAMETERS'),
+      i18n: useI18n()
+    }
+  },
+  computed:{
+    ...mapWritableState(useAppStore, ['activeRestRequest'])
+  }
+});
+
+
+
 
 </script>
 <style lang="scss">
-  .rest-onglet-param {
-    border-bottom: 1px solid;
-    border-color: var(--q-panel-border);
-  }
+.rest-onglet-param {
+  border-bottom: 1px solid;
+  border-color: var(--q-panel-border);
+}
 </style>

@@ -65,7 +65,6 @@ function useCloseRequest() {
  */
 function useSaveRestRequest(){
 
-  const appStore = useAppStore();
   const q$ = useQuasar();
 
   const save = (value: RestRequest, collection: RestCollection[]) => {
@@ -83,6 +82,7 @@ function useSaveRestRequest(){
   };
 
   const saveRequest = (value?: RestRequest): void => {
+    const appStore = useAppStore();
     const request = value ?? appStore.activeRestRequest;
     if (request && !request.isSaved){
       const result = save(request, appStore.restCollection);

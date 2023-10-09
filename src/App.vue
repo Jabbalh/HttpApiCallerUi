@@ -8,13 +8,37 @@ import {useQuasar} from 'quasar';
 import {RestCollection} from 'src/models/model';
 import { uid } from 'quasar'
 import {useAppStore} from 'stores/appStore';
+import {useEnvStore} from "stores/EnvStore";
 
 export default defineComponent({
   name: 'App',
   setup(){
     const q$ = useQuasar();
     const appStore = useAppStore();
+    const envStore = useEnvStore();
 
+    envStore.$patch({
+      AppEnvironnement: [
+        {
+          name: 'DEV',
+          values: [
+            {
+              key: 'rootUrl',
+              value: 'http://'
+            }
+          ]
+        },
+        {
+          name: 'PROD',
+          values: [
+            {
+              key: 'rootUrl',
+              value: 'https://'
+            }
+          ]
+        }
+      ]
+    })
 
     let mock = ref<RestCollection[]>([{
       isCollection: true,
@@ -73,6 +97,11 @@ export default defineComponent({
         deep: true
       }
     )
+
+    watch(envStore.$state, state => {
+      console.log("save env");
+      localStorage.setItem('REST_ENV',JSON.stringify(state));
+    })
   }
 });
 </script>

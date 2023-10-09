@@ -1,25 +1,34 @@
 <template>
-  <SmartJson v-if="currentRequest" v-model="body" :editable="true" />
+  <!--  {{modelValue}}-->
+  <!--  <q-separator />-->
+  <SmartJson
+    ref="smartJson"
+    v-if="currentRequest"
+    :modelValue="modelValue"
+    @update:modelValue="update"
+    :editable="true"/>
 </template>
 <script lang="ts" setup>
 
-import SmartJson from "components/commun/SmartJson.vue";
-import {useAppStore} from "stores/appStore";
-import {computed, defineComponent} from "vue";
+import SmartJson from 'components/commun/SmartJson.vue';
+import {useAppStore} from 'stores/appStore';
+import {computed, defineComponent } from 'vue';
 
 defineComponent({SmartJson});
 
 const appState = useAppStore();
+const currentRequest = computed(() => appState.activeRestRequest);
+const props = withDefaults(defineProps<{ modelValue: string  }>(), { modelValue: '' });
+const emit = defineEmits(['update:modelValue']);
 
-const currentRequest = appState.activeRestRequest;
-
-const body = computed({
-  get: () => currentRequest?.body ?? '',
-  set: (value: string) => {
-    if (currentRequest){
-      currentRequest.body = value;
+const update = (value: string) => {
+  if (value != props.modelValue){
+    if (currentRequest.value){
+      appState.updateSaveAttribute(currentRequest.value,false);
     }
+    emit('update:modelValue', value);
   }
-})
+
+}
 
 </script>

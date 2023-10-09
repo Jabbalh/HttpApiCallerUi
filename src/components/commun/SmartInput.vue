@@ -2,18 +2,21 @@
   <div class="q-ml-xs q-mr-xs">
     <input type="text"
            class="smart-input"
-           :value="modelValue" @input="onUpdate"  />
+           :value="modelValue"
+           :placeholder="placeHolder"
+           @input="onUpdate"  />
   </div>
 </template>
 <script lang="ts" setup>
-  defineProps({
-    modelValue: String,
-  });
-  const emits = defineEmits(['update:modelValue']);
+defineProps({
+  modelValue: String,
+  placeHolder: String
+});
+const emits = defineEmits(['update:modelValue']);
 
-  const onUpdate = ($event: any) => {
-    emits('update:modelValue', $event.target.value);
-  }
+const onUpdate = ($event: any) => {
+  emits('update:modelValue', $event.target.value);
+}
 </script>
 <style lang="scss">
 .smart-input {

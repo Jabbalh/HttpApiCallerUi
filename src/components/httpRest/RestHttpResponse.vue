@@ -18,7 +18,7 @@ import {useAppStore} from "stores/appStore";
 
 export default defineComponent({
   name:'RestHttpResponse',
-  components: {SmartJson},
+  components: { SmartJson },
   props: {
     loading: {
       type: Boolean,
@@ -33,9 +33,7 @@ export default defineComponent({
 
     const response = computed({
       get: () => {
-        const r = appStore.activeRestRequest?.response.response ?? '';
-        console.log('r', r);
-        return r;
+        return appStore.activeRestRequest?.response.response ?? '';
       },
       set: (value: string) => {
         if (appStore.activeRestRequest){
@@ -52,4 +50,3 @@ export default defineComponent({
 });
 
 </script>
-
