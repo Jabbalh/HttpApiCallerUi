@@ -22,8 +22,8 @@
 import {computed, defineComponent, ref} from 'vue';
 import RestHttpOnglets from 'components/httpRest/RestHttpOnglets.vue';
 import RestHttpContainer from 'components/httpRest/RestHttpContainer.vue';
-import {useEnvStore} from "stores/EnvStore";
-import {AppEnvironnement} from "src/models/model";
+import {useEnvStore} from 'stores/EnvStore';
+import {AppEnvironnement} from 'src/models/model';
 
 export default defineComponent({
   name:'RestHttp',

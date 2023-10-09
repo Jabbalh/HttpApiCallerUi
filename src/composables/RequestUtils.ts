@@ -2,6 +2,7 @@ import {useI18n} from 'vue-i18n';
 import {useQuasar} from 'quasar';
 import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
+import useActiveRequest from "src/composables/ActiveRequest";
 
 const useRequestUtils = function() {
   const i18n = useI18n();
@@ -83,7 +84,8 @@ function useSaveRestRequest(){
 
   const saveRequest = (value?: RestRequest): void => {
     const appStore = useAppStore();
-    const request = value ?? appStore.activeRestRequest;
+    const activeRequest = useActiveRequest()
+    const request = value ?? activeRequest.activeRequest.value;
     if (request && !request.isSaved){
       const result = save(request, appStore.restCollection);
       if (result){

@@ -27,7 +27,7 @@ const props = defineModel<RestCollection>({
   required: true
 });
 
-const emit = defineEmits(['update:modelValue']);
+//defineEmits(['update:modelValue']);
 const appStore = useAppStore();
 const { addRequest, findCollectionById } = useRequestUtils();
 
