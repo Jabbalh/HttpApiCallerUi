@@ -6,7 +6,7 @@
           dense
           class="select-method"
           dropdown-icon="expand_more"
-         />
+          @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
       <q-separator vertical inset />
       <q-field borderless dense class="input-url">
         <SmartInput
@@ -14,7 +14,7 @@
           :editable="true"
           v-model="activeRestRequest.url"
           :single-line="true"
-
+          @update:modelValue="updateSaveAttribute(activeRestRequest)"
         />
       </q-field>
 

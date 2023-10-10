@@ -9,7 +9,7 @@ const useParseEnv = function() {
    */
   const parseEnv = (value: string, envs: {key: string, value: string}[] | undefined ) => {
     return decodeURI(encodeURI(value)).replace(ENV_REGEXT,(v, k) => {
-      return envs?.find(x => x.key == k)?.value ?? v
+      return envs?.find(x => x.key == k)?.value ?? ''
     });
   }
   return {

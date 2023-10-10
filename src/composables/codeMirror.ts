@@ -174,7 +174,8 @@ function checkEnv(env: string, aggregateEnvs: Ref<AppEnvironnement | null>) {
   })
 }
 
-export function useCodeMirror(
+export function
+useCodeMirror(
   el: Ref<Element | null>,
   value: Ref<string | undefined>,
   editable: boolean,
@@ -273,8 +274,6 @@ export function useCodeMirror(
     }
     return []
   }
-
-  console.log("extLineNumber", extLineNumber())
 
   /**
    * Watcher on theme change
