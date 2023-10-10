@@ -6,14 +6,24 @@
           dense
           class="select-method"
           dropdown-icon="expand_more"
-          @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
+         />
       <q-separator vertical inset />
-      <q-input
-        borderless
-        dense
-        class="input-url"
-        v-model="activeRestRequest.url"
-        @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
+      <q-field borderless dense class="input-url">
+        <SmartInput
+          class="q-mt-sm"
+          :editable="true"
+          v-model="activeRestRequest.url"
+          :single-line="true"
+
+        />
+      </q-field>
+
+<!--      <q-input-->
+<!--        borderless-->
+<!--        dense-->
+<!--        class="input-url"-->
+<!--        v-model="activeRestRequest.url"-->
+<!--        @update:modelValue="updateSaveAttribute(activeRestRequest)"/>-->
     </div>
     <div class="request-url-action">
       <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
@@ -30,9 +40,11 @@ import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
 import {mapWritableState} from 'pinia';
 import {useSendHttpRequest} from 'src/composables/SendHttpRequest';
+import SmartInput from "components/commun/SmartInput.vue";
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
+  components: {SmartInput},
   props: {
     loading: {
       type: Boolean,
@@ -57,6 +69,7 @@ export default defineComponent({
   },
   methods: {
     updateSaveAttribute(request: RestRequest){
+      console.log('updateSaveAttribute');
       this.appStore.updateSaveAttribute(request, false);
     }
   },

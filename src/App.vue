@@ -32,6 +32,11 @@ export default defineComponent({
               value:'id dev',
               active: true
             },
+            {
+              key: 'rootUrl',
+              value: 'http://',
+              active: true
+            }
           ]
         },
         {
@@ -40,6 +45,11 @@ export default defineComponent({
             {
               key: 'user',
               value: 'toto prod',
+              active: true
+            },
+            {
+              key: 'rootUrl',
+              value: 'http://',
               active: true
             }
           ]
