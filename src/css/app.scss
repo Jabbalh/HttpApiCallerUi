@@ -31,3 +31,17 @@ body {
   }
 
 }
+
+.environnement-not-found {
+  background-color: #a80000;
+  &:hover{
+    cursor: help;
+  }
+}
+
+.environnement-found {
+  background-color: #7c3aed;
+  &:hover{
+    cursor: help;
+  }
+}

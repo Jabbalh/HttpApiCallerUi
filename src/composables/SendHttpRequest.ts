@@ -14,18 +14,18 @@ const useSendHttpRequest = function() {
       // COntrcution et paramétrage de l'instance axios pour l'envoie de la requete
       const axiosRequest = axios.create();
       const params = new URLSearchParams();
-      const parseEnv = useParseEnv();
+      const { parseEnv } = useParseEnv();
       for (const item of request.parameter.filter((x => x.entry.active))){
         params.append(
-          parseEnv.parseEnv(item.entry.key, envApp.Current?.values),
-          parseEnv.parseEnv(item.entry.value, envApp.Current?.values));
+          parseEnv(item.entry.key, envApp.Current?.values),
+          parseEnv(item.entry.value, envApp.Current?.values));
       }
       console.log("request.body", request.body);
       const param: AxiosRequestConfig = {
-        url: request.url,
+        url: parseEnv(request.url, envApp.Current?.values),
         method: request.method.toLowerCase(),
         params: params,
-        data: request.body
+        data: parseEnv(request.body, envApp.Current?.values)
       };
       const result = await axiosRequest.request(param);
       request.response.response = useJson().cloneJson(JSON.stringify(result));

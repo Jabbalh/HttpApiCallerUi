@@ -1,27 +1,17 @@
-
-import { templateSettings, template } from "lodash";
-
-const ENV_REGEXT = /<<([^>]*)>>/g;
+export const ENV_REGEXT = /<<([^>]*)>>/g;
 
 const useParseEnv = function() {
 
+  /**
+   * Gestion des variables dans les chaines
+   * @param value
+   * @param envs
+   */
   const parseEnv = (value: string, envs: {key: string, value: string}[] | undefined ) => {
-    templateSettings.interpolate = ENV_REGEXT;
-    const compiled = template(value);
-
-    const obj = {};
-    for (const item of envs ?? []){
-      Object.defineProperty(obj,item.key, {
-        value: item.value,
-        writable: false,
-      });
-    }
-
-    const result =  compiled(obj);
-    console.log("result", result);
-    return result;
+    return decodeURI(encodeURI(value)).replace(ENV_REGEXT,(v, k) => {
+      return envs?.find(x => x.key == k)?.value ?? v
+    });
   }
-
   return {
     parseEnv
   }

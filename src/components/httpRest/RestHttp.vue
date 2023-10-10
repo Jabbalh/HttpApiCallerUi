@@ -1,7 +1,9 @@
 <template>
-  <div class="rest-http-header" >
-    <div class="rest-http-wrapper">
-      <RestHttpOnglets />
+  <div style="display: flex">
+    <div class="rest-http-header" >
+      <div class="rest-http-wrapper">
+        <RestHttpOnglets />
+      </div>
     </div>
     <div class="rest-http-onglet-env ">
       <q-select

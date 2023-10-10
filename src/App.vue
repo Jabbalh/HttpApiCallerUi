@@ -24,8 +24,14 @@ export default defineComponent({
           values: [
             {
               key: 'user',
-              value: 'toto dev'
-            }
+              value: 'toto dev',
+              active: true
+            },
+            {
+              key:'id',
+              value:'id dev',
+              active: true
+            },
           ]
         },
         {
@@ -33,7 +39,8 @@ export default defineComponent({
           values: [
             {
               key: 'user',
-              value: 'toto prod'
+              value: 'toto prod',
+              active: true
             }
           ]
         }
@@ -99,7 +106,6 @@ export default defineComponent({
     )
 
     watch(envStore.$state, state => {
-      console.log("save env");
       localStorage.setItem('REST_ENV',JSON.stringify(state));
     })
   }
