@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading">
     <div class="row wrap-word" v-if="response">
-      <SmartJson v-model="response" :editable="false" />
+      <SmartInput v-model="response" :editable="false" :singleLine="false" />
     </div>
     <div v-else>
       Aucune réponse
@@ -13,12 +13,12 @@
 </template>
 <script lang="ts">
 import {computed, defineComponent} from 'vue';
-import SmartJson from '../commun/SmartJson.vue';
-import {useAppStore} from "stores/appStore";
+import SmartInput from '../commun/SmartInput.vue';
+import {useAppStore} from 'stores/appStore';
 
 export default defineComponent({
   name:'RestHttpResponse',
-  components: { SmartJson },
+  components: { SmartInput },
   props: {
     loading: {
       type: Boolean,

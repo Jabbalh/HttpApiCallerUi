@@ -24,10 +24,20 @@
             <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput v-model="element.entry.key" @update:modelValue="onUpdate" :place-holder="libelleKey(element)" />
+            <SmartInput
+              v-model="element.entry.key"
+              @update:modelValue="onUpdate"
+              :place-holder="libelleKey(element)"
+            :editable="true"
+            :singleLine="true"/>
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput v-model="element.entry.value" @update:modelValue="onUpdate" :place-holder="libelleValue(element)"/>
+            <SmartInput
+              v-model="element.entry.value"
+              @update:modelValue="onUpdate"
+              :place-holder="libelleValue(element)"
+              :editable="true"
+              :singleLine="true"/>
           </div>
           <div class="rest-parametre-width-icon">
             <span

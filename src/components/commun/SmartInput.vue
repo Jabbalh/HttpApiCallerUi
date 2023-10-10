@@ -1,32 +1,38 @@
 <template>
-  <div class="q-ml-xs q-mr-xs">
-    <input type="text"
-           class="smart-input"
-           :value="modelValue"
-           :placeholder="placeHolder"
-           @input="onUpdate"  />
-  </div>
+  <div ref="docResponse" style="height: auto; background-color: transparent"  />
 </template>
 <script lang="ts" setup>
-defineProps({
-  modelValue: String,
-  placeHolder: String
-});
-const emits = defineEmits(['update:modelValue']);
+import {computed, ref, watch} from 'vue';
+import { useCodeMirror } from "src/composables/codeMirror";
+import {useEnvStore} from "stores/EnvStore";
 
-const onUpdate = ($event: any) => {
-  emits('update:modelValue', $event.target.value);
-}
+const props = defineProps<{
+  modelValue: string,
+  editable: boolean,
+  singleLine: boolean
+}>();
+
+const appEnv = useEnvStore();
+const envs = computed(() => appEnv.Current);
+const emit = defineEmits(['update:modelValue']);
+
+const value = computed({
+  get: () => props.modelValue,
+  set: (value: string) => emit('update:modelValue', value)
+});
+
+const docResponse = ref<Element | null>(null);
+const editor = useCodeMirror(
+  docResponse,
+  value,
+  props.editable,
+  props.singleLine,
+  envs
+);
+
+watch(envs, () => {
+  editor.reconfigure(envs);
+})
+
+
 </script>
-<style lang="scss">
-.smart-input {
-  width: 100%;
-  height: 100%;
-  border: none;
-  background-color: transparent;
-  color: var(--q-panel-color-font);
-  &:focus {
-    outline: none;
-  }
-}
-</style>

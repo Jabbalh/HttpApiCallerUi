@@ -6,15 +6,15 @@ import {
   EditorView,
   highlightActiveLine,
   highlightActiveLineGutter, highlightSpecialChars, hoverTooltip,
-  keymap,
-  lineNumbers, MatchDecorator, rectangularSelection,
+  keymap, lineNumbers,
+  MatchDecorator, rectangularSelection,
   ViewPlugin,
   ViewUpdate
 } from '@codemirror/view';
-import {Compartment, EditorState, Extension} from '@codemirror/state';
+import {Compartment, EditorState } from '@codemirror/state';
 import {json} from '@codemirror/lang-json';
 import {defaultKeymap, historyKeymap, indentLess, insertTab, history} from '@codemirror/commands';
-import {oneDark} from 'components/commun/apiCallerDarkTheme';
+//import {oneDark} from 'components/commun/apiCallerDarkTheme';
 import {espresso} from 'thememirror';
 import {
   bracketMatching, defaultHighlightStyle,
@@ -27,15 +27,23 @@ import {highlightSelectionMatches, search, searchKeymap} from '@codemirror/searc
 import {lintKeymap} from '@codemirror/lint';
 import {AppEnvironnement } from 'src/models/model';
 import {ENV_REGEXT} from 'src/composables/parseEnv';
+import {oneDark} from "components/commun/apiCallerDarkTheme";
 
-const basicSetup: Extension = [
-  lineNumbers(),
-  highlightActiveLineGutter(),
+const noSingleLineExtention = (singleLine: boolean) => {
+  return singleLine
+  ? []
+  : [
+      highlightActiveLineGutter(),
+      highlightActiveLine(),
+      foldGutter({
+        openText: '▾',
+        closedText: '▸',
+      }),
+    ]
+
+}
+const basicSetup = (singleLine: boolean) =>  [
   highlightSpecialChars(),
-  foldGutter({
-    openText: '▾',
-    closedText: '▸',
-  }),
   drawSelection(),
   dropCursor(),
   EditorState.allowMultipleSelections.of(true),
@@ -46,7 +54,7 @@ const basicSetup: Extension = [
   autocompletion(),
   rectangularSelection(),
   crosshairCursor(),
-  highlightActiveLine(),
+  ...noSingleLineExtention(singleLine),
   highlightSelectionMatches(),
   history(),
   keymap.of([
@@ -170,6 +178,7 @@ export function useCodeMirror(
   el: Ref<Element | null>,
   value: Ref<string | undefined>,
   editable: boolean,
+  singleLine: boolean,
   envs: Ref<AppEnvironnement | null>
 ) {
 
@@ -183,9 +192,13 @@ export function useCodeMirror(
   // Comparment for theme managment
   const themeConfig = new Compartment();
 
-  const compartment = new Compartment()
+  const compartment = new Compartment();
+
+  const extSingleLine = singleLine
+    ? [EditorState.transactionFilter.of(tr => { return tr.newDoc.lines > 1 ? [] : [tr] })]
+    : [];
+
   const reconfigure = (envs: Ref<AppEnvironnement | null>) => {
-    console.log('reconfigure environmentHighlightStyle');
     editor.value?.dispatch({
       effects: compartment.reconfigure([
         cursorTooltipField(envs),
@@ -200,9 +213,8 @@ export function useCodeMirror(
    */
   const initView = (el: Element) => {
     const extensions = [
-      basicSetup,
-      highlightActiveLine(),
-      lineNumbers(),
+      basicSetup(singleLine),
+        ...extLineNumber(),
       EditorView.lineWrapping,
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
@@ -211,6 +223,7 @@ export function useCodeMirror(
         cursorTooltipField(envs),
         environmentHighlightStyle(envs),
       ]),
+        ...extSingleLine,
       ViewPlugin.fromClass(
         class {
           update(update: ViewUpdate) {
@@ -249,10 +262,19 @@ export function useCodeMirror(
       parent: el,
       state: EditorState.create({
         doc: jsonResponse.value,
-        extensions,
+        extensions
       }),
     })
   }
+
+  const extLineNumber = () => {
+    if (!singleLine){
+      return [lineNumbers()];
+    }
+    return []
+  }
+
+  console.log("extLineNumber", extLineNumber())
 
   /**
    * Watcher on theme change

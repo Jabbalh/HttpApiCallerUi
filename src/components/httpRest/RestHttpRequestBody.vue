@@ -6,11 +6,12 @@
     v-if="currentRequest"
     :modelValue="modelValue"
     @update:modelValue="update"
-    :editable="true"/>
+    :editable="true"
+  :single-line="false"/>
 </template>
 <script lang="ts" setup>
 
-import SmartJson from 'components/commun/SmartJson.vue';
+import SmartJson from 'components/commun/SmartInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {computed, defineComponent } from 'vue';
 
