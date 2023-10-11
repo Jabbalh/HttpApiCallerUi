@@ -54,8 +54,7 @@ watch(envs, () => {
 .input-wrapper {
   position: relative;
   display: flex;
-  flex: 1 1 0%;
-  flex-shrink: 0;
+  flex: 1 1 0;
   white-space: nowrap;
   cursor: text;
 }
