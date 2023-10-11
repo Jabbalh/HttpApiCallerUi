@@ -1,42 +1,44 @@
 <template>
-  <div class="autocomplete">
+  <div class="autocomplete" ref="autocomplete">
     <div class="input-wrapper">
       <div
         ref="docResponse"
-        @focusin="showSuggestionPopover = true"
+        @focusin="onFocus"
         style="height: auto;width: 100%; background-color: transparent"  />
-
     </div>
-    <ul
-      v-if="showSuggestionPopover && suggestionSource"
-      ref="suggestionsMenu"
-      class="suggestions"
-    >
-      <li  v-for="(suggestion, index) in suggestionSource"  :key="`suggestion-${index}`">
-            <span class="truncate py-0.5">
-              {{ suggestion }}
-            </span>
-      </li>
-    </ul>
+<!--    <q-menu-->
+<!--      v-model="showSuggestionPopover"-->
+<!--      ref="refPopupProxy"-->
+<!--      v-if="suggestionSource"-->
+<!--      :offset="[30, 30]"-->
+<!--      no-parent-event-->
+<!--      >-->
+<!--            <q-list-->
+<!--              ref="suggestionsMenu"-->
+<!--              class=""-->
+<!--              bordered-->
+<!--              separator-->
+<!--              dense-->
+<!--              >-->
+<!--              <q-item-->
+<!--                clickable-->
+<!--                v-ripple-->
+<!--                v-for="(item, index) in suggestionSource" :key="`sugg-${index}`">-->
+<!--                <q-item-section>{{item}}</q-item-section>-->
+<!--              </q-item>-->
+<!--            </q-list>-->
+<!--    </q-menu>-->
+
   </div>
 
-  <!--  <ul-->
-  <!--    v-if="showSuggestionPopover && suggestionSource"-->
-  <!--    ref="suggestionsMenu"-->
-  <!--    class="suggestions"-->
-  <!--  >-->
-  <!--    <li  v-for="(suggestion, index) in suggestionSource"  :key="`suggestion-${index}`">-->
-  <!--        <span class="truncate py-0.5">-->
-  <!--          {{ suggestion }}-->
-  <!--        </span>-->
-  <!--    </li>-->
-  <!--  </ul>-->
 
 </template>
 <script lang="ts" setup>
 import {computed, ref, watch, withDefaults} from 'vue';
 import { useCodeMirror } from "src/composables/codeMirror";
 import {useEnvStore} from "stores/EnvStore";
+import { onClickOutside } from "@vueuse/core"
+import {QPopupProxy} from "quasar";
 
 const props = withDefaults(
   defineProps<{
@@ -62,9 +64,10 @@ const value = computed({
     }
   }
 });
-
-const suggestionsMenu = ref<any | null>(null)
-const docResponse = ref<Element | null>(null);
+const autocomplete = ref<any | null>(null);
+const suggestionsMenu = ref<any | null>(null);
+const docResponse = ref<HTMLElement | null>(null);
+const refPopupProxy = ref<QPopupProxy>();
 const editor = useCodeMirror(
   docResponse,
   value,
@@ -72,6 +75,18 @@ const editor = useCodeMirror(
   true,
   envs
 );
+
+const onFocus = () => {
+  showSuggestionPopover.value = true;
+}
+//
+// const onShowPopover = () => {
+//   if (docResponse.value){
+//     docResponse.value.focus();
+//   }
+// }
+
+//onClickOutside(autocomplete, () => showSuggestionPopover.value = false);
 
 const scrollActiveElIntoView = () => {
   const suggestionsMenuEl = suggestionsMenu.value
@@ -102,12 +117,25 @@ watch(envs, () => {
 
 </script>
 <style scoped lang="scss">
+
+
+.suggestion-liste {
+  max-height: 100px;
+  height: 100px;
+  position: absolute;
+  background-color: black;
+  overflow: auto;
+}
+
 .input-wrapper {
-  position: relative;
+  //absolute inset-0 flex flex-1 divide-x divide-dividerLight overflow-x-auto
+  position: absolute;
   display: flex;
-  flex: 1 1 0;
+  flex: 1;
+  overflow-x: auto;
   white-space: nowrap;
   cursor: text;
+  width: 100%;
 
 }
 .autocomplete {
@@ -123,7 +151,7 @@ watch(envs, () => {
   .suggestions {
     position: absolute;
     background-color:  green;
-    z-index: 50;
+    z-index: 3;
     //@apply shadow-lg;
     min-height: 46px;
     //@apply border-b border-x border-divider;
