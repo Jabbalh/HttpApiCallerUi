@@ -24,6 +24,7 @@ export default {
     PARAM_ONGLET_PRE_REQ: 'Script de pré-requète',
     PARAM_ONGLET_TESTS: 'Tests',
     PARAM_REQ_PARAM_TITLE: 'Paramètre de la requète',
+    PARAM_REQ_HEADER_TITLE: 'Liste des en-têtes',
     PARAM_REQ_PARAM_KEY: 'Paramètre',
     PARAM_REQ_PARAM_VALUE: 'Valeur'
   }

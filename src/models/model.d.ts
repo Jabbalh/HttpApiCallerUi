@@ -16,6 +16,7 @@ export interface RestRequest {
   isOpen: boolean,
   isSaved: boolean,
   parameter: RestRequestParameters[],
+  header: RestRequestParameters[],
   body: string,
   response: RestResponse
 }

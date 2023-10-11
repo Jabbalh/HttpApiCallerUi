@@ -1,7 +1,7 @@
 <template>
   <div style="position: relative;">
     <div class="row rest-parameter-title sticky-tabs top-tertiary" >
-      <div class="rest-parametre-titre">Paramètres de la requète</div>
+      <div class="rest-parametre-titre">{{ libelleTitle }}</div>
       <div class="rest-parametre-width-icon">
         <span class="material-icons cursor-pointer rest-parameter-icon text-primary" @click="addParameter">add</span>
         <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">delete</span>
@@ -28,16 +28,15 @@
               v-model="element.entry.key"
               @update:modelValue="onUpdate"
               :place-holder="libelleKey(element)"
-            :editable="true"
-            :singleLine="true"/>
+              :suggestion-source="baseHeaders"
+              :editable="true" />
           </div>
           <div class="rest-parameter-key-value">
             <SingleLineInput
               v-model="element.entry.value"
               @update:modelValue="onUpdate"
               :place-holder="libelleValue(element)"
-              :editable="true"
-              :singleLine="true"/>
+              :editable="true" />
           </div>
           <div class="rest-parametre-width-icon">
             <span
@@ -61,54 +60,61 @@
 import {computed} from 'vue';
 import draggable from 'vuedraggable-es'
 import SingleLineInput from 'components/commun/SingleLineInput.vue';
-import {useAppStore} from 'stores/appStore';
-import maxBy from 'lodash/maxBy';
-import remove from 'lodash/remove';
 import {useI18n} from "vue-i18n";
 import {RestRequestParameters} from "src/models/model";
+import {commonHeaders} from 'src/models/HeaderConstantes';
 
-const appState = useAppStore();
-const workingParams = computed(() => appState.activeRestRequest?.parameter);
+const props = defineProps<{ modelValue: RestRequestParameters[], isHeader: boolean  }>();
+const emit = defineEmits(['update:modelValue', 'add', 'delete', 'deleteAll', 'updateRequest']);
+
+const workingParams = computed(() => props.modelValue);
 const i18n = useI18n();
 
+const libelleTitle = computed(() => props.isHeader ? i18n.t('REST.PARAM_REQ_HEADER_TITLE') : i18n.t('REST.PARAM_REQ_PARAM_TITLE'));
 const libelleKey = (value: RestRequestParameters) => `${i18n.t('REST.PARAM_REQ_PARAM_KEY')} ${value.id}`;
 const libelleValue = (value: RestRequestParameters) => `${i18n.t('REST.PARAM_REQ_PARAM_VALUE')} ${value.id}`;
+
+const baseHeaders = props.isHeader ? commonHeaders : undefined;
 /**
  * Ajout d'un paramètre
  */
 const addParameter = () => {
-  const last = maxBy(workingParams.value, x => x.id);
-  workingParams.value?.push({
-    id: (last?.id ?? 0) + 1,
-    entry: { key: '',  value: '', active: true }
-  });
+  // const last = maxBy(workingParams.value, x => x.id);
+  // workingParams.value?.push({
+  //   id: (last?.id ?? 0) + 1,
+  //   entry: { key: '',  value: '', active: true }
+  // });
+  emit('add');
 };
 
 const deleteParameter = (value: RestRequestParameters) => {
-  if (workingParams.value){
-    const p = workingParams.value?.find(x => x.id == value.id);
-    if (p){
-      remove(workingParams.value, x => x.id == p.id);
-      let i = 0;
-      for (const item of workingParams.value){
-        item.id = ++i;
-      }
-      onUpdate();
-    }
-  }
+  // if (workingParams.value){
+  //   const p = workingParams.value?.find(x => x.id == value.id);
+  //   if (p){
+  //     remove(workingParams.value, x => x.id == p.id);
+  //     let i = 0;
+  //     for (const item of workingParams.value){
+  //       item.id = ++i;
+  //     }
+  //     onUpdate();
+  //   }
+  // }
+  emit('delete', value);
 }
 
 const onUpdate = () => {
-  if (appState.activeRestRequest){
-    appState.updateSaveAttribute(appState.activeRestRequest, false);
-  }
+  // if (appState.activeRestRequest){
+  //   appState.updateSaveAttribute(appState.activeRestRequest, false);
+  // }
+  emit('updateRequest');
 }
 
 const deleteAllParameter = () => {
-  if (appState.activeRestRequest){
-    appState.activeRestRequest.parameter = [];
-    onUpdate();
-  }
+  // if (appState.activeRestRequest){
+  //   appState.activeRestRequest.parameter = [];
+  //   onUpdate();
+  // }
+  emit('deleteAll');
 }
 
 const activeBouton = (value: boolean) => value ? 'radio_button_checked' : 'radio_button_unchecked';

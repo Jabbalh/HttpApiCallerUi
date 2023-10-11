@@ -12,7 +12,11 @@ import {defaultKeymap} from '@codemirror/commands';
 import {espresso} from 'thememirror';
 import {AppEnvironnement } from 'src/models/model';
 import {oneDark} from "components/commun/apiCallerDarkTheme";
-import {basicSetup, extLineNumber, extSingleLine, manageKeyMap} from "src/helpers/editor/CodeMirrorExtensions";
+import {
+  basicSetupArea,
+  basicSetupSingleLine,
+  manageKeyMap
+} from 'src/helpers/editor/CodeMirrorExtensions';
 import {environmentHighlightStyle} from "src/helpers/editor/HighlightStyle";
 import {cursorTooltipField} from "src/helpers/editor/CursorTooltip";
 
@@ -52,9 +56,9 @@ useCodeMirror(
    * @param el
    */
   const initView = (el: Element) => {
+    const baseSetup = singleLine ? basicSetupSingleLine : basicSetupArea;
     const extensions = [
-      basicSetup(singleLine),
-        ...extLineNumber(singleLine),
+      ...baseSetup,
       EditorView.lineWrapping,
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
@@ -63,7 +67,6 @@ useCodeMirror(
         cursorTooltipField(envs),
         environmentHighlightStyle(envs),
       ]),
-        ...extSingleLine(singleLine),
       ViewPlugin.fromClass(
         class {
           update(update: ViewUpdate) {

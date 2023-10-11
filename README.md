@@ -1,41 +1,21 @@
 # HttpAPiCallerUi (httpapicallerui)
 
-HttpApiCallerUi
+Project implémentant les principales fonctionnalités pour tester des WebApi et plus encore.
+Le project est entièrement OpenSource et proposera un backend pour partager des collections d'équipes.
 
-## Install the dependencies
+## Pour instaler les dépendances
 ```bash
 yarn
 # or
 npm install
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Pour lancer le projet (Front)
 ```bash
 quasar dev
 ```
 
-
-### Lint the files
-```bash
-yarn lint
-# or
-npm run lint
-```
-
-
-### Format the files
-```bash
-yarn format
-# or
-npm run format
-```
-
-
-
-### Build the app for production
+### Pour compiler en mode production
 ```bash
 quasar build
 ```
-
-### Customize the configuration
-See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

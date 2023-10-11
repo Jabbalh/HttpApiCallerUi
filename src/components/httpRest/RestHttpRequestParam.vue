@@ -18,14 +18,28 @@
     v-model="restParamOnglet"
     class="" style="width: 100%"
   >
-    <q-tab-panel name="PARAMETERS">
-      <RestHttpRequestParamValues />
+    <q-tab-panel name="PARAMETERS" >
+      <RestHttpRequestParamValues
+        v-model="activeRestRequest.parameter"
+        :is-header="false"
+        @add="addParameter"
+        @delete="deleteParameter"
+        @deleteAll="deleteAllParameter"
+        @updateRequest="onUpdate"
+      />
     </q-tab-panel>
     <q-tab-panel name="BODY">
       <RestHttpRequestBody v-model="activeRestRequest.body" />
     </q-tab-panel>
     <q-tab-panel name="HEADERS">
-      Headers
+      <RestHttpRequestParamValues
+        v-model="activeRestRequest.header"
+        :is-header="true"
+        @add="addHeader"
+        @delete="deleteHeader"
+        @deleteAll="deleteAllHeader"
+        @updateRequest="onUpdate"
+      />
     </q-tab-panel>
     <q-tab-panel name="AUTH">
       Auth
@@ -46,6 +60,9 @@ import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParam
 import RestHttpRequestBody from 'components/httpRest/RestHttpRequestBody.vue';
 import {mapWritableState} from 'pinia';
 import {useAppStore} from 'stores/appStore';
+import maxBy from 'lodash/maxBy';
+import {RestRequestParameters} from 'src/models/model';
+import remove from 'lodash/remove';
 
 export default defineComponent({
   name: 'RestHttpRequestParam',
@@ -54,7 +71,81 @@ export default defineComponent({
 
     return {
       restParamOnglet: ref('PARAMETERS'),
-      i18n: useI18n()
+      i18n: useI18n(),
+      appState: useAppStore()
+    }
+  },
+  methods: {
+    /**
+     * Ajout d'un nouveau paramètre
+     */
+    addParameter() {
+      this.add(this.activeRestRequest?.parameter);
+    },
+    addHeader() {
+      this.add(this.activeRestRequest?.header);
+    },
+    /**
+     * AJout d'une nouvelle valeur
+     * @param values
+     */
+    add: function(values: RestRequestParameters[]) {
+      const last = maxBy(values, x => x.id);
+      values.push({
+        id: (last?.id ?? 0) + 1,
+        entry: { key: '',  value: '', active: true }
+      });
+    },
+    deleteHeader(value: RestRequestParameters){
+      this.delete(this.activeRestRequest?.header, value);
+    },
+    /**
+     * Suppression d'un paramètre
+     * @param value
+     */
+    deleteParameter(value: RestRequestParameters) {
+      this.delete(this.activeRestRequest?.parameter, value);
+    },
+    /**
+     * Supression d'une valeur
+     * @param values
+     * @param value
+     */
+    delete(values: RestRequestParameters[], value: RestRequestParameters) {
+      if (value){
+        const p = values.find(x => x.id == value.id);
+        if (p){
+          remove(values, x => x.id == p.id);
+          let i = 0;
+          for (const item of values){
+            item.id = ++i;
+          }
+          this.onUpdate();
+        }
+      }
+    },
+    /**
+     * Mie à jour de la requète active
+     */
+    onUpdate() {
+      if (this.activeRestRequest){
+        this.appState.updateSaveAttribute(this.activeRestRequest, false);
+      }
+    },
+    /**
+     * Suppression de tous les paramètres
+     */
+    deleteAllParameter() {
+      if (this.activeRestRequest){
+        this.activeRestRequest.parameter = [];
+        this.onUpdate();
+      }
+    },
+    deleteAllHeader(){
+      if (this.activeRestRequest){
+        this.activeRestRequest.header = [];
+        this.onUpdate();
+      }
     }
   },
   computed:{

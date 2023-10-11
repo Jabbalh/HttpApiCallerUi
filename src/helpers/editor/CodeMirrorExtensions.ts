@@ -19,19 +19,6 @@ import {autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap} fr
 import {highlightSelectionMatches, search, searchKeymap} from "@codemirror/search";
 import {lintKeymap} from "@codemirror/lint";
 
-const noSingleLineExtention = (singleLine: boolean) => {
-  return singleLine
-    ? []
-    : [
-      highlightActiveLineGutter(),
-      highlightActiveLine(),
-      foldGutter({
-        openText: '▾',
-        closedText: '▸',
-      }),
-    ]
-};
-
 export const manageKeyMap = (singleLine: boolean) => {
   return singleLine
     ? []
@@ -58,7 +45,7 @@ export const extSingleLine = (singleLine: boolean) => singleLine
   ? [EditorState.transactionFilter.of(tr => { return tr.newDoc.lines > 1 ? [] : [tr] })]
   : [];
 
-export const basicSetup = (singleLine: boolean) =>  [
+export const basicSetup = [
   highlightSpecialChars(),
   drawSelection(),
   dropCursor(),
@@ -70,7 +57,6 @@ export const basicSetup = (singleLine: boolean) =>  [
   autocompletion(),
   rectangularSelection(),
   crosshairCursor(),
-  ...noSingleLineExtention(singleLine),
   highlightSelectionMatches(),
   history(),
   keymap.of([
@@ -86,3 +72,25 @@ export const basicSetup = (singleLine: boolean) =>  [
     top: true,
   }),
 ];
+
+export const basicSetupSingleLine = [
+  ...basicSetup,
+  EditorState.transactionFilter.of(tr => { return tr.newDoc.lines > 1 ? [] : [tr] })
+];
+
+export const basicSetupArea = [
+  ...basicSetup,
+  highlightActiveLineGutter(),
+  highlightActiveLine(),
+  foldGutter({
+    openText: '▾',
+    closedText: '▸',
+  }),
+  lineNumbers()
+];
+
+// export const basicSetup = (singleLine: boolean) =>  [
+//
+//   ...noSingleLineExtention(singleLine),
+//
+// ];

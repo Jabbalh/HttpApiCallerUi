@@ -11,8 +11,7 @@ import {useEnvStore} from "stores/EnvStore";
 
 const props = defineProps<{
   modelValue: string,
-  editable: boolean,
-  singleLine: boolean
+  editable: boolean
 }>();
 
 const appEnv = useEnvStore();
@@ -32,7 +31,7 @@ const editor = useCodeMirror(
   docResponse,
   value,
   props.editable,
-  props.singleLine,
+  false,
   envs
 );
 

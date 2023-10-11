@@ -1,34 +1,26 @@
 <template>
-    <div class="request-url-input">
-      <q-select
-          v-model="activeRestRequest.method"
-          borderless :options="REST_METHODS"
-          dense
-          class="select-method"
-          dropdown-icon="expand_more"
-          @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
-      <q-separator vertical inset />
-      <q-field borderless dense class="input-url">
-        <SingleLineInput
-          class="q-mt-sm"
-          :editable="true"
-          v-model="activeRestRequest.url"
-          :single-line="true"
-          @update:modelValue="updateSaveAttribute(activeRestRequest)"
-        />
-      </q-field>
-
-<!--      <q-input-->
-<!--        borderless-->
-<!--        dense-->
-<!--        class="input-url"-->
-<!--        v-model="activeRestRequest.url"-->
-<!--        @update:modelValue="updateSaveAttribute(activeRestRequest)"/>-->
-    </div>
-    <div class="request-url-action">
-      <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
-      <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps/>
-    </div>
+  <div class="request-url-input">
+    <q-select
+      v-model="activeRestRequest.method"
+      borderless :options="REST_METHODS"
+      dense
+      class="select-method"
+      dropdown-icon="expand_more"
+      @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
+    <q-separator vertical inset />
+    <q-field borderless dense class="input-url">
+      <SingleLineInput
+        class="q-mt-sm"
+        :editable="true"
+        v-model="activeRestRequest.url"
+        @update:modelValue="updateSaveAttribute(activeRestRequest)"
+      />
+    </q-field>
+  </div>
+  <div class="request-url-action">
+    <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
+    <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps/>
+  </div>
 </template>
 
 <script lang="ts">
