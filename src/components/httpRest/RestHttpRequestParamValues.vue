@@ -24,7 +24,7 @@
             <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput
+            <SingleLineInput
               v-model="element.entry.key"
               @update:modelValue="onUpdate"
               :place-holder="libelleKey(element)"
@@ -32,7 +32,7 @@
             :singleLine="true"/>
           </div>
           <div class="rest-parameter-key-value">
-            <SmartInput
+            <SingleLineInput
               v-model="element.entry.value"
               @update:modelValue="onUpdate"
               :place-holder="libelleValue(element)"
@@ -60,7 +60,7 @@
 <script lang="ts" setup>
 import {computed} from 'vue';
 import draggable from 'vuedraggable-es'
-import SmartInput from 'components/commun/SmartInput.vue';
+import SingleLineInput from 'components/commun/SingleLineInput.vue';
 import {useAppStore} from 'stores/appStore';
 import maxBy from 'lodash/maxBy';
 import remove from 'lodash/remove';

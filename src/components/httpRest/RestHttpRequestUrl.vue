@@ -9,7 +9,7 @@
           @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
       <q-separator vertical inset />
       <q-field borderless dense class="input-url">
-        <SmartInput
+        <SingleLineInput
           class="q-mt-sm"
           :editable="true"
           v-model="activeRestRequest.url"
@@ -40,11 +40,11 @@ import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
 import {mapWritableState} from 'pinia';
 import {useSendHttpRequest} from 'src/composables/SendHttpRequest';
-import SmartInput from "components/commun/SmartInput.vue";
+import SingleLineInput from "components/commun/SingleLineInput.vue";
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
-  components: {SmartInput},
+  components: {SingleLineInput},
   props: {
     loading: {
       type: Boolean,

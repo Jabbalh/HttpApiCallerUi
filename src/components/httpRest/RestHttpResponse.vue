@@ -1,7 +1,7 @@
 <template>
   <div v-if="!loading">
     <div class="row wrap-word" v-if="response">
-      <SmartInput v-model="response" :editable="false" :singleLine="false" />
+      <AreaInput v-model="response" :editable="false" :singleLine="false" />
     </div>
     <div v-else>
       Aucune réponse
@@ -13,12 +13,12 @@
 </template>
 <script lang="ts">
 import {computed, defineComponent} from 'vue';
-import SmartInput from '../commun/SmartInput.vue';
+import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 
 export default defineComponent({
   name:'RestHttpResponse',
-  components: { SmartInput },
+  components: { AreaInput },
   props: {
     loading: {
       type: Boolean,

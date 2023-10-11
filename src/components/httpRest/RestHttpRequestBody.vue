@@ -1,7 +1,7 @@
 <template>
   <!--  {{modelValue}}-->
   <!--  <q-separator />-->
-  <SmartJson
+  <AreaInput
     ref="smartJson"
     v-if="currentRequest"
     :modelValue="modelValue"
@@ -11,11 +11,11 @@
 </template>
 <script lang="ts" setup>
 
-import SmartJson from 'components/commun/SmartInput.vue';
+import AreaInput from 'components/commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {computed, defineComponent } from 'vue';
 
-defineComponent({SmartJson});
+defineComponent({AreaInput});
 
 const appState = useAppStore();
 const currentRequest = computed(() => appState.activeRestRequest);
