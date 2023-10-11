@@ -15,6 +15,7 @@
     <q-tab name="TESTS" no-caps :label="i18n.t('REST.PARAM_ONGLET_TESTS')" :ripple="false" />
   </q-tabs>
   <q-tab-panels
+    v-if="activeRestRequest"
     v-model="restParamOnglet"
     class="" style="width: 100%"
   >
@@ -54,11 +55,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParamValues.vue';
 import RestHttpRequestBody from 'components/httpRest/RestHttpRequestBody.vue';
-import {mapWritableState} from 'pinia';
 import {useAppStore} from 'stores/appStore';
 import maxBy from 'lodash/maxBy';
 import {RestRequestParameters} from 'src/models/model';
@@ -68,11 +68,12 @@ export default defineComponent({
   name: 'RestHttpRequestParam',
   components: { RestHttpRequestParamValues,RestHttpRequestBody  },
   setup(){
-
+    const appState = useAppStore();
     return {
       restParamOnglet: ref('PARAMETERS'),
       i18n: useI18n(),
-      appState: useAppStore()
+      appState,
+      activeRestRequest: computed(() => appState.activeRestRequest)
     }
   },
   methods: {
@@ -89,12 +90,14 @@ export default defineComponent({
      * AJout d'une nouvelle valeur
      * @param values
      */
-    add: function(values: RestRequestParameters[]) {
-      const last = maxBy(values, x => x.id);
-      values.push({
-        id: (last?.id ?? 0) + 1,
-        entry: { key: '',  value: '', active: true }
-      });
+    add: function(values?: RestRequestParameters[]) {
+      if (values) {
+        const last = maxBy(values, x => x.id);
+        values.push({
+          id: (last?.id ?? 0) + 1,
+          entry: { key: '',  value: '', active: true }
+        });
+      }
     },
     deleteHeader(value: RestRequestParameters){
       this.delete(this.activeRestRequest?.header, value);
@@ -111,8 +114,8 @@ export default defineComponent({
      * @param values
      * @param value
      */
-    delete(values: RestRequestParameters[], value: RestRequestParameters) {
-      if (value){
+    delete(values?: RestRequestParameters[], value?: RestRequestParameters) {
+      if (value && values){
         const p = values.find(x => x.id == value.id);
         if (p){
           remove(values, x => x.id == p.id);
@@ -148,13 +151,7 @@ export default defineComponent({
       }
     }
   },
-  computed:{
-    ...mapWritableState(useAppStore, ['activeRestRequest'])
-  }
 });
-
-
-
 
 </script>
 <style lang="scss">
