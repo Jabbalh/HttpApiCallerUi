@@ -75,7 +75,7 @@ export default defineComponent({
     }
     .rest-collection-tree-node-menu{
       float: right;
-      z-index: 99;
+      z-index: 1;
     }
   }
 </style>

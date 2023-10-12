@@ -1,30 +1,30 @@
 <template>
   <div>
-  <q-splitter
-    style="height: calc(100vh - 135px);"
-    v-model="splitterModel"
-    unit="px"
-    separator-class="splitter-separator-horizontal"
-    horizontal
-    before-class="panel-primary"
-    after-class="panel-primary"
+    <q-splitter
+      style="height: calc(100vh - 135px);"
+      v-model="splitterModel"
+      unit="px"
+      separator-class="splitter-separator-horizontal"
+      horizontal
+      before-class="panel-primary"
+      after-class="panel-primary"
     >
-    <template v-slot:before>
-      <div class="sticky-tabs top-0 z-index-22">
-        <div class="row q-pa-md">
-          <RestHttpRequestUrl v-model:loading="loading" />
+      <template v-slot:before>
+        <div class="sticky-tabs top-0 z-index-22">
+          <div class="row q-pa-md">
+            <RestHttpRequestUrl v-model:loading="loading" />
+          </div>
         </div>
-      </div>
-      <div class="row q-pb-md">
-        <RestHttpRequestParam />
-      </div>
-    </template>
-    <template v-slot:after>
-      <div class="row q-ma-md">
-        <RestHttpResponse :loading="loading" />
-      </div>
-    </template>
-  </q-splitter>
+        <div class="row q-pb-md request-container">
+          <RestHttpRequestParam />
+        </div>
+      </template>
+      <template v-slot:after>
+        <div class="row q-ma-md">
+          <RestHttpResponse :loading="loading" />
+        </div>
+      </template>
+    </q-splitter>
   </div>
 </template>
 <script lang="ts">
@@ -47,3 +47,9 @@ export default defineComponent({
 });
 
 </script>
+<style lang="scss">
+.request-container {
+  width: 100%;
+  height: calc(100% - 95px);
+}
+</style>

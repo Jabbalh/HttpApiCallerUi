@@ -1,42 +1,28 @@
 <template>
-  <div class="autocomplete">
+  <div class="autocomplete" ref="autocomplete">
     <div class="input-wrapper">
       <div
         ref="docResponse"
-        @focusin="showSuggestionPopover = true"
+        @focusin="onFocus"
         style="height: auto;width: 100%; background-color: transparent"  />
-
     </div>
-    <ul
-      v-if="showSuggestionPopover && suggestionSource"
-      ref="suggestionsMenu"
-      class="suggestions"
-    >
-      <li  v-for="(suggestion, index) in suggestionSource"  :key="`suggestion-${index}`">
-            <span class="truncate py-0.5">
-              {{ suggestion }}
-            </span>
-      </li>
-    </ul>
+    <div v-if="showSuggestionPopover && filteredSuggestion" class="suggestion-liste">
+      <q-list  ref="suggestionsMenu" dense >
+        <q-item
+          clickable
+          @click="selectSuggestion(item)"
+          v-for="(item, index) in filteredSuggestion" :key="`sugg-${index}`">
+          <q-item-section>{{item}}</q-item-section>
+        </q-item>
+      </q-list>
+    </div>
   </div>
-
-  <!--  <ul-->
-  <!--    v-if="showSuggestionPopover && suggestionSource"-->
-  <!--    ref="suggestionsMenu"-->
-  <!--    class="suggestions"-->
-  <!--  >-->
-  <!--    <li  v-for="(suggestion, index) in suggestionSource"  :key="`suggestion-${index}`">-->
-  <!--        <span class="truncate py-0.5">-->
-  <!--          {{ suggestion }}-->
-  <!--        </span>-->
-  <!--    </li>-->
-  <!--  </ul>-->
-
 </template>
 <script lang="ts" setup>
 import {computed, ref, watch, withDefaults} from 'vue';
 import { useCodeMirror } from "src/composables/codeMirror";
 import {useEnvStore} from "stores/EnvStore";
+import { onClickOutside } from "@vueuse/core"
 
 const props = withDefaults(
   defineProps<{
@@ -54,6 +40,9 @@ const appEnv = useEnvStore();
 const envs = computed(() => appEnv.Current);
 const emit = defineEmits(['update:modelValue']);
 
+/**
+ * Le v-model, on doit passer par un computed qui propage l'evènement
+ */
 const value = computed({
   get: () => props.modelValue,
   set: (value: string) => {
@@ -62,9 +51,13 @@ const value = computed({
     }
   }
 });
-
-const suggestionsMenu = ref<any | null>(null)
-const docResponse = ref<Element | null>(null);
+// Div global
+const autocomplete = ref<any | null>(null);
+// Div de suggestion
+const suggestionsMenu = ref<any | null>(null);
+// L'input codeMirror
+const docResponse = ref<HTMLElement | null>(null);
+// L'editeur codeMirror
 const editor = useCodeMirror(
   docResponse,
   value,
@@ -72,6 +65,40 @@ const editor = useCodeMirror(
   true,
   envs
 );
+
+/**
+ * Filter on suggestion source and input value
+ */
+const filteredSuggestion = computed(() => {
+  if (props.suggestionSource){
+    const result =  value.value ? props.suggestionSource.filter(x => x.startsWith(value.value)) : props.suggestionSource;
+    return result.length > 0 ? result : undefined;
+  }
+  return undefined
+})
+
+/**
+ * Evènement onFocus on input codeMirror
+ */
+const onFocus = () => {
+  if (props.suggestionSource){
+    showSuggestionPopover.value = true;
+  }
+}
+
+/**
+ * On click on suggestion
+ * @param sug
+ */
+const selectSuggestion = (sug: string) => {
+  value.value = sug;
+  showSuggestionPopover.value = false;
+}
+
+/**
+ * On clic outside main div (hide suggestion)
+ */
+onClickOutside(autocomplete, () => showSuggestionPopover.value = false);
 
 const scrollActiveElIntoView = () => {
   const suggestionsMenuEl = suggestionsMenu.value
@@ -87,82 +114,45 @@ const scrollActiveElIntoView = () => {
   }
 }
 
+/**
+ * Watch env to reconfigure editor for Highlight and Tooltip
+ */
 watch(envs, () => {
   editor.reconfigure(envs);
 })
 
-// watch(() => props.modelValue, (newValue, oldValue) => {
-//   if (newValue != oldValue) {
-//     console.log('newValue')
-//   } else {
-//     console.log('idem value')
-//   }
-// })
-
-
 </script>
 <style scoped lang="scss">
-.input-wrapper {
-  position: relative;
-  display: flex;
-  flex: 1 1 0;
-  white-space: nowrap;
-  cursor: text;
-
-}
 .autocomplete {
   position: relative;
   display: flex;
   flex: 1;
   flex-shrink: 0;
-  //@apply relative;
-  //@apply flex;
-  //@apply flex-1;
-  //@apply flex-shrink-0;
-  //@apply whitespace-nowrap py-4;
-  .suggestions {
+
+  .input-wrapper {
     position: absolute;
-    background-color:  green;
-    z-index: 50;
-    //@apply shadow-lg;
-    min-height: 46px;
-    //@apply border-b border-x border-divider;
-    overflow-y: auto;
-    left: 1px;
-    right: 1px;
-
-    top: calc(100% + 1px);
-    border-radius: 0 0 8px 8px;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-items: center;
-      width: 100%;
-      //@apply flex;
-      //@apply items-center;
-      //@apply justify-between;
-      //@apply w-full;
-      //@apply py-2 px-4;
-      //@apply text-secondary;
-      //@apply cursor-pointer;
-
-      &:last-child {
-        border-radius: 0 0 0 8px;
-      }
-
-      &:hover,
-      &.active {
-        background-color: gray;
-        color: white;
-        cursor: pointer;
-        //@apply bg-primaryDark;
-        //@apply text-secondaryDark;
-        //@apply cursor-pointer;
-      }
-    }
+    display: flex;
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    cursor: text;
+    width: 100%;
+  }
+  .suggestion-liste {
+    max-height: 150px;
+    height: auto;
+    width: 100%;
+    position: absolute;
+    background-color: var(--q-panel-secondary);
+    overflow: auto;
+    top: 27px;
+    z-index: 10;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    border-color: var(--q-panel-border);
   }
 }
-
-
 </style>

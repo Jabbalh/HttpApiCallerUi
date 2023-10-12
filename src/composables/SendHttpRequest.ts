@@ -1,5 +1,5 @@
 import {RestRequest} from 'src/models/model';
-import axios, {AxiosRequestConfig} from 'axios';
+import axios, {AxiosHeaders, AxiosRequestConfig} from 'axios';
 import useJson from "src/composables/Json";
 import useParseEnv from "src/composables/parseEnv";
 import {useEnvStore} from "stores/EnvStore";
@@ -20,10 +20,16 @@ const useSendHttpRequest = function() {
           parseEnv(item.entry.key, envApp.Current?.values),
           parseEnv(item.entry.value, envApp.Current?.values));
       }
-      console.log("request.body", request.body);
+
+      const headers: AxiosHeaders = new AxiosHeaders();
+      for (const item of request.header.filter((x => x.entry.active))){
+        headers[parseEnv(item.entry.key, envApp.Current?.values)] = parseEnv(item.entry.value, envApp.Current?.values);
+      }
+
       const param: AxiosRequestConfig = {
         url: parseEnv(request.url, envApp.Current?.values),
         method: request.method.toLowerCase(),
+        headers: headers,
         params: params,
         data: parseEnv(request.body, envApp.Current?.values)
       };

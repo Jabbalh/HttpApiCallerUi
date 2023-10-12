@@ -27,6 +27,7 @@
     "@codemirror/view": "^6.20.2",
     "@quasar/cli": "^2.3.0",
     "@quasar/extras": "^1.16.4",
+    "@vueuse/core": "^10.5.0",
     "axios": "^1.2.1",
     "codemirror": "^6.0.1",
     "lodash.clonedeep": "^4.5.0",

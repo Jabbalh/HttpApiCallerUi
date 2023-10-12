@@ -14,10 +14,11 @@
     <q-tab name="PREREQUEST" no-caps :label="i18n.t('REST.PARAM_ONGLET_PRE_REQ')" :ripple="false" />
     <q-tab name="TESTS" no-caps :label="i18n.t('REST.PARAM_ONGLET_TESTS')" :ripple="false" />
   </q-tabs>
+  <!--  <div class="" style="display: contents">-->
   <q-tab-panels
     v-if="activeRestRequest"
     v-model="restParamOnglet"
-    class="" style="width: 100%"
+    class="full-width full-height"
   >
     <q-tab-panel name="PARAMETERS" >
       <RestHttpRequestParamValues
@@ -52,6 +53,7 @@
       Tests
     </q-tab-panel>
   </q-tab-panels>
+  <!--  </div>-->
 </template>
 
 <script lang="ts">

@@ -36,7 +36,7 @@ const displayRound = computed(() => !props.saved && !isCloseDisplay.value);
 </script>
 <style lang="scss">
   .smart-tab-close {
-    z-index: 99;
+    z-index: 2;
     color: gray;
     padding-right: 8px;
     &:hover {
