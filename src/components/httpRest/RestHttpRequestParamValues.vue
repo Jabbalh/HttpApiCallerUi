@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative;">
+  <div style="position: relative;height: 100%; overflow: hidden">
     <div class="row rest-parameter-title sticky-tabs top-tertiary" >
       <div class="rest-parametre-titre">{{ libelleTitle }}</div>
       <div class="rest-parametre-width-icon">
@@ -8,7 +8,7 @@
       </div>
     </div>
     <draggable
-      style="overflow: auto; "
+      style="overflow: auto; height: 100%;"
       v-model="workingParams"
       item-key="id"
       animation="250"
@@ -67,7 +67,10 @@ import {commonHeaders} from 'src/models/HeaderConstantes';
 const props = defineProps<{ modelValue: RestRequestParameters[], isHeader: boolean  }>();
 const emit = defineEmits(['update:modelValue', 'add', 'delete', 'deleteAll', 'updateRequest']);
 
-const workingParams = computed(() => props.modelValue);
+const workingParams = computed({
+  get: () => props.modelValue,
+  set: (value: RestRequestParameters[]) => emit('update:modelValue', value)
+});
 const i18n = useI18n();
 
 const libelleTitle = computed(() => props.isHeader ? i18n.t('REST.PARAM_REQ_HEADER_TITLE') : i18n.t('REST.PARAM_REQ_PARAM_TITLE'));
@@ -79,41 +82,18 @@ const baseHeaders = props.isHeader ? commonHeaders : undefined;
  * Ajout d'un paramètre
  */
 const addParameter = () => {
-  // const last = maxBy(workingParams.value, x => x.id);
-  // workingParams.value?.push({
-  //   id: (last?.id ?? 0) + 1,
-  //   entry: { key: '',  value: '', active: true }
-  // });
   emit('add');
 };
 
 const deleteParameter = (value: RestRequestParameters) => {
-  // if (workingParams.value){
-  //   const p = workingParams.value?.find(x => x.id == value.id);
-  //   if (p){
-  //     remove(workingParams.value, x => x.id == p.id);
-  //     let i = 0;
-  //     for (const item of workingParams.value){
-  //       item.id = ++i;
-  //     }
-  //     onUpdate();
-  //   }
-  // }
   emit('delete', value);
 }
 
 const onUpdate = () => {
-  // if (appState.activeRestRequest){
-  //   appState.updateSaveAttribute(appState.activeRestRequest, false);
-  // }
   emit('updateRequest');
 }
 
 const deleteAllParameter = () => {
-  // if (appState.activeRestRequest){
-  //   appState.activeRestRequest.parameter = [];
-  //   onUpdate();
-  // }
   emit('deleteAll');
 }
 
@@ -168,6 +148,7 @@ const toogleActive = (value: {active: boolean}) => value.active = !value.active;
 .rest-parametre-width-icon {
   width: 64px;
 }
+
 
 
 </style>
