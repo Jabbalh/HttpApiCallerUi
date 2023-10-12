@@ -62,7 +62,6 @@ useCodeMirror(
       EditorView.lineWrapping,
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
-      json(),
       compartment.of([
         cursorTooltipField(envs),
         environmentHighlightStyle(envs),
