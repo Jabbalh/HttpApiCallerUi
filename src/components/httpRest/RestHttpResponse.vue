@@ -1,5 +1,6 @@
 <template>
   <div v-if="!loading">
+<!--    running_with_errors-->
     <div class="row wrap-word" v-if="response">
       <AreaInput v-model="response" :editable="false" :singleLine="false" />
     </div>
