@@ -29,7 +29,7 @@ const useSendHttpRequest = function() {
       url: parseEnv(cloneRequest.url, envApp.Current?.values),
       method: cloneRequest.method.toLowerCase(),
       headers: ensureHeader(cloneRequest.header),
-      params: ensureParametre(cloneRequest.parameter),
+      params: ensureParameter(cloneRequest.parameter),
       data: parseEnv(cloneRequest.body, envApp.Current?.values)
     };
 
@@ -38,7 +38,10 @@ const useSendHttpRequest = function() {
   return { sendRequest }
 }
 
-
+/**
+ * Lance la requète et traite le résultat
+ * @param request
+ */
 const effectiveRunRequest = async (request: AxiosRequestConfig) => {
   try {
     const axiosRequest = axios.create();
@@ -49,6 +52,9 @@ const effectiveRunRequest = async (request: AxiosRequestConfig) => {
   }
 }
 
+/**
+ * Résultat en attente
+ */
 export const pendingRequest = (): RestResponse => {
   return {
     type: 'loading',
@@ -56,6 +62,10 @@ export const pendingRequest = (): RestResponse => {
   }
 }
 
+/**
+ * Retour correct
+ * @param value
+ */
 export const successRequest = (value: AxiosResponse): RestResponse => {
   const body = useJson().cloneJson(JSON.stringify(value));
 
@@ -77,6 +87,10 @@ export const successRequest = (value: AxiosResponse): RestResponse => {
   }
 }
 
+/**
+ * Retour en erreur
+ * @param value
+ */
 export const failRequest = (value: AxiosError): RestResponse => {
   return {
     type: 'fail',
@@ -88,8 +102,11 @@ export const failRequest = (value: AxiosError): RestResponse => {
   }
 }
 
-
-const ensureParametre = (values: RestRequestParameters[]) => {
+/**
+ * Vérification et traitement des paramètres
+ * @param values
+ */
+const ensureParameter = (values: RestRequestParameters[]) => {
   const envApp = useEnvStore();
   const params = new URLSearchParams();
   const { parseEnv } = useParseEnv();
@@ -101,6 +118,10 @@ const ensureParametre = (values: RestRequestParameters[]) => {
   return params;
 }
 
+/**
+ * Vérification et traitement des entêtes
+ * @param values
+ */
 const ensureHeader = (values: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   const envApp = useEnvStore();
