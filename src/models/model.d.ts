@@ -1,3 +1,5 @@
+import {RestResponse} from "src/models/types/RestResponse";
+
 export interface RestCollection {
   id: string,
   isCollection: boolean,
@@ -30,13 +32,6 @@ export interface RestRequestParameters {
   }
 }
 
-export interface  RestResponse {
-  response: string
-}
-
-export interface  RestResponseParametre {
-
-}
 
 
 export interface AppEnvironnement {

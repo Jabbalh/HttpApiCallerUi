@@ -31,26 +31,31 @@ import {useI18n} from 'vue-i18n';
 import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
 import {mapWritableState} from 'pinia';
-import {useSendHttpRequest} from 'src/composables/SendHttpRequest';
+import {pendingRequest, useSendHttpRequest} from 'src/composables/SendHttpRequest';
 import SingleLineInput from "components/commun/SingleLineInput.vue";
+import * as E from "fp-ts/Either";
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
   components: {SingleLineInput},
-  props: {
-    loading: {
-      type: Boolean,
-      required: true
-    }
-  },
-  emits: ['update:loading'],
-  setup(props, { emit }){
+  setup(){
     const i18n = useI18n();
     const { sendRequest } = useSendHttpRequest() ;
     const appStore = useAppStore();
+
     const sendRestRequest = (value: RestRequest) => {
-      emit('update:loading', true);
-      sendRequest(value).finally(() => emit('update:loading', false))
+      value.response = pendingRequest();
+      sendRequest(value).then(x => {
+        // En cas d'erreur
+        if (E.isLeft(x)){
+          value.response = x.left;
+        }
+        // En cas de succès
+        if (E.isRight(x)){
+          console.log("x.Right", x.right);
+          value.response = x.right
+        }
+      })
     };
     return {
       sendRestRequest,
@@ -61,7 +66,6 @@ export default defineComponent({
   },
   methods: {
     updateSaveAttribute(request: RestRequest){
-      console.log('updateSaveAttribute');
       this.appStore.updateSaveAttribute(request, false);
     }
   },

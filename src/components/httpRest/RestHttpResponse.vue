@@ -1,15 +1,22 @@
 <template>
-  <div v-if="!loading">
-<!--    running_with_errors-->
-    <div class="row wrap-word" v-if="response">
-      <AreaInput v-model="response" :editable="false" :singleLine="false" />
+  <div class="full-width ">
+    <!--    running_with_errors-->
+    <div class="row wrap-word" v-if="hasResponse">
+      <AreaInput v-model="responseBody" :editable="false" :singleLine="false" />
     </div>
-    <div v-else>
-      Aucune réponse
+    <div v-if="isLoading">
+      Chargement en cours .....
     </div>
-  </div>
-  <div v-else>
-    Chargement en cours .....
+    <div v-else class="q-mt-xl">
+      <div class="flex items-center justify-center" style="flex-direction: column">
+        <q-icon name="running_with_errors"
+                style="font-size: 6rem; flex-direction: column; display: inline-flex"
+                class="text-red-12"/>
+        <span class="font-semibold text-center q-mt-md text-grey">
+          Erreur lors de l'exécution de la requète ({{ statusCode }})
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -20,31 +27,25 @@ import {useAppStore} from 'stores/appStore';
 export default defineComponent({
   name:'RestHttpResponse',
   components: { AreaInput },
-  props: {
-    loading: {
-      type: Boolean,
-      required: true
-    }
-  },
   setup(){
     const appStore = useAppStore();
-    if (appStore.activeRestRequest && !appStore.activeRestRequest?.response){
-      appStore.activeRestRequest.response.response = '';
-    }
-
-    const response = computed({
-      get: () => {
-        return appStore.activeRestRequest?.response.response ?? '';
-      },
-      set: (value: string) => {
-        if (appStore.activeRestRequest){
-          appStore.activeRestRequest.response.response = value;
-        }
+    const response = computed(() => appStore.activeRestRequest?.response);
+    const responseBody = computed(() => appStore.activeRestRequest?.response.body ?? '');
+    const hasResponse = computed(() => {
+      if (response.value){
+        return response.value?.type == 'success'
       }
+      return false
     });
 
+    const isLoading = computed(() => response.value?.type == 'loading');
+    const statusCode = computed(() => response.value?.type == 'fail' ? response.value?.statusCode ?? 500 : 500)
     return {
-      response
+      isLoading,
+      statusCode,
+      response,
+      responseBody,
+      hasResponse
     }
 
   }
