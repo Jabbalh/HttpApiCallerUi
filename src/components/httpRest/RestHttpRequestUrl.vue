@@ -32,9 +32,9 @@ import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
 import {mapWritableState} from 'pinia';
 import {pendingRequest, useSendHttpRequest} from 'src/composables/SendHttpRequest';
-import SingleLineInput from "components/commun/SingleLineInput.vue";
-import * as E from "fp-ts/Either";
-import useRequestUtils from "src/composables/RequestUtils";
+import SingleLineInput from 'components/commun/SingleLineInput.vue';
+import * as E from 'fp-ts/Either';
+import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
@@ -53,7 +53,7 @@ export default defineComponent({
         }
         // En cas de succès
         if (E.isRight(x)){
-          console.log("x.Right", x.right);
+          console.log('x.Right', x.right);
           value.response = x.right
         }
       })

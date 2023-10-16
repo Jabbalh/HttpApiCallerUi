@@ -2,8 +2,8 @@ import {useI18n} from 'vue-i18n';
 import {useQuasar} from 'quasar';
 import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
-import useActiveRequest from "src/composables/ActiveRequest";
-import PopinSaveRequest from "components/collection/PopinSaveRequest.vue";
+import useActiveRequest from 'src/composables/ActiveRequest';
+import PopinSaveRequest from 'components/collection/PopinSaveRequest.vue';
 
 const useRequestUtils = function() {
   const i18n = useI18n();

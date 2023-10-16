@@ -45,7 +45,7 @@
 import {computed, defineComponent} from 'vue';
 import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
-import {LANGUAGE} from "src/models/Constantes";
+import {LANGUAGE} from 'src/models/Constantes';
 
 export default defineComponent({
   name:'RestHttpResponse',

@@ -16,13 +16,13 @@ import {
   basicSetupSingleLine,
   manageKeyMap
 } from 'src/helpers/editor/CodeMirrorExtensions';
-import {environmentHighlightStyle} from "src/helpers/editor/HighlightStyle";
-import {cursorTooltipField} from "src/helpers/editor/CursorTooltip";
-import { jsonLanguage} from "@codemirror/lang-json";
-import { xmlLanguage} from "@codemirror/lang-xml";
-import {LANGUAGE} from "src/models/Constantes";
-import {html} from "@codemirror/legacy-modes/mode/xml";
-import {StreamLanguage} from "@codemirror/language";
+import {environmentHighlightStyle} from 'src/helpers/editor/HighlightStyle';
+import {cursorTooltipField} from 'src/helpers/editor/CursorTooltip';
+import { jsonLanguage} from '@codemirror/lang-json';
+import { xmlLanguage} from '@codemirror/lang-xml';
+import {LANGUAGE} from 'src/models/Constantes';
+import {html} from '@codemirror/legacy-modes/mode/xml';
+import {StreamLanguage} from '@codemirror/language';
 
 
 export function

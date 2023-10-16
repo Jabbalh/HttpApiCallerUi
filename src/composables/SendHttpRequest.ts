@@ -4,11 +4,11 @@ import useJson from "src/composables/Json";
 import useParseEnv from "src/composables/parseEnv";
 import {useEnvStore} from "stores/EnvStore";
 import cloneDeep from 'lodash/cloneDeep';
-import * as E from "fp-ts/Either";
-import {RestResponse} from "src/models/types/RestResponse";
-import {map} from "lodash";
-import {RawAxiosResponseHeaders} from "axios";
-import {LANGUAGE} from "src/models/Constantes";
+import * as E from 'fp-ts/Either';
+import {RestResponse} from 'src/models/types/RestResponse';
+import {map} from 'lodash';
+import {RawAxiosResponseHeaders} from 'axios';
+import {LANGUAGE} from 'src/models/Constantes';
 
 /**
  * Permet d'envoyer une requete Http
@@ -73,11 +73,11 @@ export const successRequest = (value: AxiosResponse): RestResponse => {
     ? useJson().cloneJson(JSON.stringify(value.data))
     : value.data;
 
-  const contentLength = value.headers["content-length"]
-    ? parseInt(value.headers["content-length"])
+  const contentLength = value.headers['content-length']
+    ? parseInt(value.headers['content-length'])
     : (value.data as ArrayBuffer).byteLength;
   return {
-    type: "success",
+    type: 'success',
     body: body,
     headers: map(value.headers, (x,y) => {
       return { key: x, value: y}
