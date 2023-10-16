@@ -20,7 +20,7 @@ export interface RestRequest {
   parameter: RestRequestParameters[],
   header: RestRequestParameters[],
   body: string,
-  response: RestResponse
+  response?: RestResponse
 }
 
 export interface RestRequestParameters {

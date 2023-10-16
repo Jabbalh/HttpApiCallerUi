@@ -1,21 +1,29 @@
 <template>
-  <div class="full-width ">
+  <div class="full-width " style="position: relative;height: 100%; overflow: hidden">
     <!--    running_with_errors-->
-    <div class="row wrap-word" v-if="hasResponse">
-      <AreaInput v-model="responseBody" :editable="false" :singleLine="false" />
+    <div class="" v-if="hasResponse" style="overflow: auto;height: calc(100% - 50px); ">
+      <div class="row rest-parameter-title sticky-tabs top-tertiary ">
+        <div class="rest-body-title" >
+          Status {{ statusCode }}
+        </div>
+      </div>
+      <AreaInput
+        v-model="responseBody"
+        :editable="false"
+        :language="language" />
     </div>
     <div v-else-if="isLoading">
       <div class="flex items-center justify-center" style="flex-direction: column;">
         <q-circular-progress
-              indeterminate
-              rounded
-              size="6rem"
-              color="grey"
-              class="q-ma-md"
-            />
+          indeterminate
+          rounded
+          size="6rem"
+          color="grey"
+          class="q-ma-md"
+        />
         <span class="font-semibold text-center q-mt-md text-grey">
-          Chargement en cours
-        </span>
+            Chargement en cours
+          </span>
       </div>
     </div>
     <div v-else-if="hasError" class="q-mt-xl">
@@ -24,8 +32,8 @@
                 style="font-size: 6rem; flex-direction: column; display: inline-flex"
                 class="text-red-12"/>
         <span class="font-semibold text-center q-mt-md text-grey">
-          Erreur lors de l'exécution de la requète ({{ statusCode }})
-        </span>
+            Erreur lors de l'exécution de la requète ({{ statusCode }})
+          </span>
       </div>
     </div>
     <div v-else>
@@ -37,6 +45,7 @@
 import {computed, defineComponent} from 'vue';
 import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
+import {LANGUAGE} from "src/models/Constantes";
 
 export default defineComponent({
   name:'RestHttpResponse',
@@ -44,7 +53,7 @@ export default defineComponent({
   setup(){
     const appStore = useAppStore();
     const response = computed(() => appStore.activeRestRequest?.response);
-    const responseBody = computed(() => appStore.activeRestRequest?.response.body ?? '');
+    const responseBody = computed(() => appStore.activeRestRequest?.response?.body ?? '');
     const hasResponse = computed(() => {
       if (response.value){
         return response.value?.type == 'success'
@@ -54,13 +63,24 @@ export default defineComponent({
     const hasError = computed(() => response.value?.type == 'fail');
     const isLoading = computed(() => response.value?.type == 'loading');
     const statusCode = computed(() => response.value?.type == 'fail' ? response.value?.statusCode ?? 500 : 500)
+
+    const language = computed(() => {
+      if (hasResponse.value) {
+        console.log('response', response);
+        return LANGUAGE.applicationJson
+      } else {
+        return '';
+      }
+    })
+
     return {
       isLoading,
       statusCode,
       response,
       responseBody,
       hasResponse,
-      hasError
+      hasError,
+      language
     }
   }
 });

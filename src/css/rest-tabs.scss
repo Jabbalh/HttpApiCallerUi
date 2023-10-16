@@ -70,6 +70,18 @@
     border-bottom-color: var(--q-panel-border);
     height: 40px;
   }
+}
 
+.rest-http-body-select {
+  height: 30px;
+  background-color: var(--q-panel-primary);
+  .select {
+    width: auto;
+    min-width: 150px;
+    height: 30px;
 
+    .q-field__native {
+      color:$color-secondary!important;
+    }
+  }
 }

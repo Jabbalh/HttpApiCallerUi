@@ -19,7 +19,7 @@
   </div>
   <div class="request-url-action">
     <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
-    <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps/>
+    <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps @click="saveRequest()"/>
   </div>
 </template>
 
@@ -34,6 +34,7 @@ import {mapWritableState} from 'pinia';
 import {pendingRequest, useSendHttpRequest} from 'src/composables/SendHttpRequest';
 import SingleLineInput from "components/commun/SingleLineInput.vue";
 import * as E from "fp-ts/Either";
+import useRequestUtils from "src/composables/RequestUtils";
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
@@ -42,7 +43,7 @@ export default defineComponent({
     const i18n = useI18n();
     const { sendRequest } = useSendHttpRequest() ;
     const appStore = useAppStore();
-
+    const { saveRequest } = useRequestUtils().useSaveRestRequest();
     const sendRestRequest = (value: RestRequest) => {
       value.response = pendingRequest();
       sendRequest(value).then(x => {
@@ -57,11 +58,14 @@ export default defineComponent({
         }
       })
     };
+
+
     return {
       sendRestRequest,
       REST_METHODS,
       i18n,
-      appStore
+      appStore,
+      saveRequest
     }
   },
   methods: {

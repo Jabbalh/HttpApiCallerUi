@@ -23,6 +23,7 @@ export type RestResponse =
   headers: RequestParameter[],
   body: string,
   statusCode: number,
+  language: string,
   meta: {
     responseSize: number // in bytes
     responseDuration: number // in millis

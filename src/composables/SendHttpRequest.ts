@@ -1,5 +1,5 @@
 import {RestRequest, RestRequestParameters} from 'src/models/model';
-import axios, {AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders} from 'axios';
 import useJson from "src/composables/Json";
 import useParseEnv from "src/composables/parseEnv";
 import {useEnvStore} from "stores/EnvStore";
@@ -7,6 +7,8 @@ import cloneDeep from 'lodash/cloneDeep';
 import * as E from "fp-ts/Either";
 import {RestResponse} from "src/models/types/RestResponse";
 import {map} from "lodash";
+import {RawAxiosResponseHeaders} from "axios";
+import {LANGUAGE} from "src/models/Constantes";
 
 /**
  * Permet d'envoyer une requete Http
@@ -67,24 +69,49 @@ export const pendingRequest = (): RestResponse => {
  * @param value
  */
 export const successRequest = (value: AxiosResponse): RestResponse => {
-  const body = useJson().cloneJson(JSON.stringify(value));
+  const body = isJson(value.headers)
+    ? useJson().cloneJson(JSON.stringify(value.data))
+    : value.data;
 
   const contentLength = value.headers["content-length"]
     ? parseInt(value.headers["content-length"])
     : (value.data as ArrayBuffer).byteLength;
-  console.log("value.data as ArrayBuffer", (value.data as ArrayBuffer).byteLength);
   return {
     type: "success",
     body: body,
     headers: map(value.headers, (x,y) => {
       return { key: x, value: y}
     }),
+    language: determineLanguage(value.headers),
     meta: {
       responseDuration: 1,
       responseSize: contentLength
     },
     statusCode: value.status
   }
+}
+
+const isJson = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+  return /\bjson\b/i.test(header['content-type']);
+}
+
+const isXml = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+  return /\bxml\b/i.test(header['content-type']);
+}
+
+const isHtml = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+  return /\bhtml\b/i.test(header['content-type']);
+}
+
+const determineLanguage = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+  if (isJson(header)){
+    return LANGUAGE.applicationJson;
+  } else if (isXml(header)) {
+    return LANGUAGE.applicationXml;
+  } else if (isHtml(header)) {
+    return LANGUAGE.textHtml
+  }
+  return '';
 }
 
 /**

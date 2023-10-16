@@ -1,7 +1,7 @@
 import {
   crosshairCursor,
   drawSelection,
-  dropCursor,
+  dropCursor, EditorView,
   highlightActiveLine,
   highlightActiveLineGutter,
   highlightSpecialChars, keymap, lineNumbers, rectangularSelection
@@ -18,7 +18,6 @@ import {EditorState} from "@codemirror/state";
 import {autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap} from "@codemirror/autocomplete";
 import {highlightSelectionMatches, search, searchKeymap} from "@codemirror/search";
 import {lintKeymap} from "@codemirror/lint";
-import {json} from "@codemirror/lang-json";
 
 export const manageKeyMap = (singleLine: boolean) => {
   return singleLine
@@ -81,7 +80,7 @@ export const basicSetupSingleLine = [
 
 export const basicSetupArea = [
   ...basicSetup,
-  json(),
+  EditorView.lineWrapping,
   highlightActiveLineGutter(),
   highlightActiveLine(),
   foldGutter({

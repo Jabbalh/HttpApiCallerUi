@@ -75,9 +75,7 @@ export default defineComponent({
           parameter: [],
           header: [],
           body: '',
-          response: {
-            response: ''
-          }
+          response: undefined
         },
         {
           id: uid(),
@@ -89,9 +87,7 @@ export default defineComponent({
           parameter: [],
           header: [],
           body: '',
-          response: {
-            response: ''
-          }
+          response: undefined
         }
       ]
     }]);

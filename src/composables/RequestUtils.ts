@@ -3,6 +3,7 @@ import {useQuasar} from 'quasar';
 import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
 import useActiveRequest from "src/composables/ActiveRequest";
+import PopinSaveRequest from "components/collection/PopinSaveRequest.vue";
 
 const useRequestUtils = function() {
   const i18n = useI18n();
@@ -69,25 +70,42 @@ function useSaveRestRequest(){
   const q$ = useQuasar();
 
   const save = (value: RestRequest, collection: RestCollection[]) => {
-    const parent = findParentCollectionById(collection, value.id);
-    if (parent){
-      const origin = parent.requests.find(x => x.id == value.id);
-      if (origin){
-        const indexOrigin = parent.requests.indexOf(origin);
-        value.isSaved = true;
-        parent.requests[indexOrigin] = value;
-        return true;
+    return new Promise(r => {
+      const parent = findParentCollectionById(collection, value.id);
+      if (parent){
+        const origin = parent.requests.find(x => x.id == value.id);
+        if (origin){
+          const indexOrigin = parent.requests.indexOf(origin);
+          value.isSaved = true;
+          parent.requests[indexOrigin] = value;
+          return r(true);
+        }
+      } else {
+        q$.dialog({
+          component: PopinSaveRequest,
+          componentProps: {
+            collection: collection
+          }
+        }).onOk((id: string) => {
+          const parent = findCollectionById(collection, id);
+          if (parent){
+            value.isSaved = true;
+            parent.requests.push(value);
+            r(true);
+          } else {
+            r(false);
+          }
+        }).onCancel(() => r(false))
       }
-    }
-    return false;
+    });
   };
 
-  const saveRequest = (value?: RestRequest): void => {
+  const saveRequest = async (value?: RestRequest): Promise<void> => {
     const appStore = useAppStore();
     const activeRequest = useActiveRequest()
     const request = value ?? activeRequest.activeRequest.value;
     if (request && !request.isSaved){
-      const result = save(request, appStore.restCollection);
+      const result = await save(request, appStore.restCollection);
       if (result){
         q$.notify({
           message: 'Sauvegarde réussie',
@@ -113,7 +131,7 @@ function useSaveRestRequest(){
  * @param collections
  * @param id
  */
-function findCollectionById(collections: RestCollection[], id: string) : RestCollection | null{
+export function findCollectionById(collections: RestCollection[], id: string) : RestCollection | null{
   // noinspection LoopStatementThatDoesntLoopJS
   for (const item of collections){
     if (item.id == id){
