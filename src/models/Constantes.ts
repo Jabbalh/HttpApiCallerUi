@@ -1,5 +1,6 @@
 export const REST_METHODS: string[] = [ 'GET', 'POST', 'OPTION' ];
 export const LANGUAGE = {
+  nothing: 'Nothing',
   applicationJson: 'application/Json',
   applicationXml: 'application/Xml',
   applicationFormUrlEncoded: 'application/x-www-form-urlencoded',
@@ -9,6 +10,7 @@ export const LANGUAGE = {
 }
 
 export const OPTIONS_LANGUAGE = [
+  LANGUAGE.nothing,
   LANGUAGE.applicationJson,
   LANGUAGE.applicationXml,
   LANGUAGE.applicationFormUrlEncoded,
@@ -16,3 +18,5 @@ export const OPTIONS_LANGUAGE = [
   LANGUAGE.textPlain,
   LANGUAGE.textHtml
 ];
+
+export const isRawBody = LANGUAGE.applicationJson || LANGUAGE.applicationXml || LANGUAGE.textHtml ||LANGUAGE.textHtml;

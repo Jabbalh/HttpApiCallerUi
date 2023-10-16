@@ -2,7 +2,7 @@
   <div style="position: relative;height: 100%; overflow: hidden">
     <div class="row rest-parameter-title sticky-tabs top-tertiary " style="">
       <div class="rest-body-title" >
-        Type de contenu
+        {{i18n.t('REST.PARAM_BODY_CONTENU_TITLE')}}
       </div>
       <div class="rest-http-body-select">
         <q-select
@@ -13,10 +13,11 @@
           hide-bottom-space
           item-aligned
           dropdown-icon="expand_more"
-          class=""/>
+          class="select input-box q-pa-none"/>
       </div>
     </div>
-    <div style="overflow: auto;height: calc(100% - 50px); ">
+    <div  v-if="displayEditor"
+          style="overflow: auto;height: calc(100% - 50px); ">
       <AreaInput
         ref="smartJson"
         v-if="currentRequest"
@@ -34,6 +35,7 @@ import AreaInput from 'components/commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {computed, defineComponent, ref} from 'vue';
 import {LANGUAGE, OPTIONS_LANGUAGE} from 'src/models/Constantes';
+import {useI18n} from "vue-i18n";
 
 defineComponent({AreaInput});
 
@@ -41,7 +43,7 @@ const appState = useAppStore();
 const currentRequest = computed(() => appState.activeRestRequest);
 const props = withDefaults(defineProps<{ modelValue: string  }>(), { modelValue: '' });
 const emit = defineEmits(['update:modelValue']);
-
+const i18n = useI18n();
 const languageValue = ref(LANGUAGE.applicationJson);
 const optionsLanguage = OPTIONS_LANGUAGE;
 
@@ -52,12 +54,24 @@ const update = (value: string) => {
     }
     emit('update:modelValue', value);
   }
-
 }
 
+
+const displayEditor = computed(() => languageValue.value != LANGUAGE.nothing);
+
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+:deep(.input-box .q-field__control),
+:deep(.input-box .q-field__control:before),
+:deep(.input-box .q-field__native),
+:deep(.input-box .q-field__marginal){
+  height: 30px;
+  font-size: 0.8rem;
+  min-height: 30px;
+}
+
 .rest-body-title {
   margin-right: 16px;
+  align-self: center;
 }
 </style>

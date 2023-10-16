@@ -1,4 +1,4 @@
-import {RestRequest, RestRequestParameters} from 'src/models/model';
+import {AppEnvitonnementValue, RestRequest, RestRequestParameters} from 'src/models/model';
 import axios, {AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders} from 'axios';
 import useJson from "src/composables/Json";
 import useParseEnv from "src/composables/parseEnv";
@@ -19,20 +19,15 @@ const useSendHttpRequest = function() {
     const cloneRequest = cloneDeep(request);
 
     const envApp = useEnvStore();
-    // COntrcution et paramétrage de l'instance axios pour l'envoie de la requete
-    const params = new URLSearchParams();
+    const envs = envApp.Current?.values ?? [];
     const { parseEnv } = useParseEnv();
-    for (const item of cloneRequest.parameter.filter((x => x.entry.active))){
-      params.append(
-        parseEnv(item.entry.key, envApp.Current?.values),
-        parseEnv(item.entry.value, envApp.Current?.values));
-    }
+
     const param: AxiosRequestConfig = {
       url: parseEnv(cloneRequest.url, envApp.Current?.values),
       method: cloneRequest.method.toLowerCase(),
-      headers: ensureHeader(cloneRequest.header),
-      params: ensureParameter(cloneRequest.parameter),
-      data: parseEnv(cloneRequest.body, envApp.Current?.values)
+      headers: ensureHeader(cloneRequest.header, envs),
+      params: ensureParameter(cloneRequest.parameter, envs),
+      data: ensureBody(cloneRequest.body, envs)
     };
 
     return effectiveRunRequest(param);
@@ -129,18 +124,34 @@ export const failRequest = (value: AxiosError): RestResponse => {
   }
 }
 
+const ensureBody = (value?: string, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  if (value){
+    return parseEnv(value, envs);
+    // if (value.language != LANGUAGE.nothing){
+    //   // if ('parameters' in value){
+    //   //   return ensureParameter(value.parameters, envs);
+    //   // } else {
+    //   //  return parseEnv(value.body, envs);
+    //   // }
+    //   return parseEnv(value.body, envs);
+    // }
+  }
+  return '';
+}
+
 /**
  * Vérification et traitement des paramètres
  * @param values
+ * @param envs
  */
-const ensureParameter = (values: RestRequestParameters[]) => {
-  const envApp = useEnvStore();
+const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
   const params = new URLSearchParams();
   const { parseEnv } = useParseEnv();
   for (const item of values.filter((x => x.entry.active))){
     params.append(
-      parseEnv(item.entry.key, envApp.Current?.values),
-      parseEnv(item.entry.value, envApp.Current?.values));
+      parseEnv(item.entry.key, envs),
+      parseEnv(item.entry.value, envs));
   }
   return params;
 }
@@ -148,13 +159,13 @@ const ensureParameter = (values: RestRequestParameters[]) => {
 /**
  * Vérification et traitement des entêtes
  * @param values
+ * @param envs
  */
-const ensureHeader = (values: RestRequestParameters[]) => {
+const ensureHeader = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
   const { parseEnv } = useParseEnv();
-  const envApp = useEnvStore();
   const headers: AxiosHeaders = new AxiosHeaders();
   for (const item of values.filter((x => x.entry.active))){
-    headers[parseEnv(item.entry.key, envApp.Current?.values)] = parseEnv(item.entry.value, envApp.Current?.values);
+    headers[parseEnv(item.entry.key, envs)] = parseEnv(item.entry.value, envs);
   }
   return headers;
 }
