@@ -59,3 +59,11 @@ body {
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+.bg-cancel {
+  background-color: var(--q-panel-secondary)!important;
+}
+
+.text-cancel {
+  color: var(--q-cancel-color)!important;
+}

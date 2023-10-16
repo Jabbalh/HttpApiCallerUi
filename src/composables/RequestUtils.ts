@@ -4,6 +4,7 @@ import {useAppStore} from 'stores/appStore';
 import {RestCollection, RestRequest} from 'src/models/model';
 import useActiveRequest from 'src/composables/ActiveRequest';
 import PopinSaveRequest from 'components/collection/PopinSaveRequest.vue';
+import * as E from 'fp-ts/Either';
 
 const useRequestUtils = function() {
   const i18n = useI18n();
@@ -66,11 +67,10 @@ function useCloseRequest() {
  * Sauvegarde de la requète
  */
 function useSaveRestRequest(){
-
   const q$ = useQuasar();
-
+  const i18n$ = useI18n();
   const save = (value: RestRequest, collection: RestCollection[]) => {
-    return new Promise(r => {
+    return new Promise<E.Either<boolean, boolean>>(r => {
       const parent = findParentCollectionById(collection, value.id);
       if (parent){
         const origin = parent.requests.find(x => x.id == value.id);
@@ -78,24 +78,28 @@ function useSaveRestRequest(){
           const indexOrigin = parent.requests.indexOf(origin);
           value.isSaved = true;
           parent.requests[indexOrigin] = value;
-          return r(true);
+          return r(E.right(true));
+        } else {
+          return r(E.left(false));
         }
       } else {
         q$.dialog({
           component: PopinSaveRequest,
           componentProps: {
-            collection: collection
+            collection: collection,
+            request: value
           }
-        }).onOk((id: string) => {
-          const parent = findCollectionById(collection, id);
+        }).onOk((payload: {id: string, name: string}) => {
+          const parent = findCollectionById(collection, payload.id);
           if (parent){
             value.isSaved = true;
+            value.name = payload.name;
             parent.requests.push(value);
-            r(true);
+            r(E.right(true));
           } else {
-            r(false);
+            r(E.right(false));
           }
-        }).onCancel(() => r(false))
+        }).onCancel(() => r(E.left(true)))
       }
     });
   };
@@ -106,16 +110,18 @@ function useSaveRestRequest(){
     const request = value ?? activeRequest.activeRequest.value;
     if (request && !request.isSaved){
       const result = await save(request, appStore.restCollection);
-      if (result){
-        q$.notify({
-          message: 'Sauvegarde réussie',
-          type: 'positive'
-        });
-      } else {
-        q$.notify({
-          message: 'Echec de l sauvegarde',
-          type: 'negative'
-        });
+      if (E.isRight(result)){
+        if (result.right){
+          q$.notify({
+            message: i18n$.t('MESSAGE_SAUVEGARDE_OK'),
+            type: 'positive'
+          });
+        } else {
+          q$.notify({
+            message: i18n$.t('MESSAGE_SAUVEGARDE_NOK'),
+            type: 'negative'
+          });
+        }
       }
     }
   }

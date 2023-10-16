@@ -1,10 +1,16 @@
 <template>
   <q-dialog ref="dialogRef" @hide="onDialogHide" >
-    <q-card class="q-dialog-plugin" style="height: 500px; width: 500px">
-      <q-card-section>
-        Liste des collections
+    <q-card class="q-dialog-plugin popin-save">
+      <q-card-section class="popin-save-title">
+        {{i18n$.t('REST.POPIN_SAVE_REQUEST_TITLE')}}
       </q-card-section>
-      <q-card-section>
+      <q-separator />
+      <q-card-section class="">
+        <div style="width: 100%">
+          <q-input v-model="requestName" outlined dense :label="i18n$.t('REST.ADD_REQUEST_PLACEHOLDER')"/>
+        </div>
+      </q-card-section>
+      <q-card-section class="popin-save-container">
         <q-tree
           :nodes="directories"
           v-model:selected="selectedKey"
@@ -13,43 +19,41 @@
           children-key="requests"
           selected-color="accent"
           default-expand-all
-          class="rest-collection-tree"
+          class=""
         >
           <template v-slot:default-header="prop" >
             <div class="rest-collection-tree-node wrap-word">
               {{prop.node.name}}
             </div>
-            <q-icon name="more_vert" class="rest-collection-tree-node-menu" >
-              <q-popup-proxy transition-show="flip-up" transition-hide="flip-down">
-                <component
-                  :is="isCollection(prop.node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"
-                  v-model="prop.node"/>
-              </q-popup-proxy>
-            </q-icon>
           </template>
         </q-tree>
       </q-card-section>
-      <q-card-actions>
-        <q-btn label="Fermer" v-close-popup />
-        <q-btn label="Sauvegarder" @click="onSave" />
+      <q-separator />
+      <q-card-actions align="right" class="popin-save-actions">
+        <q-btn :label="i18n$.t('REST.BUTTON_CANCEL')" v-close-popup class="bg-cancel text-cancel bouton"/>
+        <q-btn :label="i18n$.t('REST.BUTTON_SAVE')" @click="onSave" color="accent" class="bouton"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 <script lang="ts" setup>
 import { useDialogPluginComponent } from 'quasar'
-import { RestCollection } from "src/models/model";
+import {RestCollection, RestRequest} from "src/models/model";
 import {ref} from "vue";
-import {isCollection} from "src/composables/ActiveRequest";
+import {useI18n} from "vue-i18n";
 
-const props = defineProps<{collection: RestCollection[]}>();
+const props = defineProps<{
+  collection: RestCollection[],
+  request: RestRequest
+}>();
 
 defineEmits([
   // REQUIRED; need to specify some events that your
   // component will emit through useDialogPluginComponent()
   ...useDialogPluginComponent.emits
 ]);
-
+const requestName = ref(props.request.name);
+const i18n$ = useI18n();
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 // dialogRef      - Vue ref to be applied to QDialog
 // onDialogHide   - Function to be used as handler for @hide on QDialog
@@ -59,10 +63,10 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginC
 // onDialogCancel - Function to call to settle dialog with "cancel" outcome
 
 // this is part of our example (so not required)
-function onOKClick (value: string) {
+function onOKClick (value: string, name: string) {
   // on OK, it is REQUIRED to
   // call onDialogOK (with optional payload)
-  onDialogOK(value)
+  onDialogOK({id: value, name: name});
   // or with payload: onDialogOK({ ... })
   // ...and it will also hide the dialog automatically
 }
@@ -97,7 +101,34 @@ const directories = props.collection.map(x => {
 });
 
 const onSave = () => {
-  onOKClick(selectedKey.value);
+  onOKClick(selectedKey.value, requestName.value);
 }
 
 </script>
+
+<style lang="scss">
+.popin-save {
+  height: 80vh;
+  width: 60vw;
+}
+
+.popin-save-title {
+  height: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: var(panel-secondary);
+}
+
+.popin-save-container {
+  height: calc(80vh - 180px);
+}
+
+.popin-save-actions {
+  height: 50px;
+  .bouton {
+    width: 150px;
+    height: 35px;
+  }
+}
+
+</style>
