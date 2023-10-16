@@ -33,7 +33,7 @@
 import AreaInput from 'components/commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {computed, defineComponent, ref} from 'vue';
-import {LANGUAGE, OPTIONS_LANGUAGE} from "src/models/Constantes";
+import {LANGUAGE, OPTIONS_LANGUAGE} from 'src/models/Constantes';
 
 defineComponent({AreaInput});
 
