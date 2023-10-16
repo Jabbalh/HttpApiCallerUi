@@ -5,11 +5,14 @@ export default {
     TAB_HISTORY: 'Historique',
     TAB_TEST_PLAN: 'Plan de test',
     ADD_REQUEST_TITLE: 'Nouvelle requète',
-    ADD_REQUEST_PLACEHOLDER: 'Nom',
+    ADD_REQUEST_PLACEHOLDER: 'Nom de la requète',
     REQUEST_NOT_SAVED_TITLE:'Vous avez des modifications',
     REQUEST_NOT_SAVED_MESSAGE: 'Voulez-vous sauvegarder vos modifications ?',
     BUTTON_SEND: 'Envoyer',
     BUTTON_SAVE: 'Sauvegarder',
+    BUTTON_CANCEL: 'Annuler',
+    MESSAGE_SAUVEGARDE_OK: 'Sauvegarde réussie',
+    MESSAGE_SAUVEGARDE_NOK: 'Echec de la sauvegarde',
     MENU_COL_NEW_DIRECTORY: 'Nouveau dossier',
     MENU_COL_NEW_REQUEST: 'Nouvelle requète',
     MENU_COL_EDITER: 'Editer',
@@ -26,7 +29,8 @@ export default {
     PARAM_REQ_PARAM_TITLE: 'Paramètre de la requète',
     PARAM_REQ_HEADER_TITLE: 'Liste des en-têtes',
     PARAM_REQ_PARAM_KEY: 'Paramètre',
-    PARAM_REQ_PARAM_VALUE: 'Valeur'
+    PARAM_REQ_PARAM_VALUE: 'Valeur',
+    POPIN_SAVE_REQUEST_TITLE: 'Liste de mes collections'
   }
 
 }

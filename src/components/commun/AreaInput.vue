@@ -11,7 +11,8 @@ import {useEnvStore} from "stores/EnvStore";
 
 const props = defineProps<{
   modelValue: string,
-  editable: boolean
+  editable: boolean,
+  language: string
 }>();
 
 const appEnv = useEnvStore();
@@ -27,26 +28,19 @@ const value = computed({
 });
 
 const docResponse = ref<Element | null>(null);
+const lang = computed(() => props.language);
 const editor = useCodeMirror(
   docResponse,
   value,
   props.editable,
   false,
-  envs
+  envs,
+  lang
 );
 
 watch(envs, () => {
   editor.reconfigure(envs);
 })
-
-// watch(() => props.modelValue, (newValue, oldValue) => {
-//   if (newValue != oldValue) {
-//     console.log('newValue')
-//   } else {
-//     console.log('idem value')
-//   }
-// })
-
 
 </script>
 <style scoped lang="scss">

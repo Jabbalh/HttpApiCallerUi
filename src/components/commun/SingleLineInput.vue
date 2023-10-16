@@ -1,7 +1,8 @@
 <template>
   <div class="autocomplete" ref="autocomplete">
-    <div class="input-wrapper">
+    <div class="input-wrapper ">
       <div
+        class="single-line"
         ref="docResponse"
         @focusin="onFocus"
         style="height: auto;width: 100%; background-color: transparent"  />
@@ -57,13 +58,16 @@ const autocomplete = ref<any | null>(null);
 const suggestionsMenu = ref<any | null>(null);
 // L'input codeMirror
 const docResponse = ref<HTMLElement | null>(null);
+
+const lang = ref('none');
 // L'editeur codeMirror
 const editor = useCodeMirror(
   docResponse,
   value,
   props.editable,
   true,
-  envs
+  envs,
+  lang
 );
 
 /**

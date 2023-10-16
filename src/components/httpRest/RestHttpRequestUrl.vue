@@ -19,7 +19,7 @@
   </div>
   <div class="request-url-action">
     <q-btn :label="i18n.t('REST.BUTTON_SEND')" color="accent" unelevated no-caps @click="sendRestRequest(activeRestRequest)" />
-    <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps/>
+    <q-btn :label="i18n.t('REST.BUTTON_SAVE')" color="grey" outline class="q-ml-md" no-caps @click="saveRequest()"/>
   </div>
 </template>
 
@@ -31,37 +31,45 @@ import {useI18n} from 'vue-i18n';
 import { REST_METHODS } from 'src/models/Constantes';
 import {useAppStore} from 'stores/appStore';
 import {mapWritableState} from 'pinia';
-import {useSendHttpRequest} from 'src/composables/SendHttpRequest';
-import SingleLineInput from "components/commun/SingleLineInput.vue";
+import {pendingRequest, useSendHttpRequest} from 'src/composables/SendHttpRequest';
+import SingleLineInput from 'components/commun/SingleLineInput.vue';
+import * as E from 'fp-ts/Either';
+import useRequestUtils from 'src/composables/RequestUtils';
 
 export default defineComponent({
   name:'RestHttpRequestUrl',
   components: {SingleLineInput},
-  props: {
-    loading: {
-      type: Boolean,
-      required: true
-    }
-  },
-  emits: ['update:loading'],
-  setup(props, { emit }){
+  setup(){
     const i18n = useI18n();
     const { sendRequest } = useSendHttpRequest() ;
     const appStore = useAppStore();
+    const { saveRequest } = useRequestUtils().useSaveRestRequest();
     const sendRestRequest = (value: RestRequest) => {
-      emit('update:loading', true);
-      sendRequest(value).finally(() => emit('update:loading', false))
+      value.response = pendingRequest();
+      sendRequest(value).then(x => {
+        // En cas d'erreur
+        if (E.isLeft(x)){
+          value.response = x.left;
+        }
+        // En cas de succès
+        if (E.isRight(x)){
+          console.log('x.Right', x.right);
+          value.response = x.right
+        }
+      })
     };
+
+
     return {
       sendRestRequest,
       REST_METHODS,
       i18n,
-      appStore
+      appStore,
+      saveRequest
     }
   },
   methods: {
     updateSaveAttribute(request: RestRequest){
-      console.log('updateSaveAttribute');
       this.appStore.updateSaveAttribute(request, false);
     }
   },

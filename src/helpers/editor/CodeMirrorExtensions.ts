@@ -1,7 +1,7 @@
 import {
   crosshairCursor,
   drawSelection,
-  dropCursor,
+  dropCursor, EditorView,
   highlightActiveLine,
   highlightActiveLineGutter,
   highlightSpecialChars, keymap, lineNumbers, rectangularSelection
@@ -80,6 +80,7 @@ export const basicSetupSingleLine = [
 
 export const basicSetupArea = [
   ...basicSetup,
+  EditorView.lineWrapping,
   highlightActiveLineGutter(),
   highlightActiveLine(),
   foldGutter({

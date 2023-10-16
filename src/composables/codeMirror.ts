@@ -7,7 +7,6 @@ import {
   ViewUpdate
 } from '@codemirror/view';
 import {Compartment, EditorState } from '@codemirror/state';
-import {json} from '@codemirror/lang-json';
 import {defaultKeymap} from '@codemirror/commands';
 import {espresso} from 'thememirror';
 import {AppEnvironnement } from 'src/models/model';
@@ -17,8 +16,13 @@ import {
   basicSetupSingleLine,
   manageKeyMap
 } from 'src/helpers/editor/CodeMirrorExtensions';
-import {environmentHighlightStyle} from "src/helpers/editor/HighlightStyle";
-import {cursorTooltipField} from "src/helpers/editor/CursorTooltip";
+import {environmentHighlightStyle} from 'src/helpers/editor/HighlightStyle';
+import {cursorTooltipField} from 'src/helpers/editor/CursorTooltip';
+import { jsonLanguage} from '@codemirror/lang-json';
+import { xmlLanguage} from '@codemirror/lang-xml';
+import {LANGUAGE} from 'src/models/Constantes';
+import {html} from '@codemirror/legacy-modes/mode/xml';
+import {StreamLanguage} from '@codemirror/language';
 
 
 export function
@@ -27,7 +31,8 @@ useCodeMirror(
   value: Ref<string | undefined>,
   editable: boolean,
   singleLine: boolean,
-  envs: Ref<AppEnvironnement | null>
+  envs: Ref<AppEnvironnement | null>,
+  language: Ref<string>
 ) {
 
   // Thème managment
@@ -37,8 +42,10 @@ useCodeMirror(
   const jsonResponse = ref(value.value);
   // CodeMirror editor
   const editor = ref<EditorView>();
-  // Comparment for theme managment
+  // Compartment for theme managment
   const themeConfig = new Compartment();
+  // Compartment for language
+  const languageConfig = new Compartment();
 
   const compartment = new Compartment();
 
@@ -51,6 +58,15 @@ useCodeMirror(
     })
   }
 
+  const obtainLanguage = (lang: string) => {
+    switch (lang) {
+      case LANGUAGE.applicationJson: return jsonLanguage;
+      case LANGUAGE.applicationXml : return xmlLanguage;
+      case LANGUAGE.textHtml: return StreamLanguage.define(html);
+    }
+    return [];
+  }
+
   /**
    * Code mirror editor init
    * @param el
@@ -59,10 +75,8 @@ useCodeMirror(
     const baseSetup = singleLine ? basicSetupSingleLine : basicSetupArea;
     const extensions = [
       ...baseSetup,
-      EditorView.lineWrapping,
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
-      json(),
       compartment.of([
         cursorTooltipField(envs),
         environmentHighlightStyle(envs),
@@ -89,6 +103,7 @@ useCodeMirror(
         ...defaultKeymap,
         ...manageKeyMap(singleLine)
       ]),
+      languageConfig.of(obtainLanguage(language.value)),
       EditorView.contentAttributes.of({ 'data-enable-grammarly': 'false' }),
     ];
     // Code mirror editor create
@@ -100,6 +115,16 @@ useCodeMirror(
       }),
     })
   }
+
+  watch(language, () => {
+    if (editor.value){
+      console.log('language', language.value);
+      const langConfig = obtainLanguage(language.value);
+      editor.value?.dispatch({
+        effects: languageConfig.reconfigure(langConfig)
+      });
+    }
+  })
 
   /**
    * Watcher on theme change

@@ -4,6 +4,7 @@
 @import 'rest.methods';
 @import 'rest-tabs';
 @import 'sticky-helper';
+@import 'codeMirror-custom';
 
 .wrap-word {
   white-space: break-spaces;
@@ -57,4 +58,12 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+
+.bg-cancel {
+  background-color: var(--q-panel-secondary)!important;
+}
+
+.text-cancel {
+  color: var(--q-cancel-color)!important;
 }

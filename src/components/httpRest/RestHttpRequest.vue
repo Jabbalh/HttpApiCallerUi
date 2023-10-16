@@ -12,7 +12,7 @@
       <template v-slot:before>
         <div class="sticky-tabs top-0 z-index-22">
           <div class="row q-pa-md">
-            <RestHttpRequestUrl v-model:loading="loading" />
+            <RestHttpRequestUrl />
           </div>
         </div>
         <div class="row q-pb-md request-container">
@@ -21,7 +21,7 @@
       </template>
       <template v-slot:after>
         <div class="row q-ma-md">
-          <RestHttpResponse :loading="loading" />
+          <RestHttpResponse />
         </div>
       </template>
     </q-splitter>
@@ -30,7 +30,6 @@
 <script lang="ts">
 import {defineComponent, ref} from 'vue';
 import RestHttpRequestUrl from 'components/httpRest/RestHttpRequestUrl.vue';
-import useActiveRequest from 'src/composables/ActiveRequest';
 import RestHttpResponse from 'components/httpRest/RestHttpResponse.vue';
 import RestHttpRequestParam from 'components/httpRest/RestHttpRequestParam.vue';
 export default defineComponent({
@@ -38,12 +37,9 @@ export default defineComponent({
   components: {RestHttpRequestParam, RestHttpResponse, RestHttpRequestUrl},
   setup(){
     return {
-      loading: ref(false),
-      splitterModel: ref(350),
-      ...useActiveRequest()
+      splitterModel: ref(350)
     }
   }
-
 });
 
 </script>

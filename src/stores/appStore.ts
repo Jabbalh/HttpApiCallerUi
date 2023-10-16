@@ -48,9 +48,8 @@ export const useAppStore = defineStore('app', {
         url: '',
         body: '',
         parameter: [],
-        response: {
-          response: ''
-        }
+        header: [],
+        response: undefined
       }
 
       this.activeRestRequest = this.cloneAndAddToOpenedRequest(request);
