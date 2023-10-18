@@ -1,9 +1,9 @@
-import {uid, useQuasar} from "quasar";
-import {IAppStore, useAppStore} from "src/stores/appStore";
-import {useEnvStore} from "src/stores/EnvStore";
-import {RestRequest} from "src/models/model";
-import useRequestUtils from "src/composables/RequestUtils";
-import {LANGUAGE} from "src/models/Constantes";
+import {uid, useQuasar} from 'quasar';
+import {IAppStore, useAppStore} from 'src/stores/appStore';
+import {useEnvStore} from 'src/stores/EnvStore';
+import {RestRequest} from 'src/models/model';
+import useRequestUtils from 'src/composables/RequestUtils';
+import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
 
 export const useLoadDataCollection = function() {

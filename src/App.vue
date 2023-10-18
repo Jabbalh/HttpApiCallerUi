@@ -5,8 +5,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {useAppStore} from 'stores/appStore';
-import {useEnvStore} from "stores/EnvStore";
-import {useLoadDataCollection} from "src/composables/loadLocalStorageData";
+import {useEnvStore} from 'stores/EnvStore';
+import {useLoadDataCollection} from 'src/composables/loadLocalStorageData';
 
 export default defineComponent({
   name: 'App',
