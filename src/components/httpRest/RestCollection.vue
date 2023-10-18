@@ -15,7 +15,7 @@
           {{prop.node.name}}
         </div>
         <q-icon name="more_vert" class="rest-collection-tree-node-menu" @click="openNodeMenu">
-          <q-popup-proxy transition-show="flip-up" transition-hide="flip-down">
+          <q-popup-proxy >
             <component
               :is="isCollection(prop.node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"
               v-model="prop.node"/>
@@ -39,7 +39,6 @@ export default defineComponent({
   name: 'RestCollection',
   components: { PopinMenuDirectory, PopinMenuRequest },
   setup(){
-    console.log('RestCollection')
     const appStore = useAppStore();
     const collections = computed<RestCollection[]>(() => appStore.restCollection );
     const openItem = (x: RestRequest) => {
@@ -53,6 +52,7 @@ export default defineComponent({
     });
 
     const openNodeMenu = () => console.log('open menu node');
+
 
     return {
       collections,

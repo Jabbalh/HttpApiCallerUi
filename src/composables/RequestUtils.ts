@@ -10,19 +10,25 @@ const useRequestUtils = function() {
   const i18n = useI18n();
   const q$ = useQuasar();
   const appStore = useAppStore();
-  const addRequest = () => {
+  const addRequest = (request?: RestRequest, isSaved?: boolean) => {
     return new Promise<RestRequest>(r => {
       q$.dialog({
         title:i18n.t('REST.ADD_REQUEST_TITLE'),
         prompt: {
           type:'text',
-          model: '',
+          model: request?.name ?? '',
           outlined: true,
           label: i18n.t('REST.ADD_REQUEST_PLACEHOLDER')
         },
         cancel: true
       }).onOk((x: string) => {
-        r(appStore.addRestRequest(x));
+        if (request){
+          request.name = x;
+          r(request);
+        } else {
+          r(appStore.addRestRequest(x, isSaved));
+        }
+
       })
     })
 

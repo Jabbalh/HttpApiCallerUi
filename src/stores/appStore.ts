@@ -39,13 +39,13 @@ export const useAppStore = defineStore('app', {
         this.activeRestRequest = this.openedRestRequest[this.openedRestRequest.length -1];
       }
     },
-    addRestRequest(value: string){
+    addRestRequest(value: string, isSaved?: boolean){
       const request: RestRequest = {
         id: uid(),
         name: value,
         isOpen: true,
         method: 'GET',
-        isSaved: false,
+        isSaved: isSaved ?? false,
         url: '',
         body: {
           language: LANGUAGE.nothing,

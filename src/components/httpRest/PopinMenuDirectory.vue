@@ -16,29 +16,29 @@
 </template>
 
 <script lang="ts" setup>
-
+import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {RestCollection} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
+import {useVModel} from "@vueuse/core";
 
 const i18n = useI18n();
-const props = defineModel<RestCollection>({
-  required: true
-});
 
-//defineEmits(['update:modelValue']);
+const props = defineProps({
+  modelValue: {
+    type: Object as PropType<RestCollection>,
+    required: true
+  }
+});
+const emit = defineEmits(['update:modelValue']);
+const data = useVModel(props, 'modelValue', emit );
 const appStore = useAppStore();
-const { addRequest, findCollectionById } = useRequestUtils();
+const { addRequest } = useRequestUtils();
 
 const addRestRequest = async  () => {
-  const request = await addRequest();
-  const parent = findCollectionById(appStore.restCollection, props.value.id);
-  if (parent){
-    parent.requests.push(request);
-  }
+  const request = await addRequest(undefined, true);
+  data.value.requests.push(request);
 }
-
-
 
 </script>
