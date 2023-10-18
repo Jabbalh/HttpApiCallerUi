@@ -59,6 +59,18 @@ export const useAppStore = defineStore('app', {
       this.activeRestRequest = this.cloneAndAddToOpenedRequest(request);
       return request;
     },
+    addCollection(value: string){
+      const col: RestCollection = {
+        id: uid(),
+        name: value,
+        requests: [],
+        isLocal: true,
+        isSaved: true,
+        isCollection: true,
+        childs: [],
+      }
+      return col;
+    },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
     },

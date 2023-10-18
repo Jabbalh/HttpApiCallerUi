@@ -1,12 +1,12 @@
 <template>
   <q-list>
-    <q-item clickable>
+    <q-item clickable @click="addCollection">
       <q-item-section>{{i18n.t('REST.MENU_COL_NEW_DIRECTORY')}}</q-item-section>
     </q-item>
     <q-item clickable @click="addRestRequest">
       <q-item-section>{{i18n.t('REST.MENU_COL_NEW_REQUEST')}}</q-item-section>
     </q-item>
-    <q-item clickable>
+    <q-item clickable @click="editCollection">
       <q-item-section>{{i18n.t('REST.MENU_COL_EDITER')}}</q-item-section>
     </q-item>
     <q-item clickable>
@@ -34,11 +34,21 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue']);
 const data = useVModel(props, 'modelValue', emit );
 const appStore = useAppStore();
-const { addRequest } = useRequestUtils();
+const { addRequest, addFolder } = useRequestUtils();
 
 const addRestRequest = async  () => {
   const request = await addRequest(undefined, true);
-  data.value.requests.push(request);
+  appStore.addRequestOnCollection(request, props.modelValue);
+  //data.value.requests.push(request);
+}
+
+const addCollection = async () => {
+  const col = await addFolder();
+  data.value.childs.push(col);
+}
+
+const editCollection = () => {
+  addFolder(data.value)
 }
 
 </script>

@@ -31,11 +31,34 @@ const useRequestUtils = function() {
 
       })
     })
+  }
 
+  const addFolder = (collection?: RestCollection) => {
+    return new Promise<RestCollection>(r => {
+      q$.dialog({
+        title:i18n.t('REST.ADD_FOLDER_TITLE'),
+        prompt: {
+          type:'text',
+          model: collection?.name ?? '',
+          outlined: true,
+          label: i18n.t('REST.ADD_FOLDER_PLACEHOLDER')
+        },
+        cancel: true
+      }).onOk((x: string) => {
+        if (collection){
+          collection.name = x;
+          r(collection);
+        } else {
+          r(appStore.addCollection(x));
+        }
+
+      })
+    })
   }
 
   return {
     addRequest,
+    addFolder,
     findCollectionById,
     findParentCollectionById,
     useSaveRestRequest,

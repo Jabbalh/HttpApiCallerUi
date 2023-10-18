@@ -8,7 +8,7 @@
       horizontal
       before-class="panel-primary"
       after-class="panel-primary"
-    >
+     >
       <template v-slot:before>
         <div class="sticky-tabs top-0 z-index-22">
           <div class="row q-pa-md">
@@ -33,7 +33,7 @@ import {defineComponent, ref} from 'vue';
 import RestHttpRequestUrl from 'components/httpRest/RestHttpRequestUrl.vue';
 import RestHttpResponse from 'components/httpRest/RestHttpResponse.vue';
 import RestHttpRequestParam from 'components/httpRest/RestHttpRequestParam.vue';
-import ResponseStatus from "components/httpRest/response/ResponseStatus.vue";
+import ResponseStatus from 'components/httpRest/response/ResponseStatus.vue';
 export default defineComponent({
   name:'RestHttpRequest',
   components: {ResponseStatus, RestHttpRequestParam, RestHttpResponse, RestHttpRequestUrl},
