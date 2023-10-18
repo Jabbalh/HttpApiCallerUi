@@ -1,8 +1,9 @@
 <template>
-  <div class="row sticky-tabs sticky-status q-col-gutter-md q-pt-none q-pb-none full-width text-gray" v-if="hasStatusCode(response)">
+  <div class="row sticky-tabs sticky-status q-col-gutter-md q-pt-none q-pb-none full-width text-gray status-color"
+       v-if="hasStatusCode(response)">
     <div>Status: <span :class="codeStatusClass">{{status}}</span> </div>
-    <div>Time: {{meta.responseDuration}}ms </div>
-    <div>Weight: {{responseSize}} </div>
+    <div>Time: <span class="text-positive">{{meta.responseDuration}}ms</span></div>
+    <div>Weight: <span class="text-positive">{{responseSize}}</span></div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -43,6 +44,11 @@ const codeStatusClass = computed(() => {
   z-index: 22;
   bottom: 0;
   padding-left:16px;
+}
+
+.status-color {
+  color: grey;
+  font-weight: bold;
 }
 
 

@@ -1,4 +1,14 @@
-export const REST_METHODS: string[] = [ 'GET', 'POST', 'OPTION' ];
+export const REST_METHODS: string[] = [
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'HEAD',
+  'CONNECT',
+  'OPTIONS',
+  'TRACE'
+];
 export const LANGUAGE = {
   nothing: 'Nothing',
   applicationJson: 'application/Json',

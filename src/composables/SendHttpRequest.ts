@@ -101,7 +101,7 @@ export const successRequest = (value: AxiosResponse): RestResponse => {
     headers: map(value.headers, (x,y) => {
       return { key: x, value: y}
     }),
-    language: determineLanguage(value.headers),
+    language: checkLanguage(value.headers),
     meta: {
       responseDuration: 1,
       responseSize: contentLength
@@ -110,19 +110,44 @@ export const successRequest = (value: AxiosResponse): RestResponse => {
   }
 }
 
+/**
+ * Check if content is json
+ * @param header
+ */
 const isJson = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
-  return /\bjson\b/i.test(header['content-type']);
+  return isContentTypeIsSomething(/\bjson\b/i, header);
 }
 
+/**
+ * Check if content is Xml
+ * @param header
+ */
 const isXml = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
-  return /\bxml\b/i.test(header['content-type']);
+  return isContentTypeIsSomething(/\bxml\b/i, header);
 }
 
+/**
+ * Test if sentence is Html
+ * @param header
+ */
 const isHtml = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
-  return /\bhtml\b/i.test(header['content-type']);
+  return isContentTypeIsSomething(/\bhtml\b/i, header);
 }
 
-const determineLanguage = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+/**
+ * Check content with regexp
+ * @param regex
+ * @param header
+ */
+const isContentTypeIsSomething = (regex: RegExp, header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
+  return regex.test(header['content-type']);
+}
+
+/**
+ * Check and obtain language
+ * @param header
+ */
+const checkLanguage = (header: RawAxiosResponseHeaders | AxiosResponseHeaders) => {
   if (isJson(header)){
     return LANGUAGE.applicationJson;
   } else if (isXml(header)) {
@@ -148,6 +173,11 @@ export const failRequest = (value: AxiosError): RestResponse => {
   }
 }
 
+/**
+ * Vérification du Body
+ * @param value
+ * @param envs
+ */
 const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => {
   if (value && value.language != LANGUAGE.nothing){
     const { parseEnv } = useParseEnv();
@@ -187,7 +217,7 @@ const ensureMultiPartForm = (values: RestRequestParameters[], envs?: AppEnvitonn
 const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
   const params = new URLSearchParams();
   const { parseEnv } = useParseEnv();
-  for (const item of values.filter((x => x.entry.active))){
+  for (const item of values.filter((x => x.entry.active && x.entry.key))){
     params.append(
       parseEnv(item.entry.key, envs),
       parseEnv(item.entry.value, envs));
@@ -204,14 +234,13 @@ const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnemen
 const ensureHeader = (values: RestRequestParameters[], language: string, envs?: AppEnvitonnementValue[]) => {
   const { parseEnv } = useParseEnv();
   const headers: AxiosHeaders = new AxiosHeaders();
-  for (const item of values.filter((x => x.entry.active))){
+  for (const item of values.filter((x => x.entry.active && x.entry.key))){
     headers[parseEnv(item.entry.key, envs)] = parseEnv(item.entry.value, envs);
   }
 
   if (language != LANGUAGE.nothing){
     headers['Content-type'] = language;
   }
-  console.log('header', headers);
   return headers;
 }
 
