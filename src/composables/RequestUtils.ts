@@ -113,12 +113,12 @@ function useSaveRestRequest(){
       if (E.isRight(result)){
         if (result.right){
           q$.notify({
-            message: i18n$.t('MESSAGE_SAUVEGARDE_OK'),
+            message: i18n$.t('REST.MESSAGE_SAUVEGARDE_OK'),
             type: 'positive'
           });
         } else {
           q$.notify({
-            message: i18n$.t('MESSAGE_SAUVEGARDE_NOK'),
+            message: i18n$.t('REST.MESSAGE_SAUVEGARDE_NOK'),
             type: 'negative'
           });
         }

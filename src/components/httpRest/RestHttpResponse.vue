@@ -1,16 +1,12 @@
 <template>
   <div class="full-width " style="position: relative;height: 100%; overflow: hidden">
     <!--    running_with_errors-->
-    <div class="" v-if="hasResponse" style="overflow: auto;height: calc(100% - 50px); ">
-      <div class="row rest-parameter-title sticky-tabs top-tertiary ">
-        <div class="rest-body-title" >
-          Status {{ statusCode }}
-        </div>
-      </div>
+    <div class="" v-if="hasResponse" style="overflow: auto;height: 100%; ">
       <AreaInput
         v-model="responseBody"
         :editable="false"
         :language="language" />
+
     </div>
     <div v-else-if="isLoading">
       <div class="flex items-center justify-center" style="flex-direction: column;">
@@ -26,7 +22,7 @@
           </span>
       </div>
     </div>
-    <div v-else-if="hasError" class="q-mt-xl">
+    <div v-else-if="hasError" class="q-mt-xl" >
       <div class="flex items-center justify-center" style="flex-direction: column">
         <q-icon name="running_with_errors"
                 style="font-size: 6rem; flex-direction: column; display: inline-flex"
@@ -46,12 +42,15 @@ import {computed, defineComponent} from 'vue';
 import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {LANGUAGE} from 'src/models/Constantes';
+import {useTypeVerify} from "src/composables/TypeVerify";
 
 export default defineComponent({
   name:'RestHttpResponse',
   components: { AreaInput },
   setup(){
     const appStore = useAppStore();
+    const { hasStatusCode } = useTypeVerify();
+
     const response = computed(() => appStore.activeRestRequest?.response);
     const responseBody = computed(() => appStore.activeRestRequest?.response?.body ?? '');
     const hasResponse = computed(() => {
@@ -62,7 +61,7 @@ export default defineComponent({
     });
     const hasError = computed(() => response.value?.type == 'fail');
     const isLoading = computed(() => response.value?.type == 'loading');
-    const statusCode = computed(() => response.value?.type == 'fail' ? response.value?.statusCode ?? 500 : 500)
+    const statusCode = computed(() => hasStatusCode(response.value) ? response.value.statusCode : -1)
 
     const language = computed(() => {
       if (hasResponse.value) {

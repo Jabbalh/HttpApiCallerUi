@@ -1,5 +1,11 @@
 import {AppEnvitonnementValue, RestRequest, RestRequestParameters} from 'src/models/model';
-import axios, {AxiosError, AxiosHeaders, AxiosRequestConfig, AxiosResponse, AxiosResponseHeaders} from 'axios';
+import axios, {
+  AxiosError,
+  AxiosHeaders,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosResponseHeaders
+} from 'axios';
 import useJson from "src/composables/Json";
 import useParseEnv from "src/composables/parseEnv";
 import {useEnvStore} from "stores/EnvStore";
@@ -9,6 +15,8 @@ import {RestResponse} from 'src/models/types/RestResponse';
 import {map} from 'lodash';
 import {RawAxiosResponseHeaders} from 'axios';
 import {LANGUAGE} from 'src/models/Constantes';
+import {useTypeVerify} from "src/composables/TypeVerify";
+import {RestRequestBody} from "src/models/types/RestRequestBody";
 
 /**
  * Permet d'envoyer une requete Http
@@ -25,7 +33,7 @@ const useSendHttpRequest = function() {
     const param: AxiosRequestConfig = {
       url: parseEnv(cloneRequest.url, envApp.Current?.values),
       method: cloneRequest.method.toLowerCase(),
-      headers: ensureHeader(cloneRequest.header, envs),
+      headers: ensureHeader(cloneRequest.header, cloneRequest.body.language, envs),
       params: ensureParameter(cloneRequest.parameter, envs),
       data: ensureBody(cloneRequest.body, envs)
     };
@@ -41,9 +49,25 @@ const useSendHttpRequest = function() {
  */
 const effectiveRunRequest = async (request: AxiosRequestConfig) => {
   try {
+    const { hasMetaResponse } = useTypeVerify();
+    const start = new Date().getTime();
     const axiosRequest = axios.create();
+    let download =0;
+    request.onDownloadProgress =  (axiosProgressEvent) => {
+      console.log('onDownloadProgress', axiosProgressEvent);
+      download += axiosProgressEvent.bytes;
+    }
+
     const res = await axiosRequest.request(request);
-    return E.right(successRequest(res));
+    const end = new Date().getTime();
+    const result = successRequest(res);
+    console.log("download", download);
+    if (hasMetaResponse(result)){
+      result.meta.responseDuration = end - start;
+      result.meta.responseSize = download;
+    }
+    return E.right(result);
+
   } catch (error: any){
     return E.left(failRequest(error));
   }
@@ -124,21 +148,36 @@ export const failRequest = (value: AxiosError): RestResponse => {
   }
 }
 
-const ensureBody = (value?: string, envs?: AppEnvitonnementValue[]) => {
-  const { parseEnv } = useParseEnv();
-  if (value){
-    return parseEnv(value, envs);
-    // if (value.language != LANGUAGE.nothing){
-    //   // if ('parameters' in value){
-    //   //   return ensureParameter(value.parameters, envs);
-    //   // } else {
-    //   //  return parseEnv(value.body, envs);
-    //   // }
-    //   return parseEnv(value.body, envs);
-    // }
+const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => {
+  if (value && value.language != LANGUAGE.nothing){
+    const { parseEnv } = useParseEnv();
+    const { isRestRequestParameters } = useTypeVerify()
+
+    if (isRestRequestParameters(value.body)){
+      return ensureMultiPartForm(value.body);
+    } else if (value.language != LANGUAGE.nothing){
+      return parseEnv(value.body, envs);
+    }
   }
   return '';
 }
+
+/**
+ * Vérification et traitement des paramètres
+ * @param values
+ * @param envs
+ */
+const ensureMultiPartForm = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
+  const params = new FormData();
+  const { parseEnv } = useParseEnv();
+  for (const item of values.filter((x => x.entry.active))){
+    params.append(
+      parseEnv(item.entry.key, envs),
+      parseEnv(item.entry.value, envs));
+  }
+  return params;
+}
+
 
 /**
  * Vérification et traitement des paramètres
@@ -159,14 +198,20 @@ const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnemen
 /**
  * Vérification et traitement des entêtes
  * @param values
+ * @param language
  * @param envs
  */
-const ensureHeader = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
+const ensureHeader = (values: RestRequestParameters[], language: string, envs?: AppEnvitonnementValue[]) => {
   const { parseEnv } = useParseEnv();
   const headers: AxiosHeaders = new AxiosHeaders();
   for (const item of values.filter((x => x.entry.active))){
     headers[parseEnv(item.entry.key, envs)] = parseEnv(item.entry.value, envs);
   }
+
+  if (language != LANGUAGE.nothing){
+    headers['Content-type'] = language;
+  }
+  console.log('header', headers);
   return headers;
 }
 

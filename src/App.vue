@@ -9,6 +9,7 @@ import {RestCollection} from 'src/models/model';
 import { uid } from 'quasar'
 import {useAppStore} from 'stores/appStore';
 import {useEnvStore} from "stores/EnvStore";
+import {LANGUAGE} from "src/models/Constantes";
 
 export default defineComponent({
   name: 'App',
@@ -74,7 +75,10 @@ export default defineComponent({
           isSaved: true,
           parameter: [],
           header: [],
-          body: '',
+          body: {
+            body: '',
+            language: LANGUAGE.nothing
+          },
           response: undefined
         },
         {
@@ -86,7 +90,10 @@ export default defineComponent({
           isSaved: true,
           parameter: [],
           header: [],
-          body: '',
+          body: {
+            body: '',
+            language: LANGUAGE.nothing
+          },
           response: undefined
         }
       ]

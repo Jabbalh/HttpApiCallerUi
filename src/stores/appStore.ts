@@ -3,6 +3,7 @@ import {RestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash/remove';
 import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
+import {LANGUAGE} from "src/models/Constantes";
 
 export interface IAppStore {
   restCollection: RestCollection[],
@@ -46,7 +47,10 @@ export const useAppStore = defineStore('app', {
         method: 'GET',
         isSaved: false,
         url: '',
-        body: '',
+        body: {
+          language: LANGUAGE.nothing,
+          body: ''
+        },
         parameter: [],
         header: [],
         response: undefined

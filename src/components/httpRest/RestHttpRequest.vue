@@ -20,9 +20,10 @@
         </div>
       </template>
       <template v-slot:after>
-        <div class="row q-ma-md">
+        <div class="row q-ma-md" style="height: calc(100% - 50px)">
           <RestHttpResponse />
         </div>
+        <ResponseStatus  />
       </template>
     </q-splitter>
   </div>
@@ -32,9 +33,10 @@ import {defineComponent, ref} from 'vue';
 import RestHttpRequestUrl from 'components/httpRest/RestHttpRequestUrl.vue';
 import RestHttpResponse from 'components/httpRest/RestHttpResponse.vue';
 import RestHttpRequestParam from 'components/httpRest/RestHttpRequestParam.vue';
+import ResponseStatus from "components/httpRest/response/ResponseStatus.vue";
 export default defineComponent({
   name:'RestHttpRequest',
-  components: {RestHttpRequestParam, RestHttpResponse, RestHttpRequestUrl},
+  components: {ResponseStatus, RestHttpRequestParam, RestHttpResponse, RestHttpRequestUrl},
   setup(){
     return {
       splitterModel: ref(350)

@@ -7,7 +7,8 @@
       <div class="rest-http-body-select">
         <q-select
           :options="optionsLanguage"
-          v-model="languageValue"
+          v-model="dataModel.language"
+          @update:modelValue="updateLanguage"
           outlined
           dense
           hide-bottom-space
@@ -18,14 +19,17 @@
     </div>
     <div  v-if="displayEditor"
           style="overflow: auto;height: calc(100% - 50px); ">
-      <AreaInput
-        ref="smartJson"
-        v-if="currentRequest"
-        :modelValue="modelValue"
-        @update:modelValue="update"
-        :editable="true"
-        :language="languageValue"
-      />
+      <BodyArea
+        v-if="displayArea"
+        v-model="dataModel.body"
+        :languageValue="dataModel.language"
+        :currentRequest="currentRequest" />
+      <div v-else>
+        <BodyForm
+          v-model="dataModel.body"
+          :languageValue="dataModel.language"
+          :currentRequest="currentRequest" />
+      </div>
     </div>
   </div>
 </template>
@@ -33,31 +37,43 @@
 
 import AreaInput from 'components/commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
-import {computed, defineComponent, ref} from 'vue';
-import {LANGUAGE, OPTIONS_LANGUAGE} from 'src/models/Constantes';
-import {useI18n} from "vue-i18n";
+import {computed, defineComponent} from 'vue';
+import {isRawBody, LANGUAGE, OPTIONS_LANGUAGE} from 'src/models/Constantes';
+import {useI18n} from 'vue-i18n';
+import {RestRequestBody} from 'src/models/types/RestRequestBody';
+import BodyArea from "components/httpRest/body/BodyArea.vue";
+import {useVModel} from "@vueuse/core";
+import BodyForm from "components/httpRest/body/BodyForm.vue";
 
 defineComponent({AreaInput});
 
 const appState = useAppStore();
 const currentRequest = computed(() => appState.activeRestRequest);
-const props = withDefaults(defineProps<{ modelValue: string  }>(), { modelValue: '' });
-const emit = defineEmits(['update:modelValue']);
-const i18n = useI18n();
-const languageValue = ref(LANGUAGE.applicationJson);
-const optionsLanguage = OPTIONS_LANGUAGE;
-
-const update = (value: string) => {
-  if (value != props.modelValue){
-    if (currentRequest.value){
-      appState.updateSaveAttribute(currentRequest.value,false);
+const props = withDefaults(
+  defineProps<{
+    modelValue: RestRequestBody
+  }>(),
+  {
+    modelValue: () => {
+      return {
+        language: LANGUAGE.nothing,
+        body: ''
+      }
     }
-    emit('update:modelValue', value);
+  });
+
+const emit = defineEmits(['update:modelValue']);
+const dataModel = useVModel(props, 'modelValue', emit);
+const i18n = useI18n();
+const optionsLanguage = OPTIONS_LANGUAGE;
+const displayEditor = computed(() => dataModel.value.language != LANGUAGE.nothing);
+const displayArea = computed(() => isRawBody(dataModel.value.language));
+
+const updateLanguage = () => {
+  if (currentRequest.value){
+    appState.updateSaveAttribute(currentRequest.value,false);
   }
 }
-
-
-const displayEditor = computed(() => languageValue.value != LANGUAGE.nothing);
 
 </script>
 <style lang="scss" scoped>

@@ -19,4 +19,9 @@ export const OPTIONS_LANGUAGE = [
   LANGUAGE.textHtml
 ];
 
-export const isRawBody = LANGUAGE.applicationJson || LANGUAGE.applicationXml || LANGUAGE.textHtml ||LANGUAGE.textHtml;
+export const isRawBody = (value: string) => {
+  return value == LANGUAGE.applicationJson
+    || value == LANGUAGE.applicationXml
+    || value == LANGUAGE.textPlain
+    || value == LANGUAGE.textHtml
+};
