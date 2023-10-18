@@ -1,5 +1,16 @@
-export const REST_METHODS: string[] = [ 'GET', 'POST', 'OPTION' ];
+export const REST_METHODS: string[] = [
+  'GET',
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+  'HEAD',
+  'CONNECT',
+  'OPTIONS',
+  'TRACE'
+];
 export const LANGUAGE = {
+  nothing: 'Nothing',
   applicationJson: 'application/Json',
   applicationXml: 'application/Xml',
   applicationFormUrlEncoded: 'application/x-www-form-urlencoded',
@@ -9,6 +20,7 @@ export const LANGUAGE = {
 }
 
 export const OPTIONS_LANGUAGE = [
+  LANGUAGE.nothing,
   LANGUAGE.applicationJson,
   LANGUAGE.applicationXml,
   LANGUAGE.applicationFormUrlEncoded,
@@ -16,3 +28,10 @@ export const OPTIONS_LANGUAGE = [
   LANGUAGE.textPlain,
   LANGUAGE.textHtml
 ];
+
+export const isRawBody = (value: string) => {
+  return value == LANGUAGE.applicationJson
+    || value == LANGUAGE.applicationXml
+    || value == LANGUAGE.textPlain
+    || value == LANGUAGE.textHtml
+};

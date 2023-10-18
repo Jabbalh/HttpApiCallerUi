@@ -12,16 +12,13 @@
   padding-left: 8px;
 }
 
-.rest-method.GET {
-  color: #1069c2;
-}
-
-.rest-method.POST {
-  color: chocolate;
-}
+.rest-method.GET { color: #269a00; }
+.rest-method.POST { color: chocolate; }
+.rest-method.PUT { color: #1069c2; }
+.rest-method.DELETE { color: #a80000; }
 
 .rest-method-name {
-  padding-left: 4px;
+  padding-left: 6px;
   width: 65%;
   overflow: hidden;
   -o-text-overflow: ellipsis;

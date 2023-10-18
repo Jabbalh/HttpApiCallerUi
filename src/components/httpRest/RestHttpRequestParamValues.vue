@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" setup>
-import {computed} from 'vue';
+import {computed, onMounted} from 'vue';
 import draggable from 'vuedraggable-es'
 import SingleLineInput from 'components/commun/SingleLineInput.vue';
 import {useI18n} from "vue-i18n";
@@ -71,6 +71,7 @@ const workingParams = computed({
   get: () => props.modelValue,
   set: (value: RestRequestParameters[]) => emit('update:modelValue', value)
 });
+
 const i18n = useI18n();
 
 const libelleTitle = computed(() => props.isHeader ? i18n.t('REST.PARAM_REQ_HEADER_TITLE') : i18n.t('REST.PARAM_REQ_PARAM_TITLE'));
@@ -81,24 +82,17 @@ const baseHeaders = props.isHeader ? commonHeaders : undefined;
 /**
  * Ajout d'un paramètre
  */
-const addParameter = () => {
-  emit('add');
-};
-
-const deleteParameter = (value: RestRequestParameters) => {
-  emit('delete', value);
-}
-
-const onUpdate = () => {
-  emit('updateRequest');
-}
-
-const deleteAllParameter = () => {
-  emit('deleteAll');
-}
-
+const addParameter = () => { emit('add'); };
+const deleteParameter = (value: RestRequestParameters) => { emit('delete', value); }
+const onUpdate = () => { emit('updateRequest'); }
+const deleteAllParameter = () => { emit('deleteAll'); }
 const activeBouton = (value: boolean) => value ? 'radio_button_checked' : 'radio_button_unchecked';
 const toogleActive = (value: {active: boolean}) => value.active = !value.active;
+onMounted(() => {
+  if (!workingParams.value || workingParams.value.length == 0){
+    addParameter();
+  }
+})
 
 </script>
 <style lang="scss">

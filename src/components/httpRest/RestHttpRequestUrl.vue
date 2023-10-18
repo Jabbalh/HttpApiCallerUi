@@ -6,7 +6,8 @@
       dense
       class="select-method"
       dropdown-icon="expand_more"
-      @update:modelValue="updateSaveAttribute(activeRestRequest)"/>
+      @update:modelValue="updateSaveAttribute(activeRestRequest)">
+    </q-select>
     <q-separator vertical inset />
     <q-field borderless dense class="input-url">
       <SingleLineInput
@@ -58,7 +59,6 @@ export default defineComponent({
         }
       })
     };
-
 
     return {
       sendRestRequest,

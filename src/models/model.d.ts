@@ -1,4 +1,5 @@
 import {RestResponse} from "src/models/types/RestResponse";
+import {RestRequestBody} from "src/models/types/RestRequestBody";
 
 export interface RestCollection {
   id: string,
@@ -19,7 +20,7 @@ export interface RestRequest {
   isSaved: boolean,
   parameter: RestRequestParameters[],
   header: RestRequestParameters[],
-  body: string,
+  body: RestRequestBody,
   response?: RestResponse
 }
 

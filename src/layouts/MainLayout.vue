@@ -11,45 +11,42 @@
         <q-btn label="dark" @click="toogleDarkMode" />
       </q-toolbar>
     </q-header>
-    <q-footer class="panel-primary layout-border-top" style="height: 35px">
-      Footer
+    <q-footer class="panel-primary layout-border-top" style="height: 35px; display: flex;align-items: center;margin-left: 8px">
+      <span>Version 1.0.0</span>
     </q-footer>
-    <q-drawer
-      v-model="menuLeft"
-      class="layout-border-right panel-secondary"
-      :width="80"
-    >
-      <q-scroll-area class="fit">
-        <q-tabs
-          vertical
-          v-model="selectedMainTab"
-          switch-indicator
-          active-color="accent"
-          indicator-color="accent"
-          content-class="tabs-content"
-        >
-          <q-route-tab icon="bi-code" label="REST" to="/rest"  :ripple="false" content-class="tabs-side-font-bold" />
-          <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false" content-class="tabs-side-font-bold"/>
-          <q-route-tab icon="tune" label="SETTINGS" to="/settings" :ripple="false" content-class="tabs-side-font-bold"/>
-        </q-tabs>
-      </q-scroll-area>
-
-    </q-drawer>
-
     <q-page-container>
-      <RouterView
-        v-slot="{ Component }"
-        class="flex flex-1 min-w-0"
-      >
-        <Transition
-          enter-active-class="animated fadeIn"
-          leave-active-class="animated fadeOut"
-          mode="out-in" appear>
-          <component :is="Component" />
-        </Transition>
-      </RouterView>
+      <div class="row">
+        <div class="layout-border-right panel-secondary" style="width: 80px">
+          <q-scroll-area class="fit">
+            <q-tabs
+              vertical
+              v-model="selectedMainTab"
+              switch-indicator
+              active-color="accent"
+              indicator-color="accent"
+              content-class="tabs-content"
+            >
+              <q-route-tab icon="bi-code" label="REST" to="/rest"  :ripple="false" content-class="tabs-side-font-bold" />
+              <q-route-tab icon="o_timeline" label="TEST" to="/test" :ripple="false" content-class="tabs-side-font-bold"/>
+              <q-route-tab icon="tune" label="SETTINGS" to="/settings" :ripple="false" content-class="tabs-side-font-bold"/>
+            </q-tabs>
+          </q-scroll-area>
+        </div>
+        <div class="col">
+        <RouterView
+          v-slot="{ Component }"
+          class="flex flex-1 min-w-0"
+        >
+          <Transition
+            enter-active-class="animated fadeIn"
+            leave-active-class="animated fadeOut"
+            mode="out-in" appear>
+            <component :is="Component" />
+          </Transition>
+        </RouterView>
+        </div>
+      </div>
     </q-page-container>
-
   </q-layout>
 </template>
 
