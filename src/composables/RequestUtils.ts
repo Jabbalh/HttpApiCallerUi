@@ -26,7 +26,7 @@ const useRequestUtils = function() {
           request.name = x;
           r(request);
         } else {
-          r(appStore.addRestRequest(x, isSaved));
+          r(appStore.addRestRequest(x, isSaved ?? false));
         }
 
       })

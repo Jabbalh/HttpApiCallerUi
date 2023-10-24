@@ -21,7 +21,7 @@
       <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeRequest(item)" :saved="item.isSaved" />
     </q-tab>
     <div class="rest-http-onglet rest-http-onglet-action">
-      <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addRequest"/>
+      <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addNewRequest"/>
     </div>
   </q-tabs>
 </template>
@@ -45,7 +45,12 @@ export default defineComponent({
       set: (value: string) => appStore.activeRequest(value)
     });
 
+    const addNewRequest = () => {
+      addRequest();
+    }
+
     return {
+      addNewRequest,
       httpOnglets,
       closeRequest,
       addRequest
