@@ -1,4 +1,5 @@
 <template>
+  <SmartTreeViewRoot :collection="collections" />
   <div class="row">
     <q-tree
       :nodes="collections"
@@ -34,10 +35,11 @@ import {RestCollection, RestRequest} from 'src/models/model';
 import { isCollection } from 'src/composables/ActiveRequest';
 import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
 import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
+import SmartTreeViewRoot from "components/commun/TreeView/SmartTreeViewRoot.vue";
 
 export default defineComponent({
   name: 'RestCollection',
-  components: { PopinMenuDirectory, PopinMenuRequest },
+  components: {SmartTreeViewRoot, PopinMenuDirectory, PopinMenuRequest },
   setup(){
     const appStore = useAppStore();
     const collections = computed<RestCollection[]>(() => appStore.restCollection );
