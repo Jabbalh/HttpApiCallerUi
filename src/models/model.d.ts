@@ -36,6 +36,7 @@ export interface RestRequestParameters {
 
 
 export interface AppEnvironnement {
+  id: string,
   name: string,
   values: RestRequestParameters[]
 }

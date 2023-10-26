@@ -25,18 +25,55 @@
     </div>
 </template>
 <script lang="ts" setup>
+import { uid, useQuasar } from 'quasar';
 import { AppEnvironnement } from 'src/models/model';
 import { useEnvStore } from 'src/stores/EnvStore';
 import { computed } from 'vue';
+import PopinEnvironement from './PopinEnvironement.vue';
 const envStore = useEnvStore();
+const q$ = useQuasar();
 const environements = computed(() => envStore.AppEnvironnement);
-const globalEdit = () => {
-    console.log("globalEdit")
+
+
+const globalEdit = async () => {
+    const result = await openPopin(true, envStore.Global ?? {
+        name: "Global",
+        id: uid(),
+        values: []
+    });
+
+    if (result) {
+        envStore.$patch({
+            Global: result
+        });
+    }
 }
-const newEnv = () => {
-    console.log("newEnv")
+const newEnv = async () => {
+    const result = await openPopin(false)
+    if (result) {
+        envStore.addNewEnv(result)
+    }
 }
-const editEnv = (value: AppEnvironnement) => {
-    console.log("editEnv", value)
+
+const editEnv = async (value: AppEnvironnement) => {
+    const result = await openPopin(false, value)
+    if (result) {
+        envStore.editEnv(result)
+    }
+}
+
+const openPopin = (isGlobal: boolean, value?: AppEnvironnement) => {
+    return new Promise<AppEnvironnement | undefined>((resolve) => {
+        q$.dialog({
+            component: PopinEnvironement,
+            componentProps: {
+                environement: value,
+                isGlobal: isGlobal
+            }
+        }).onOk((result: AppEnvironnement) => {
+            resolve(result);
+        }).onCancel(() => resolve(undefined));
+    })
+
 }
 </script>

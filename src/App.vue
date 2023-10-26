@@ -3,26 +3,28 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {useAppStore} from 'stores/appStore';
-import {useEnvStore} from 'stores/EnvStore';
-import {useLoadDataCollection} from 'src/composables/loadLocalStorageData';
+import { defineComponent } from 'vue';
+import { useAppStore } from 'stores/appStore';
+import { useEnvStore } from 'stores/EnvStore';
+import { useLoadDataCollection } from 'src/composables/loadLocalStorageData';
 
 export default defineComponent({
   name: 'App',
-  setup(){
+  setup() {
     const appStore = useAppStore();
     const envStore = useEnvStore();
-    const { load, mockCollection, mockEnv } = useLoadDataCollection();
+    const { loadCollection, mockCollection, mockEnv, loadEnvironement } = useLoadDataCollection();
 
-    envStore.$patch(mockEnv);
 
-    if (!load()) {
+    if (!loadCollection()) {
       appStore.$patch({
         restCollection: mockCollection,
       });
     }
 
+    if (!loadEnvironement()) {
+      envStore.$patch(mockEnv);
+    }
 
   }
 });
