@@ -31,7 +31,13 @@ body {
     font-size: 14px;
     font-weight: bold;
   }
+}
 
+.truncate {
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .environnement-not-found {

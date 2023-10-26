@@ -7,8 +7,8 @@ import {LANGUAGE} from "src/models/Constantes";
 
 export interface IAppStore {
   restCollection: RestCollection[],
-  openedRestRequest: RestRequest[],
-  activeRestRequest?: RestRequest
+  openedRestRequest: (RestRequest | RestCollection)[],
+  activeRestRequest?: RestRequest | RestCollection
 }
 export const useAppStore = defineStore('app', {
   state: (): IAppStore => {
@@ -20,21 +20,28 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     activeRequest(id: string){
-      console.log('activeRequest', id);
       const request = this.openedRestRequest.find(x => x.id == id);
       if (request){
+        if (this.activeRestRequest) {
+          this.activeRestRequest.isActive = false;
+        }
+        request.isActive = true;
         this.activeRestRequest = request;
       }
     },
-    openRequest(value: RestRequest){
+    openRequest(value: RestRequest | RestCollection){
       let request = this.openedRestRequest.find(x => x.id == value.id);
       if (!request){
         request = this.cloneAndAddToOpenedRequest(value);
       }
+      if (this.activeRestRequest) {
+        this.activeRestRequest.isActive = false;
+      }
+      request.isActive = true
       this.activeRestRequest = request;
     },
     closeRequest(value: RestRequest){
-      remove(this.openedRestRequest, (x: RestRequest) => x.id == value.id);
+      remove(this.openedRestRequest, (x: RestRequest | RestCollection) => x.id == value.id);
       if (this.openedRestRequest.length > 0){
         this.activeRestRequest = this.openedRestRequest[this.openedRestRequest.length -1];
       }
@@ -44,6 +51,7 @@ export const useAppStore = defineStore('app', {
         id: uid(),
         name: value,
         isOpen: true,
+        isActive: false,
         method: 'GET',
         isSaved: isSaved ?? false,
         url: '',
@@ -63,6 +71,8 @@ export const useAppStore = defineStore('app', {
       const col: RestCollection = {
         id: uid(),
         name: value,
+        isOpen: false,
+        isActive: false,
         requests: [],
         isLocal: true,
         isSaved: true,
@@ -74,7 +84,10 @@ export const useAppStore = defineStore('app', {
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
     },
-    cloneAndAddToOpenedRequest(value: RestRequest){
+    addFolderOnCollection(value: RestCollection, parent: RestCollection){
+      parent.childs.push(value);
+    },
+    cloneAndAddToOpenedRequest(value: RestRequest | RestCollection){
       const request = cloneDeep(value);
       this.openedRestRequest.push(request);
       return request;

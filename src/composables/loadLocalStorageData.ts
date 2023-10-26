@@ -1,7 +1,7 @@
 import {uid, useQuasar} from 'quasar';
 import {IAppStore, useAppStore} from 'src/stores/appStore';
 import {useEnvStore} from 'src/stores/EnvStore';
-import {RestRequest} from 'src/models/model';
+import {RestCollection, RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
@@ -46,7 +46,7 @@ export const useLoadDataCollection = function() {
 
 function parseData(state: string){
   const data: IAppStore = JSON.parse(state);
-  const openCollection:RestRequest[] = [];
+  const openCollection:(RestRequest | RestCollection)[] = [];
   const requestUtils = useRequestUtils();
 
   for (const item of data.openedRestRequest){
@@ -67,6 +67,7 @@ function parseData(state: string){
 const mockCollection = [{
   isCollection: true,
   isLocal: true,
+  isActive: false,
   id: uid(),
   name: 'Ma collection',
   isSaved: true,
@@ -79,6 +80,7 @@ const mockCollection = [{
       url: 'https://echo.hoppscotch.io',
       isOpen: true,
       isSaved: true,
+      isActive: false,
       parameter: [],
       header: [],
       body: {
@@ -93,6 +95,7 @@ const mockCollection = [{
       method: 'POST',
       url: 'https://test.fr',
       isOpen: false,
+      isActive: false,
       isSaved: true,
       parameter: [],
       header: [],

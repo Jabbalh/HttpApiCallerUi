@@ -3,6 +3,8 @@ import {RestRequestBody} from "src/models/types/RestRequestBody";
 
 export interface RestCollection {
   id: string,
+  isOpen: boolean,
+  isActive: boolean,
   isCollection: boolean,
   name: string,
   isSaved: boolean,
@@ -18,6 +20,7 @@ export interface RestRequest {
   url: string,
   isOpen: boolean,
   isSaved: boolean,
+  isActive?: boolean,
   parameter: RestRequestParameters[],
   header: RestRequestParameters[],
   body: RestRequestBody,
