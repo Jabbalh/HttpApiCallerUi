@@ -1,5 +1,5 @@
-import {RestResponse} from "src/models/types/RestResponse";
-import {RestRequestBody} from "src/models/types/RestRequestBody";
+import { RestResponse } from "src/models/types/RestResponse";
+import { RestRequestBody } from "src/models/types/RestRequestBody";
 
 export interface RestCollection {
   id: string,
@@ -29,7 +29,7 @@ export interface RestRequestParameters {
   entry: {
     key: string,
     value: string,
-    active:boolean
+    active: boolean
   }
 }
 
@@ -37,11 +37,6 @@ export interface RestRequestParameters {
 
 export interface AppEnvironnement {
   name: string,
-  values: AppEnvitonnementValue[]
+  values: RestRequestParameters[]
 }
 
-export interface AppEnvitonnementValue {
-  key: string,
-  value: string,
-  active: boolean
-}
