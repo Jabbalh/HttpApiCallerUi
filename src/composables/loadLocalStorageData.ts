@@ -1,7 +1,7 @@
 import {uid, useQuasar} from 'quasar';
 import {IAppStore, useAppStore} from 'src/stores/appStore';
 import {useEnvStore} from 'src/stores/EnvStore';
-import {RestRequest} from 'src/models/model';
+import { RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
@@ -110,17 +110,28 @@ const mockEnv = {
     {
       name: 'DEV',
       values: [
-        { key: 'user',  value: 'toto dev',  active: true },
-        { key:'id',  value:'id dev', active: true },
-        { key: 'rootUrl',  value: 'http://',  active: true }
+        {
+          id: 1,
+          entry: { key: 'user',  value: 'toto dev',  active: true },
+        },
+          {
+            id: 2,
+              entry:{ key:'id',  value:'id dev', active: true },
+          }
       ]
     },
-    {
-      name: 'PROD',
-      values: [
-        { key: 'user',  value: 'toto prod',  active: true },
-        { key: 'rootUrl',  value: 'http://',  active: true }
-      ]
-    }
+      {
+          name: 'PROD',
+          values: [
+              {
+                  id: 1,
+                  entry: { key: 'user',  value: 'toto dev',  active: true },
+              },
+              {
+                  id: 2,
+                  entry:{ key:'id',  value:'id dev', active: true },
+              }
+          ]
+      },
   ]
 };

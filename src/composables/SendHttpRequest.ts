@@ -1,4 +1,4 @@
-import {AppEnvitonnementValue, RestRequest, RestRequestParameters} from 'src/models/model';
+import { RestRequest, RestRequestParameters} from 'src/models/model';
 import axios, {
   AxiosError,
   AxiosHeaders,
@@ -178,7 +178,7 @@ export const failRequest = (value: AxiosError): RestResponse => {
  * @param value
  * @param envs
  */
-const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => {
+const ensureBody = (value?: RestRequestBody, envs?: RestRequestParameters[]) => {
   if (value && value.language != LANGUAGE.nothing){
     const { parseEnv } = useParseEnv();
     const { isRestRequestParameters } = useTypeVerify()
@@ -197,7 +197,7 @@ const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => 
  * @param values
  * @param envs
  */
-const ensureMultiPartForm = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
+const ensureMultiPartForm = (values: RestRequestParameters[], envs?: RestRequestParameters[]) => {
   const params = new FormData();
   const { parseEnv } = useParseEnv();
   for (const item of values.filter((x => x.entry.active))){
@@ -214,7 +214,7 @@ const ensureMultiPartForm = (values: RestRequestParameters[], envs?: AppEnvitonn
  * @param values
  * @param envs
  */
-const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
+const ensureParameter = (values: RestRequestParameters[], envs?: RestRequestParameters[]) => {
   const params = new URLSearchParams();
   const { parseEnv } = useParseEnv();
   for (const item of values.filter((x => x.entry.active && x.entry.key))){
@@ -231,7 +231,7 @@ const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnemen
  * @param language
  * @param envs
  */
-const ensureHeader = (values: RestRequestParameters[], language: string, envs?: AppEnvitonnementValue[]) => {
+const ensureHeader = (values: RestRequestParameters[], language: string, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   const headers: AxiosHeaders = new AxiosHeaders();
   for (const item of values.filter((x => x.entry.active && x.entry.key))){
