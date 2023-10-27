@@ -2,18 +2,20 @@
     <q-dialog ref="dialogRef" @hide="onDialogHide">
         <q-card class="q-dialog-plugin popin_env">
             <q-card-section>
-                <h5>
+                <div class="title">
                     Modifier l'environement
-                </h5>
+                </div>
             </q-card-section>
             <q-card-section>
                 <q-input v-model="cloneEnv.name" outlined dense />
             </q-card-section>
-            <q-card-section>
+            <q-separator inset class="q-mt-md q-mb-md" />
+            <q-card-section class="parameter">
                 <RestHttpRequestParamValues v-model="cloneEnv.values" :is-header="false" @add="onAdd" @delete="onDelete"
                     @delete-all="onDeleteAll" />
             </q-card-section>
-            <q-card-actions align="right">
+            <q-separator inset class="q-mt-md q-mb-md" />
+            <q-card-actions align="right" class="row q-ma-md">
                 <q-btn color="primary" label="OK" @click="onOKClick" />
                 <q-btn color="primary" label="Cancel" @click="onDialogCancel" />
             </q-card-actions>
@@ -81,5 +83,15 @@ const onDeleteAll = () => cloneEnv.value.values = []
 .popin_env {
     width: 30vw;
     height: 40vw;
+
+}
+
+.title {
+    font-size: large;
+}
+
+.parameter {
+    position: relative;
+    height: calc(100% - 250px);
 }
 </style>
