@@ -8,7 +8,7 @@
       </div>
     </div>
     <draggable
-      style="overflow: auto; height: 100%;"
+      style="overflow: auto; height: calc(100% - 30px);"
       v-model="workingParams"
       item-key="id"
       animation="250"
