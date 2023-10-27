@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash/remove';
 import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
 import {LANGUAGE} from "src/models/Constantes";
+import RestCollection from "src/models/RestCollection";
 
 export interface IAppStore {
   restCollection: RestCollection[],
@@ -68,7 +69,7 @@ export const useAppStore = defineStore('app', {
       return request;
     },
     addCollection(value: string){
-      const col: RestCollection = {
+      const col = new RestCollection({
         id: uid(),
         name: value,
         isOpen: false,
@@ -78,13 +79,14 @@ export const useAppStore = defineStore('app', {
         isSaved: true,
         isCollection: true,
         childs: [],
-      }
+
+      });
       return col;
     },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
     },
-    addFolderOnCollection(value: RestCollection, parent: RestCollection){
+    addFolderOnCollection(value: IRestCollection, parent: IRestCollection){
       parent.childs.push(value);
     },
     cloneAndAddToOpenedRequest(value: RestRequest | RestCollection){

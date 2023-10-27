@@ -18,9 +18,9 @@
 <script lang="ts" setup>
 import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {RestCollection} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
+import RestCollection from "src/models/RestCollection";
 
 const i18n = useI18n();
 

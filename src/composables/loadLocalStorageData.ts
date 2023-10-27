@@ -1,10 +1,11 @@
 import {uid, useQuasar} from 'quasar';
 import {IAppStore, useAppStore} from 'src/stores/appStore';
 import {useEnvStore} from 'src/stores/EnvStore';
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
+import RestCollection from "src/models/RestCollection";
 
 export const useLoadDataCollection = function() {
   const q$ = useQuasar();
@@ -46,6 +47,9 @@ export const useLoadDataCollection = function() {
 
 function parseData(state: string){
   const data: IAppStore = JSON.parse(state);
+  const collections: RestCollection[] = [];
+  defineNode(data.restCollection, collections);
+  data.restCollection = collections;
   const openCollection:(RestRequest | RestCollection)[] = [];
   const requestUtils = useRequestUtils();
 
@@ -62,6 +66,15 @@ function parseData(state: string){
   }
   data.openedRestRequest = openCollection;
   return data as any;
+}
+
+function defineNode(values: IRestCollection[], result: IRestCollection[]){
+  for (const item of values) {
+    result.push(new RestCollection((item)));
+    if (item.childs && item.childs.length > 0){
+      defineNode(item.childs, result);
+    }
+  }
 }
 
 const mockCollection = [{

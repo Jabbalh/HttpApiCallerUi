@@ -1,12 +1,12 @@
 <template>
-  <SmartTreeViewRoot :collection="collections" />
+<!--  <SmartTreeViewRoot :collection="collections" />-->
   <div class="row">
     <q-tree
       :nodes="collections"
       v-model:selected="selectedKey"
       node-key="id"
       label-key="name"
-      children-key="requests"
+      children-key="nodes"
       selected-color="accent"
       default-expand-all
       class="rest-collection-tree"
@@ -31,7 +31,7 @@
 <script lang='ts'>
 import {computed, defineComponent} from 'vue';
 import {useAppStore} from 'stores/appStore';
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import { isCollection } from 'src/composables/ActiveRequest';
 import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
 import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
@@ -42,7 +42,7 @@ export default defineComponent({
   components: {SmartTreeViewRoot, PopinMenuDirectory, PopinMenuRequest },
   setup(){
     const appStore = useAppStore();
-    const collections = computed<RestCollection[]>(() => appStore.restCollection );
+    const collections = computed<IRestCollection[]>(() => appStore.restCollection );
     const openItem = (x: RestRequest) => {
       x.isOpen = true;
       appStore.openRequest(x);
