@@ -3,8 +3,8 @@ import {IRestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash/remove';
 import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
-import {LANGUAGE} from "src/models/Constantes";
-import RestCollection from "src/models/RestCollection";
+import {LANGUAGE} from 'src/models/Constantes';
+import RestCollection from 'src/models/RestCollection';
 
 export interface IAppStore {
   restCollection: IRestCollection[],
@@ -30,7 +30,7 @@ export const useAppStore = defineStore('app', {
         this.activeRestRequest = request;
       }
     },
-    openRequest(value: RestRequest | RestCollection){
+    openRequest(value: RestRequest | IRestCollection){
       let request = this.openedRestRequest.find(x => x.id == value.id);
       if (!request){
         request = this.cloneAndAddToOpenedRequest(value);
@@ -69,7 +69,7 @@ export const useAppStore = defineStore('app', {
       return request;
     },
     addCollection(value: string){
-      const col = new RestCollection({
+      return new RestCollection({
         id: uid(),
         name: value,
         isOpen: false,
@@ -81,7 +81,6 @@ export const useAppStore = defineStore('app', {
         childs: [],
 
       });
-      return col;
     },
     addRequestOnCollection(request: RestRequest, collection: RestCollection){
       collection.requests.push(request);
@@ -89,7 +88,7 @@ export const useAppStore = defineStore('app', {
     addFolderOnCollection(value: IRestCollection, parent: IRestCollection){
       parent.childs.push(value);
     },
-    cloneAndAddToOpenedRequest(value: RestRequest | RestCollection){
+    cloneAndAddToOpenedRequest(value: RestRequest | IRestCollection){
       const request = cloneDeep(value);
       this.openedRestRequest.push(request);
       return request;

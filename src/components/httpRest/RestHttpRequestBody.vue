@@ -41,14 +41,16 @@ import {computed, defineComponent} from 'vue';
 import {isRawBody, LANGUAGE, OPTIONS_LANGUAGE} from 'src/models/Constantes';
 import {useI18n} from 'vue-i18n';
 import {RestRequestBody} from 'src/models/types/RestRequestBody';
-import BodyArea from "components/httpRest/body/BodyArea.vue";
-import {useVModel} from "@vueuse/core";
-import BodyForm from "components/httpRest/body/BodyForm.vue";
+import BodyArea from 'components/httpRest/body/BodyArea.vue';
+import {useVModel} from '@vueuse/core';
+import BodyForm from 'components/httpRest/body/BodyForm.vue';
+import {useTypeVerify} from 'src/composables/TypeVerify';
 
 defineComponent({AreaInput});
 
 const appState = useAppStore();
-const currentRequest = computed(() => appState.activeRestRequest);
+const {isRestRequest} = useTypeVerify();
+const currentRequest = computed(() => isRestRequest(appState.activeRestRequest) ? appState.activeRestRequest : undefined);
 const props = withDefaults(
   defineProps<{
     modelValue: RestRequestBody

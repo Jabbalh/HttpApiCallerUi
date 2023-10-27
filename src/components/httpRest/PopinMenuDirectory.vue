@@ -20,12 +20,12 @@ import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
-import RestCollection from "src/models/RestCollection";
+import RestCollection from 'src/models/RestCollection';
 
 const i18n = useI18n();
 
 const props = defineProps({
-  folder: {
+  data: {
     type: Object as PropType<RestCollection>,
     required: true
   }
@@ -37,17 +37,17 @@ const { addRequest, addFolder } = useRequestUtils();
 
 const addRestRequest = async  () => {
   const request = await addRequest(undefined, true);
-  appStore.addRequestOnCollection(request, props.folder);
+  appStore.addRequestOnCollection(request, props.data);
   //data.value.requests.push(request);
 }
 
 const addCollection = async () => {
   const col = await addFolder();
-  appStore.addFolderOnCollection(col, props.folder);
+  appStore.addFolderOnCollection(col, props.data);
 }
 
 const editCollection = () => {
-  addFolder(props.folder)
+  addFolder(props.data)
 }
 
 </script>

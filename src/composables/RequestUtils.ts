@@ -192,8 +192,8 @@ function findParentCollectionById(collections: IRestCollection[], id: string) : 
   for (const item of collections){
     if (item.requests.some(x => x.id == id)){
       return item;
-    } else {
-      return findCollectionById(item.childs, id);
+    } else if (item.childs.length > 0){
+      return findParentCollectionById(item.childs, id);
     }
   }
   return null;

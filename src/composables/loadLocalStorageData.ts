@@ -5,7 +5,7 @@ import {IRestCollection, RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
-import RestCollection from "src/models/RestCollection";
+import RestCollection from 'src/models/RestCollection';
 
 export const useLoadDataCollection = function() {
   const q$ = useQuasar();
@@ -47,10 +47,9 @@ export const useLoadDataCollection = function() {
 
 function parseData(state: string){
   const data: IAppStore = JSON.parse(state);
-  const collections: RestCollection[] = [];
-  defineNode(data.restCollection, collections);
-  data.restCollection = collections;
-  const openCollection:(RestRequest | RestCollection)[] = [];
+
+  data.restCollection = defineNode(data.restCollection, []);
+  const openCollection:(RestRequest | IRestCollection)[] = [];
   const requestUtils = useRequestUtils();
 
   for (const item of data.openedRestRequest){
@@ -68,14 +67,23 @@ function parseData(state: string){
   return data as any;
 }
 
-function defineNode(values: IRestCollection[], result: IRestCollection[]){
+/**
+ * COnverti le JSON en Object concret
+ * @param values
+ * @param result
+ */
+function defineNode(values: IRestCollection[], result: IRestCollection[]) : IRestCollection[]{
   for (const item of values) {
     result.push(new RestCollection((item)));
     if (item.childs && item.childs.length > 0){
-      defineNode(item.childs, result);
+      const tmp = defineNode(item.childs, []);
+      item.childs.splice(0, item.childs.length);
+      item.childs.push(...tmp);
     }
   }
+  return result;
 }
+
 
 const mockCollection = [{
   isCollection: true,
