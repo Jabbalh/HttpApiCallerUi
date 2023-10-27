@@ -1,6 +1,6 @@
 import {useAppStore} from 'stores/appStore';
 import {computed} from 'vue';
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 
 /**
  * Renvois un compute sur la request active
@@ -13,7 +13,7 @@ const useActiveRequest = function() {
   }
 }
 
-const isCollection = (value: RestRequest | RestCollection) => {
+const isCollection = (value: RestRequest | IRestCollection) => {
   return 'isCollection' in value;
 }
 

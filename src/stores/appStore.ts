@@ -7,9 +7,9 @@ import {LANGUAGE} from "src/models/Constantes";
 import RestCollection from "src/models/RestCollection";
 
 export interface IAppStore {
-  restCollection: RestCollection[],
-  openedRestRequest: (RestRequest | RestCollection)[],
-  activeRestRequest?: RestRequest | RestCollection
+  restCollection: IRestCollection[],
+  openedRestRequest: (RestRequest | IRestCollection)[],
+  activeRestRequest?: RestRequest | IRestCollection
 }
 export const useAppStore = defineStore('app', {
   state: (): IAppStore => {
@@ -42,7 +42,7 @@ export const useAppStore = defineStore('app', {
       this.activeRestRequest = request;
     },
     closeRequest(value: RestRequest){
-      remove(this.openedRestRequest, (x: RestRequest | RestCollection) => x.id == value.id);
+      remove(this.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == value.id);
       if (this.openedRestRequest.length > 0){
         this.activeRestRequest = this.openedRestRequest[this.openedRestRequest.length -1];
       }

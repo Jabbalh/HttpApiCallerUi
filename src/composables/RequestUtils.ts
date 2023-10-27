@@ -133,11 +133,15 @@ function useSaveRestRequest(){
     });
   };
 
+  const isRestRequest = function (value: any): value is RestRequest {
+    return !('isCollection' in value);
+  }
+
   const saveRequest = async (value?: RestRequest): Promise<void> => {
     const appStore = useAppStore();
     const activeRequest = useActiveRequest()
     const request = value ?? activeRequest.activeRequest.value;
-    if (request && !request.isSaved){
+    if (request && !request.isSaved && isRestRequest(request)){
       const result = await save(request, appStore.restCollection);
       if (E.isRight(result)){
         if (result.right){
