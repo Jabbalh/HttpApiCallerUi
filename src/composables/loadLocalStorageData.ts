@@ -1,10 +1,11 @@
 import {uid, useQuasar} from 'quasar';
 import {IAppStore, useAppStore} from 'src/stores/appStore';
 import {useEnvStore} from 'src/stores/EnvStore';
-import {RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
+import RestCollection from "src/models/RestCollection";
 
 export const useLoadDataCollection = function() {
   const q$ = useQuasar();
@@ -46,7 +47,10 @@ export const useLoadDataCollection = function() {
 
 function parseData(state: string){
   const data: IAppStore = JSON.parse(state);
-  const openCollection:RestRequest[] = [];
+  const collections: RestCollection[] = [];
+  defineNode(data.restCollection, collections);
+  data.restCollection = collections;
+  const openCollection:(RestRequest | RestCollection)[] = [];
   const requestUtils = useRequestUtils();
 
   for (const item of data.openedRestRequest){
@@ -64,9 +68,19 @@ function parseData(state: string){
   return data as any;
 }
 
+function defineNode(values: IRestCollection[], result: IRestCollection[]){
+  for (const item of values) {
+    result.push(new RestCollection((item)));
+    if (item.childs && item.childs.length > 0){
+      defineNode(item.childs, result);
+    }
+  }
+}
+
 const mockCollection = [{
   isCollection: true,
   isLocal: true,
+  isActive: false,
   id: uid(),
   name: 'Ma collection',
   isSaved: true,
@@ -79,6 +93,7 @@ const mockCollection = [{
       url: 'https://echo.hoppscotch.io',
       isOpen: true,
       isSaved: true,
+      isActive: false,
       parameter: [],
       header: [],
       body: {
@@ -93,6 +108,7 @@ const mockCollection = [{
       method: 'POST',
       url: 'https://test.fr',
       isOpen: false,
+      isActive: false,
       isSaved: true,
       parameter: [],
       header: [],

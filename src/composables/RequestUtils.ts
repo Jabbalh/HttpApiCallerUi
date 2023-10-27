@@ -1,7 +1,7 @@
 import {useI18n} from 'vue-i18n';
 import {useQuasar} from 'quasar';
 import {useAppStore} from 'stores/appStore';
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import useActiveRequest from 'src/composables/ActiveRequest';
 import PopinSaveRequest from 'components/collection/PopinSaveRequest.vue';
 import * as E from 'fp-ts/Either';
@@ -26,15 +26,15 @@ const useRequestUtils = function() {
           request.name = x;
           r(request);
         } else {
-          r(appStore.addRestRequest(x, isSaved));
+          r(appStore.addRestRequest(x, isSaved ?? false));
         }
 
       })
     })
   }
 
-  const addFolder = (collection?: RestCollection) => {
-    return new Promise<RestCollection>(r => {
+  const addFolder = (collection?: IRestCollection) => {
+    return new Promise<IRestCollection>(r => {
       q$.dialog({
         title:i18n.t('REST.ADD_FOLDER_TITLE'),
         prompt: {
@@ -98,7 +98,7 @@ function useCloseRequest() {
 function useSaveRestRequest(){
   const q$ = useQuasar();
   const i18n$ = useI18n();
-  const save = (value: RestRequest, collection: RestCollection[]) => {
+  const save = (value: RestRequest, collection: IRestCollection[]) => {
     return new Promise<E.Either<boolean, boolean>>(r => {
       const parent = findParentCollectionById(collection, value.id);
       if (parent){
@@ -133,11 +133,15 @@ function useSaveRestRequest(){
     });
   };
 
+  const isRestRequest = function (value: any): value is RestRequest {
+    return !('isCollection' in value);
+  }
+
   const saveRequest = async (value?: RestRequest): Promise<void> => {
     const appStore = useAppStore();
     const activeRequest = useActiveRequest()
     const request = value ?? activeRequest.activeRequest.value;
-    if (request && !request.isSaved){
+    if (request && !request.isSaved && isRestRequest(request)){
       const result = await save(request, appStore.restCollection);
       if (E.isRight(result)){
         if (result.right){
@@ -166,7 +170,7 @@ function useSaveRestRequest(){
  * @param collections
  * @param id
  */
-export function findCollectionById(collections: RestCollection[], id: string) : RestCollection | null{
+export function findCollectionById(collections: IRestCollection[], id: string) : IRestCollection | null{
   // noinspection LoopStatementThatDoesntLoopJS
   for (const item of collections){
     if (item.id == id){
@@ -183,7 +187,7 @@ export function findCollectionById(collections: RestCollection[], id: string) : 
  * @param collections
  * @param id
  */
-function findParentCollectionById(collections: RestCollection[], id: string) : RestCollection | null{
+function findParentCollectionById(collections: IRestCollection[], id: string) : IRestCollection | null{
   // noinspection LoopStatementThatDoesntLoopJS
   for (const item of collections){
     if (item.requests.some(x => x.id == id)){
@@ -200,7 +204,7 @@ function findParentCollectionById(collections: RestCollection[], id: string) : R
  * @param collections
  * @param id
  */
-function findRequestById(collections: RestCollection[], id: string): RestRequest | null {
+function findRequestById(collections: IRestCollection[], id: string): RestRequest | null {
   // noinspection LoopStatementThatDoesntLoopJS
   for (const item of collections){
     const request = item.requests.find(x => x.id == id);

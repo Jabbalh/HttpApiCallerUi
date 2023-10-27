@@ -18,37 +18,36 @@
 <script lang="ts" setup>
 import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {RestCollection} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
-import {useVModel} from "@vueuse/core";
+import RestCollection from "src/models/RestCollection";
 
 const i18n = useI18n();
 
 const props = defineProps({
-  modelValue: {
+  folder: {
     type: Object as PropType<RestCollection>,
     required: true
   }
 });
-const emit = defineEmits(['update:modelValue']);
-const data = useVModel(props, 'modelValue', emit );
+// const emit = defineEmits(['update:modelValue']);
+// const data = useVModel(props, 'modelValue', emit );
 const appStore = useAppStore();
 const { addRequest, addFolder } = useRequestUtils();
 
 const addRestRequest = async  () => {
   const request = await addRequest(undefined, true);
-  appStore.addRequestOnCollection(request, props.modelValue);
+  appStore.addRequestOnCollection(request, props.folder);
   //data.value.requests.push(request);
 }
 
 const addCollection = async () => {
   const col = await addFolder();
-  data.value.childs.push(col);
+  appStore.addFolderOnCollection(col, props.folder);
 }
 
 const editCollection = () => {
-  addFolder(data.value)
+  addFolder(props.folder)
 }
 
 </script>

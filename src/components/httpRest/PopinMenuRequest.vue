@@ -15,13 +15,13 @@
 <script lang="ts" setup>
   import {useI18n} from 'vue-i18n';
   import {PropType} from 'vue/dist/vue';
-  import {RestRequest} from 'src/models/model';
+  import {RestCollection, RestRequest} from 'src/models/model';
   import {useAppStore} from 'stores/appStore';
   import remove from 'lodash.remove';
   import useRequestUtils from 'src/composables/RequestUtils';
 
   const props = defineProps({
-    modelValue: {
+    request: {
       type: Object as PropType<RestRequest>,
       required: true
     }
@@ -31,15 +31,15 @@
   const appStore = useAppStore();
   const { findParentCollectionById, addRequest } = useRequestUtils();
   const editRequest = () => {
-    addRequest(props.modelValue);
+    addRequest(props.request);
   }
 
   const deleteRequest = () => {
-    const parent = findParentCollectionById(appStore.restCollection, props.modelValue.id);
+    const parent = findParentCollectionById(appStore.restCollection, props.request.id);
     if (parent){
-      remove(parent.requests, (x: RestRequest) => x.id == props.modelValue.id);
+      remove(parent.requests, (x: RestRequest) => x.id == props.request.id);
     }
-    remove(appStore.openedRestRequest, (x: RestRequest) => x.id == props.modelValue.id);
+    remove(appStore.openedRestRequest, (x: RestRequest | RestCollection) => x.id == props.request.id);
   }
 
 

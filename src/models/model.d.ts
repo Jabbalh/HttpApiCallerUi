@@ -1,15 +1,19 @@
 import {RestResponse} from "src/models/types/RestResponse";
 import {RestRequestBody} from "src/models/types/RestRequestBody";
 
-export interface RestCollection {
+export interface IRestCollection {
   id: string,
+  isOpen: boolean,
+  isActive: boolean,
   isCollection: boolean,
   name: string,
   isSaved: boolean,
-  childs: RestCollection[],
+  childs: IRestCollection[],
   isLocal: boolean
   requests: RestRequest[]
 }
+
+
 
 export interface RestRequest {
   id: string,
@@ -18,6 +22,7 @@ export interface RestRequest {
   url: string,
   isOpen: boolean,
   isSaved: boolean,
+  isActive?: boolean,
   parameter: RestRequestParameters[],
   header: RestRequestParameters[],
   body: RestRequestBody,
