@@ -1,8 +1,8 @@
-import {defineStore} from "pinia";
-import {AppEnvironnement} from "src/models/model";
+import {defineStore} from 'pinia';
+import {AppEnvironnement} from 'src/models/model';
 
 export interface IEnvStore {
-  Global: AppEnvironnement[];
+  Global: AppEnvironnement;
   AppEnvironnement: AppEnvironnement[];
   Current: AppEnvironnement | null;
 }
@@ -10,7 +10,10 @@ export interface IEnvStore {
 export const useEnvStore = defineStore('env', {
   state: (): IEnvStore => {
     return {
-      Global: [],
+      Global: {
+        name: 'Global',
+        values: []
+      },
       AppEnvironnement: [],
       Current: null
     }

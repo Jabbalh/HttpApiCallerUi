@@ -146,5 +146,11 @@ const mockEnv = {
         { key: 'rootUrl',  value: 'http://',  active: true }
       ]
     }
-  ]
+  ],
+  Global: {
+    name: 'Global',
+    values: [
+      { key: 'superuser',  value: 'Nicolas',  active: true },
+    ]
+  }
 };
