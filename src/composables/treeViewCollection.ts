@@ -11,6 +11,7 @@ export type CollectionTreeView = (RestRequest | IRestCollection) & {
 const useTreeViewCollection = () => {
   const {isRestCollection} = useTypeVerify()
   const transform = (values: (IRestCollection | RestRequest)[]) => {
+    console.log("transform");
     const result: CollectionTreeView[] = [];
     for (const item of values){
       const tmp: CollectionTreeView = {

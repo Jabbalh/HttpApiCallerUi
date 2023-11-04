@@ -82,7 +82,7 @@ export const useAppStore = defineStore('app', {
 
       });
     },
-    addRequestOnCollection(request: RestRequest, collection: RestCollection){
+    addRequestOnCollection(request: RestRequest, collection: IRestCollection){
       collection.requests.push(request);
     },
     addFolderOnCollection(value: IRestCollection, parent: IRestCollection){
