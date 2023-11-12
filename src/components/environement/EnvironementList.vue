@@ -14,7 +14,7 @@
             <q-item clickable v-for="(item, index) in environements" :key="index" @click="editEnv(item)">
 
                 <q-item-section avatar>
-                    <q-icon color="primary" name="label_important" />
+                    <q-icon color="primary" name="list" />
                 </q-item-section>
 
                 <q-item-section>{{ item.name }}</q-item-section>
@@ -24,6 +24,7 @@
         </q-list>
     </div>
 </template>
+
 <script lang="ts" setup>
 import { uid, useQuasar } from 'quasar';
 import { AppEnvironnement } from 'src/models/model';
