@@ -4,7 +4,6 @@
       <div
         class="single-line"
         ref="docResponse"
-
         @focusin="onFocus"
         style="height: auto;width: 100%; background-color: transparent"  />
     </div>

@@ -64,6 +64,7 @@ function parseData(state: string){
     }
   }
   data.openedRestRequest = openCollection;
+  console.log(data);
   return data as any;
 }
 

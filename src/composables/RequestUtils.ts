@@ -24,6 +24,7 @@ const useRequestUtils = function() {
       }).onOk((x: string) => {
         if (request){
           request.name = x;
+          console.log("request", request);
           r(request);
         } else {
           r(appStore.addRestRequest(x, isSaved ?? false));

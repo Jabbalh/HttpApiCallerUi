@@ -1,7 +1,7 @@
-import {Ref} from "vue";
-import {AppEnvironnement} from "src/models/model";
-import {Decoration, MatchDecorator, ViewPlugin} from "@codemirror/view";
-import {ENV_REGEXT} from "src/composables/parseEnv";
+import {Ref} from 'vue';
+import {AppEnvironnement} from 'src/models/model';
+import {Decoration, MatchDecorator, ViewPlugin} from '@codemirror/view';
+import {ENV_REGEXT} from 'src/composables/parseEnv';
 
 export const environmentHighlightStyle = (
   aggregateEnvs: Ref<AppEnvironnement[]>

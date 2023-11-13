@@ -1,12 +1,12 @@
 <template>
-<!--  <SmartTreeViewRoot :collection="collections" />-->
   <div class="row">
     <q-tree
+      no-transition
       :nodes="collections"
       v-model:selected="selectedKey"
       node-key="id"
       label-key="name"
-      children-key="children"
+      children-key="nodes"
       selected-color="accent"
       default-expand-all
       class="rest-collection-tree"
@@ -15,14 +15,12 @@
         <SmartTreeBody :node="prop.node" />
       </template>
     </q-tree>
-
   </div>
 
 </template>
 <script lang='ts'>
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import {useAppStore} from 'stores/appStore';
-import useTreeViewCollection from 'src/composables/treeViewCollection';
 import SmartTreeBody from 'components/commun/TreeView/SmartTreeBody.vue';
 
 export default defineComponent({
@@ -30,10 +28,7 @@ export default defineComponent({
   components: {SmartTreeBody },
   setup(){
     const appStore = useAppStore();
-    const {transform} = useTreeViewCollection();
-
-    const collections = computed(() => transform(appStore.restCollection) );
-
+    const collections = ref(appStore.restCollection);
     const selectedKey = computed({
       get: () => appStore.activeRestRequest?.id ?? '',
       set: (_value: string) => console.log('selectedKey', _value)

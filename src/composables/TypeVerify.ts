@@ -1,4 +1,4 @@
-import {IRestCollection, RestRequest, RestRequestParameters} from "src/models/model";
+import {IRestCollection, RestRequest, RestRequestParameters} from 'src/models/model';
 
 /**
  * For verify type

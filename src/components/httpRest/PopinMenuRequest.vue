@@ -28,7 +28,7 @@
     }
   });
 
-  const emits = defineEmits(["update:modelValue"]);
+  const emits = defineEmits<{ (e: 'update:modelValue', value: RestRequest): void }>();
 
   const localModel = computed({
     get : () => props.modelValue,
@@ -40,14 +40,15 @@
   const { findParentCollectionById, addRequest } = useRequestUtils();
   const editRequest = () => {
     addRequest(localModel.value);
+    emits('update:modelValue', localModel.value);
   }
 
   const deleteRequest = () => {
-    const parent = findParentCollectionById(appStore.restCollection, props.modelValue.id);
+    const parent = findParentCollectionById(appStore.restCollection, localModel.value.id);
     if (parent){
-      remove(parent.requests, (x: RestRequest) => x.id == props.modelValue.id);
+      remove(parent.requests, (x: RestRequest) => x.id == localModel.value.id);
     }
-    remove(appStore.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == props.modelValue.id);
+    remove(appStore.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == localModel.value.id);
   }
 
 

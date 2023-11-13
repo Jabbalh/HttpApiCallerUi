@@ -6,9 +6,9 @@
   <q-icon name="more_vert" class="rest-collection-tree-node-menu" >
     <q-popup-proxy >
       <PopinMenuDirectory :data="node" v-if="isRestCollection(node)" />
-      <PopinMenuRequest v-model="node" v-else />
+      <PopinMenuRequest v-model="localModel" v-else />
 <!--      <component-->
-<!--        :is="isRestCollection(node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"-->
+<!--        :is="componentMenu"-->
 <!--        :data="node"/>-->
     </q-popup-proxy>
   </q-icon>
@@ -19,18 +19,18 @@
   import {useTypeVerify} from 'src/composables/TypeVerify';
   import {IRestCollection, RestRequest} from 'src/models/model';
   import {useAppStore} from 'stores/appStore';
-  import {defineComponent} from "vue";
+  import {computed, defineComponent} from "vue";
   import PopinMenuDirectory from "components/httpRest/PopinMenuDirectory.vue";
   import PopinMenuRequest from "components/httpRest/PopinMenuRequest.vue";
-
   defineComponent({PopinMenuDirectory, PopinMenuRequest});
-
-  defineProps<{
-    node: CollectionTreeView
-  }>();
+  const props = defineProps<{ node: CollectionTreeView }>();
+  const emits = defineEmits(['update:modelValue']);
+  const localModel = computed({
+    get: () => props.node,
+    set: (value: CollectionTreeView) => emits('update:modelValue', value)
+  });
 
   const appStore = useAppStore();
-
   const {isRestRequest, isRestCollection} = useTypeVerify();
 
   const openItem = (x: RestRequest | IRestCollection) => {
@@ -38,5 +38,6 @@
     appStore.openRequest(x);
   };
 
+  const componentMenu = (node: CollectionTreeView) => isRestCollection(node) ? 'PopinMenuDirectory' : 'PopinMenuRequest';
 
 </script>
