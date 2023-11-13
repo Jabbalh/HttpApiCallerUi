@@ -30,6 +30,8 @@ const dataModel = useVModel(props, 'modelValue', emit);
 
   .border-top {
     border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
     border-color: var(--q-panel-border);
   }
 
