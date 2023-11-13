@@ -19,36 +19,30 @@
   import {useAppStore} from 'stores/appStore';
   import remove from 'lodash.remove';
   import useRequestUtils from 'src/composables/RequestUtils';
-  import {computed} from "vue";
 
   const props = defineProps({
-    modelValue: {
+    data: {
       type: Object as PropType<RestRequest>,
       required: true
     }
   });
 
-  const emits = defineEmits<{ (e: 'update:modelValue', value: RestRequest): void }>();
-
-  const localModel = computed({
-    get : () => props.modelValue,
-    set: (value: RestRequest) => emits("update:modelValue", value)
-  });
+  const emits = defineEmits<{ (e: 'updateNode', value: RestRequest): void }>();
 
   const i18n = useI18n();
   const appStore = useAppStore();
   const { findParentCollectionById, addRequest } = useRequestUtils();
-  const editRequest = () => {
-    addRequest(localModel.value);
-    emits('update:modelValue', localModel.value);
+  const editRequest = async () => {
+    await addRequest(props.data);
+    emits('updateNode', props.data);
   }
 
   const deleteRequest = () => {
-    const parent = findParentCollectionById(appStore.restCollection, localModel.value.id);
+    const parent = findParentCollectionById(appStore.restCollection, props.data.id);
     if (parent){
-      remove(parent.requests, (x: RestRequest) => x.id == localModel.value.id);
+      remove(parent.requests, (x: RestRequest) => x.id == props.data.id);
     }
-    remove(appStore.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == localModel.value.id);
+    remove(appStore.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == props.data.id);
   }
 
 

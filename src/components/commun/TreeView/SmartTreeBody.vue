@@ -5,11 +5,8 @@
   </div>
   <q-icon name="more_vert" class="rest-collection-tree-node-menu" >
     <q-popup-proxy >
-      <PopinMenuDirectory :data="node" v-if="isRestCollection(node)" />
-      <PopinMenuRequest v-model="localModel" v-else />
-<!--      <component-->
-<!--        :is="componentMenu"-->
-<!--        :data="node"/>-->
+      <PopinMenuDirectory :data="node" v-if="isRestCollection(node)" @updateNode="updateNode" />
+      <PopinMenuRequest :data="node" v-else @updateNode="updateNode"/>
     </q-popup-proxy>
   </q-icon>
 
@@ -19,17 +16,12 @@
   import {useTypeVerify} from 'src/composables/TypeVerify';
   import {IRestCollection, RestRequest} from 'src/models/model';
   import {useAppStore} from 'stores/appStore';
-  import {computed, defineComponent} from "vue";
-  import PopinMenuDirectory from "components/httpRest/PopinMenuDirectory.vue";
-  import PopinMenuRequest from "components/httpRest/PopinMenuRequest.vue";
-  defineComponent({PopinMenuDirectory, PopinMenuRequest});
-  const props = defineProps<{ node: CollectionTreeView }>();
-  const emits = defineEmits(['update:modelValue']);
-  const localModel = computed({
-    get: () => props.node,
-    set: (value: CollectionTreeView) => emits('update:modelValue', value)
-  });
+  import {defineComponent} from 'vue';
+  import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
+  import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
 
+  defineComponent({PopinMenuDirectory, PopinMenuRequest});
+  defineProps<{ node: CollectionTreeView }>();
   const appStore = useAppStore();
   const {isRestRequest, isRestCollection} = useTypeVerify();
 
@@ -38,6 +30,12 @@
     appStore.openRequest(x);
   };
 
-  const componentMenu = (node: CollectionTreeView) => isRestCollection(node) ? 'PopinMenuDirectory' : 'PopinMenuRequest';
+  const updateNode = (value: {id: string, name: string}) => {
+    const req = appStore.openedRestRequest.find(x => x.id == value.id);
+    if (req){
+      req.name = value.name;
+    }
+  }
+
 
 </script>
