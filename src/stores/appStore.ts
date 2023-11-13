@@ -5,6 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
 import {LANGUAGE} from 'src/models/Constantes';
 import RestCollection from 'src/models/RestCollection';
+import {defaultAuth} from "src/helpers/DefaultTypeUtils";
 
 export interface IAppStore {
   restCollection: IRestCollection[],
@@ -62,6 +63,7 @@ export const useAppStore = defineStore('app', {
           language: LANGUAGE.nothing,
           body: ''
         },
+        authorization: defaultAuth,
         parameter: [],
         header: [],
         response: undefined
@@ -78,6 +80,7 @@ export const useAppStore = defineStore('app', {
         isActive: false,
         requests: [],
         isLocal: true,
+        authorization: defaultAuth,
         isSaved: true,
         isCollection: true,
         childs: [],

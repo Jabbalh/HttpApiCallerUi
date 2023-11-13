@@ -33,7 +33,8 @@ export default {
     PARAM_REQ_PARAM_KEY: 'Paramètre',
     PARAM_REQ_PARAM_VALUE: 'Valeur',
     POPIN_SAVE_REQUEST_TITLE: 'Liste de mes collections',
-    PARAM_BODY_CONTENU_TITLE: 'Type de contenu'
+    PARAM_BODY_CONTENU_TITLE: 'Type de contenu',
+    PARAM_AUTH_TITLE: 'Type d\'authorisation'
   }
 
 }

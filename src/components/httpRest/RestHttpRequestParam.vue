@@ -44,7 +44,7 @@
       />
     </q-tab-panel>
     <q-tab-panel name="AUTH">
-      Auth
+      <RestHttpRequestAuth v-model="activeRestRequest.authorization" />
     </q-tab-panel>
     <q-tab-panel name="PREREQUEST">
       Prerequest
@@ -63,19 +63,20 @@ import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParam
 import RestHttpRequestBody from 'components/httpRest/RestHttpRequestBody.vue';
 import {useAppStore} from 'stores/appStore';
 import maxBy from 'lodash/maxBy';
-import {RestRequestParameters} from 'src/models/model';
+import {RestRequest, RestRequestParameters} from 'src/models/model';
 import remove from 'lodash/remove';
+import RestHttpRequestAuth from 'components/httpRest/RestHttpRequestAuth.vue';
 
 export default defineComponent({
   name: 'RestHttpRequestParam',
-  components: { RestHttpRequestParamValues,RestHttpRequestBody  },
+  components: {RestHttpRequestAuth, RestHttpRequestParamValues,RestHttpRequestBody  },
   setup(){
     const appState = useAppStore();
     return {
       restParamOnglet: ref('PARAMETERS'),
       i18n: useI18n(),
       appState,
-      activeRestRequest: computed(() => appState.activeRestRequest)
+      activeRestRequest: computed(() => appState.activeRestRequest as RestRequest)
     }
   },
   methods: {

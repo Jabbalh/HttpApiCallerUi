@@ -3,6 +3,7 @@ import useTheme from 'src/composables/Themes';
 import {
   EditorView,
   keymap,
+  placeholder as placeholderExt,
   ViewPlugin,
   ViewUpdate
 } from '@codemirror/view';
@@ -32,7 +33,8 @@ useCodeMirror(
   editable: boolean,
   singleLine: boolean,
   envs: Ref<AppEnvironnement[]>,
-  language: Ref<string>
+  language: Ref<string>,
+  placeholder: string
 ) {
 
   // Thème managment
@@ -75,6 +77,7 @@ useCodeMirror(
     const baseSetup = singleLine ? basicSetupSingleLine : basicSetupArea;
     const extensions = [
       ...baseSetup,
+      placeholderExt(placeholder),
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
       compartment.of([

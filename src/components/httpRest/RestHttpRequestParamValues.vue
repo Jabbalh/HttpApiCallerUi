@@ -27,7 +27,7 @@
             <SingleLineInput
               v-model="element.entry.key"
               @update:modelValue="onUpdate"
-              :place-holder="libelleKey(element)"
+              :placeholder="libelleKey(element)"
               :suggestion-source="baseHeaders"
               :editable="true" />
           </div>
@@ -35,7 +35,7 @@
             <SingleLineInput
               v-model="element.entry.value"
               @update:modelValue="onUpdate"
-              :place-holder="libelleValue(element)"
+              :placeholder="libelleValue(element)"
               :editable="true" />
           </div>
           <div class="rest-parametre-width-icon">

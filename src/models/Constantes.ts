@@ -35,3 +35,20 @@ export const isRawBody = (value: string) => {
     || value == LANGUAGE.textPlain
     || value == LANGUAGE.textHtml
 };
+
+export enum KEY_AUTH {
+  NONE,
+  BASIC,
+  BEARER,
+  OAUTH2,
+  APIKEY
+
+}
+
+export const OPTIONS_AUTH = [
+  { value: KEY_AUTH.NONE, label:'None' },
+  { value: KEY_AUTH.BASIC, label:'Basic Auth' },
+  { value: KEY_AUTH.BEARER, label:'Bearer Token' },
+  { value: KEY_AUTH.OAUTH2, label:'OAuth 2.0' },
+  { value: KEY_AUTH.APIKEY, label:'API Key' }
+]

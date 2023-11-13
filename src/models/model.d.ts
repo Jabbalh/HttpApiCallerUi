@@ -1,5 +1,6 @@
 import {RestResponse} from "src/models/types/RestResponse";
 import {RestRequestBody} from "src/models/types/RestRequestBody";
+import {KEY_AUTH} from "src/models/Constantes";
 
 export interface IRestCollection {
   id: string,
@@ -8,6 +9,7 @@ export interface IRestCollection {
   isCollection: boolean,
   name: string,
   isSaved: boolean,
+  authorization: RestRequestAuth,
   childs: IRestCollection[],
   isLocal: boolean
   requests: RestRequest[]
@@ -25,6 +27,7 @@ export interface RestRequest {
   isActive?: boolean,
   parameter: RestRequestParameters[],
   header: RestRequestParameters[],
+  authorization: RestRequestAuth,
   body: RestRequestBody,
   response?: RestResponse
 }
@@ -38,8 +41,19 @@ export interface RestRequestParameters {
   }
 }
 
-
-
+export interface RestRequestAuth
+{
+  type: KEY_AUTH,
+  token: string,
+  key: string,
+  value: string, passBy: string
+  openIdConfig: string,
+  authorizationUrl: string,
+  accessTokenUrl: string,
+  clientId: string,
+  clientSecret: string,
+  scope: string
+}
 export interface AppEnvironnement {
   name: string,
   values: AppEnvitonnementValue[]
