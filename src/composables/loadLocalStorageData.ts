@@ -1,10 +1,11 @@
 import {uid, useQuasar} from 'quasar';
 import {IAppStore, useAppStore} from 'src/stores/appStore';
 import {useEnvStore} from 'src/stores/EnvStore';
-import {RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
+import RestCollection from 'src/models/RestCollection';
 
 export const useLoadDataCollection = function() {
   const q$ = useQuasar();
@@ -46,7 +47,9 @@ export const useLoadDataCollection = function() {
 
 function parseData(state: string){
   const data: IAppStore = JSON.parse(state);
-  const openCollection:RestRequest[] = [];
+
+  data.restCollection = defineNode(data.restCollection, []);
+  const openCollection:(RestRequest | IRestCollection)[] = [];
   const requestUtils = useRequestUtils();
 
   for (const item of data.openedRestRequest){
@@ -61,12 +64,32 @@ function parseData(state: string){
     }
   }
   data.openedRestRequest = openCollection;
+  console.log(data);
   return data as any;
 }
+
+/**
+ * COnverti le JSON en Object concret
+ * @param values
+ * @param result
+ */
+function defineNode(values: IRestCollection[], result: IRestCollection[]) : IRestCollection[]{
+  for (const item of values) {
+    result.push(new RestCollection((item)));
+    if (item.childs && item.childs.length > 0){
+      const tmp = defineNode(item.childs, []);
+      item.childs.splice(0, item.childs.length);
+      item.childs.push(...tmp);
+    }
+  }
+  return result;
+}
+
 
 const mockCollection = [{
   isCollection: true,
   isLocal: true,
+  isActive: false,
   id: uid(),
   name: 'Ma collection',
   isSaved: true,
@@ -79,6 +102,7 @@ const mockCollection = [{
       url: 'https://echo.hoppscotch.io',
       isOpen: true,
       isSaved: true,
+      isActive: false,
       parameter: [],
       header: [],
       body: {
@@ -93,6 +117,7 @@ const mockCollection = [{
       method: 'POST',
       url: 'https://test.fr',
       isOpen: false,
+      isActive: false,
       isSaved: true,
       parameter: [],
       header: [],
@@ -122,5 +147,11 @@ const mockEnv = {
         { key: 'rootUrl',  value: 'http://',  active: true }
       ]
     }
-  ]
+  ],
+  Global: {
+    name: 'Global',
+    values: [
+      { key: 'superuser',  value: 'Nicolas',  active: true },
+    ]
+  }
 };

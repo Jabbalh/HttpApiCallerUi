@@ -1,66 +1,42 @@
 <template>
   <div class="row">
     <q-tree
+      no-transition
       :nodes="collections"
       v-model:selected="selectedKey"
       node-key="id"
       label-key="name"
-      children-key="requests"
+      children-key="nodes"
       selected-color="accent"
       default-expand-all
       class="rest-collection-tree"
       >
       <template v-slot:default-header="prop" >
-        <div @click="openItem(prop.node)" class="rest-collection-tree-node wrap-word">
-          {{prop.node.name}}
-        </div>
-        <q-icon name="more_vert" class="rest-collection-tree-node-menu" @click="openNodeMenu">
-          <q-popup-proxy >
-            <component
-              :is="isCollection(prop.node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"
-              v-model="prop.node"/>
-          </q-popup-proxy>
-        </q-icon>
+        <SmartTreeBody :node="prop.node" />
       </template>
     </q-tree>
-
   </div>
 
 </template>
 <script lang='ts'>
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import {useAppStore} from 'stores/appStore';
-import {RestCollection, RestRequest} from 'src/models/model';
-import { isCollection } from 'src/composables/ActiveRequest';
-import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
-import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
+import SmartTreeBody from 'components/commun/TreeView/SmartTreeBody.vue';
 
 export default defineComponent({
   name: 'RestCollection',
-  components: { PopinMenuDirectory, PopinMenuRequest },
+  components: {SmartTreeBody },
   setup(){
     const appStore = useAppStore();
-    const collections = computed<RestCollection[]>(() => appStore.restCollection );
-    const openItem = (x: RestRequest) => {
-      x.isOpen = true;
-      appStore.openRequest(x);
-    };
-
+    const collections = ref(appStore.restCollection);
     const selectedKey = computed({
       get: () => appStore.activeRestRequest?.id ?? '',
       set: (_value: string) => console.log('selectedKey', _value)
     });
 
-    const openNodeMenu = () => console.log('open menu node');
-
-
     return {
       collections,
-      selectedKey,
-      open,
-      openItem,
-      openNodeMenu,
-      isCollection
+      selectedKey
     }
   }
 });

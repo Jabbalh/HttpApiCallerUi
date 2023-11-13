@@ -6,8 +6,8 @@
 </template>
 <script lang="ts" setup>
 import {computed, ref, watch} from 'vue';
-import { useCodeMirror } from "src/composables/codeMirror";
-import {useEnvStore} from "stores/EnvStore";
+import { useCodeMirror } from 'src/composables/codeMirror';
+import useParseEnv from 'src/composables/parseEnv';
 
 const props = defineProps<{
   modelValue: string,
@@ -15,8 +15,8 @@ const props = defineProps<{
   language: string
 }>();
 
-const appEnv = useEnvStore();
-const envs = computed(() => appEnv.Current);
+const { computedEnv } = useParseEnv();
+const envs = computed(() => computedEnv());
 const emit = defineEmits(['update:modelValue']);
 const value = computed({
   get: () => props.modelValue,

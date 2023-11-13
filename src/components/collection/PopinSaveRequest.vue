@@ -16,7 +16,7 @@
           v-model:selected="selectedKey"
           node-key="id"
           label-key="name"
-          children-key="requests"
+          children-key="nodes"
           selected-color="accent"
           default-expand-all
           class=""
@@ -38,12 +38,13 @@
 </template>
 <script lang="ts" setup>
 import { useDialogPluginComponent } from 'quasar'
-import {RestCollection, RestRequest} from "src/models/model";
-import {ref} from "vue";
-import {useI18n} from "vue-i18n";
+import {IRestCollection, RestRequest} from 'src/models/model';
+import {ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import RestCollection from 'src/models/RestCollection';
 
 const props = defineProps<{
-  collection: RestCollection[],
+  collection: IRestCollection[],
   request: RestRequest
 }>();
 
@@ -73,31 +74,32 @@ function onOKClick (value: string, name: string) {
 
 const selectedKey = ref('');
 
-const addChild = (values: RestCollection[]): RestCollection[] => {
-  return values.map(x => {
-    return {
+const addChild = (values: IRestCollection[]): IRestCollection[] => {
+  return values.map(x => new RestCollection({
       id: x.id,
       name: x.name,
       childs: addChild(x.childs),
       requests: [],
       isLocal: true,
       isSaved: true,
-      isCollection: true
-    }
-  })
+      isCollection: true,
+      isOpen: true,
+      isActive: true
+  }));
 }
 
 const directories = props.collection.map(x => {
-  const result: RestCollection = {
+  return new RestCollection({
     id: x.id,
     name: x.name,
     childs: addChild(x.childs),
     requests: [],
     isLocal: true,
     isSaved: true,
-    isCollection: true
-  }
-  return result;
+    isCollection: true,
+    isOpen: false,
+    isActive: false
+  });
 });
 
 const onSave = () => {

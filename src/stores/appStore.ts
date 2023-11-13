@@ -1,40 +1,50 @@
 import { defineStore } from 'pinia'
-import {RestCollection, RestRequest} from 'src/models/model';
+import {IRestCollection, RestRequest} from 'src/models/model';
 import remove from 'lodash/remove';
 import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
-import {LANGUAGE} from "src/models/Constantes";
+import {LANGUAGE} from 'src/models/Constantes';
+import RestCollection from 'src/models/RestCollection';
 
 export interface IAppStore {
-  restCollection: RestCollection[],
-  openedRestRequest: RestRequest[],
-  activeRestRequest?: RestRequest
+  restCollection: IRestCollection[],
+  openedRestRequest: (RestRequest | IRestCollection)[],
+  activeRestRequest?: RestRequest | IRestCollection,
+  histories: RestRequest[]
 }
 export const useAppStore = defineStore('app', {
   state: (): IAppStore => {
     return {
       restCollection: [],
       openedRestRequest: [],
-      activeRestRequest: undefined
+      activeRestRequest: undefined,
+      histories: []
     }
   },
   actions: {
     activeRequest(id: string){
-      console.log('activeRequest', id);
       const request = this.openedRestRequest.find(x => x.id == id);
       if (request){
+        if (this.activeRestRequest) {
+          this.activeRestRequest.isActive = false;
+        }
+        request.isActive = true;
         this.activeRestRequest = request;
       }
     },
-    openRequest(value: RestRequest){
+    openRequest(value: RestRequest | IRestCollection){
       let request = this.openedRestRequest.find(x => x.id == value.id);
       if (!request){
         request = this.cloneAndAddToOpenedRequest(value);
       }
+      if (this.activeRestRequest) {
+        this.activeRestRequest.isActive = false;
+      }
+      request.isActive = true
       this.activeRestRequest = request;
     },
     closeRequest(value: RestRequest){
-      remove(this.openedRestRequest, (x: RestRequest) => x.id == value.id);
+      remove(this.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == value.id);
       if (this.openedRestRequest.length > 0){
         this.activeRestRequest = this.openedRestRequest[this.openedRestRequest.length -1];
       }
@@ -44,6 +54,7 @@ export const useAppStore = defineStore('app', {
         id: uid(),
         name: value,
         isOpen: true,
+        isActive: false,
         method: 'GET',
         isSaved: isSaved ?? false,
         url: '',
@@ -60,21 +71,26 @@ export const useAppStore = defineStore('app', {
       return request;
     },
     addCollection(value: string){
-      const col: RestCollection = {
+      return new RestCollection({
         id: uid(),
         name: value,
+        isOpen: false,
+        isActive: false,
         requests: [],
         isLocal: true,
         isSaved: true,
         isCollection: true,
         childs: [],
-      }
-      return col;
+
+      });
     },
-    addRequestOnCollection(request: RestRequest, collection: RestCollection){
+    addRequestOnCollection(request: RestRequest, collection: IRestCollection){
       collection.requests.push(request);
     },
-    cloneAndAddToOpenedRequest(value: RestRequest){
+    addFolderOnCollection(value: IRestCollection, parent: IRestCollection){
+      parent.childs.push(value);
+    },
+    cloneAndAddToOpenedRequest(value: RestRequest | IRestCollection){
       const request = cloneDeep(value);
       this.openedRestRequest.push(request);
       return request;

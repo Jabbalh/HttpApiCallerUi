@@ -18,37 +18,36 @@
 <script lang="ts" setup>
 import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
-import {RestCollection} from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
-import {useVModel} from "@vueuse/core";
+import {IRestCollection} from 'src/models/model';
 
 const i18n = useI18n();
 
 const props = defineProps({
-  modelValue: {
-    type: Object as PropType<RestCollection>,
+  data: {
+    type: Object as PropType<IRestCollection>,
     required: true
   }
 });
-const emit = defineEmits(['update:modelValue']);
-const data = useVModel(props, 'modelValue', emit );
+const emits = defineEmits<{ (e: 'updateNode', value: IRestCollection): void }>();
+
 const appStore = useAppStore();
 const { addRequest, addFolder } = useRequestUtils();
 
 const addRestRequest = async  () => {
   const request = await addRequest(undefined, true);
-  appStore.addRequestOnCollection(request, props.modelValue);
-  //data.value.requests.push(request);
+  appStore.addRequestOnCollection(request, props.data);
 }
 
 const addCollection = async () => {
   const col = await addFolder();
-  data.value.childs.push(col);
+  appStore.addFolderOnCollection(col, props.data);
 }
 
-const editCollection = () => {
-  addFolder(data.value)
+const editCollection = async () => {
+  await addFolder(props.data);
+  emits('updateNode', props.data );
 }
 
 </script>

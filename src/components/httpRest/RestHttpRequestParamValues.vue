@@ -60,8 +60,8 @@
 import {computed, onMounted} from 'vue';
 import draggable from 'vuedraggable-es'
 import SingleLineInput from 'components/commun/SingleLineInput.vue';
-import {useI18n} from "vue-i18n";
-import {RestRequestParameters} from "src/models/model";
+import {useI18n} from 'vue-i18n';
+import {RestRequestParameters} from 'src/models/model';
 import {commonHeaders} from 'src/models/HeaderConstantes';
 
 const props = defineProps<{ modelValue: RestRequestParameters[], isHeader: boolean  }>();

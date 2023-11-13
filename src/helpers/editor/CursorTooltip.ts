@@ -1,9 +1,9 @@
-import {Ref} from "vue";
-import {AppEnvironnement} from "src/models/model";
-import {hoverTooltip} from "@codemirror/view";
-import {ENV_REGEXT} from "src/composables/parseEnv";
+import {Ref} from 'vue';
+import {AppEnvironnement} from 'src/models/model';
+import {hoverTooltip} from '@codemirror/view';
+import {ENV_REGEXT} from 'src/composables/parseEnv';
 
-export const cursorTooltipField = (aggregateEnvs: Ref<AppEnvironnement | null>) =>
+export const cursorTooltipField = (aggregateEnvs: Ref<AppEnvironnement[]>) =>
   hoverTooltip(
     (view, pos, side) => {
       const { from, to, text } = view.state.doc.lineAt(pos)
@@ -27,11 +27,11 @@ export const cursorTooltipField = (aggregateEnvs: Ref<AppEnvironnement | null>) 
 
       const parsedEnvKey = text.slice(start - from, end - from)
 
-      const tooltipEnv = aggregateEnvs.value?.values.find((env) => env.key === parsedEnvKey)
+      const tooltipEnv = aggregateEnvs.value.find(x => x.values.find(y => y.key == parsedEnvKey));
 
-      const envName = aggregateEnvs?.value?.name ?? 'Choose an Environment'
+      const envName = tooltipEnv?.name ?? 'Choose an Environment'
 
-      const envValue = tooltipEnv?.value ?? 'Not found'
+      const envValue = tooltipEnv?.values.find(x => x.key == parsedEnvKey)?.value ?? 'Not found'
 
       const envTypeIcon = `<span class='inline-flex items-center justify-center my-1'></span>`
 

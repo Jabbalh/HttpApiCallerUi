@@ -5,6 +5,7 @@
 @import 'rest-tabs';
 @import 'sticky-helper';
 @import 'codeMirror-custom';
+@import 'tree-view';
 
 .wrap-word {
   white-space: break-spaces;
@@ -30,7 +31,13 @@ body {
     font-size: 14px;
     font-weight: bold;
   }
+}
 
+.truncate {
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .environnement-not-found {

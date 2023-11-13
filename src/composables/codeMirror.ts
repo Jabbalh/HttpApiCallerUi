@@ -9,8 +9,8 @@ import {
 import {Compartment, EditorState } from '@codemirror/state';
 import {defaultKeymap} from '@codemirror/commands';
 import {espresso} from 'thememirror';
-import {AppEnvironnement } from 'src/models/model';
-import {oneDark} from "components/commun/apiCallerDarkTheme";
+import {AppEnvironnement} from 'src/models/model';
+import {oneDark} from 'components/commun/apiCallerDarkTheme';
 import {
   basicSetupArea,
   basicSetupSingleLine,
@@ -31,7 +31,7 @@ useCodeMirror(
   value: Ref<string | undefined>,
   editable: boolean,
   singleLine: boolean,
-  envs: Ref<AppEnvironnement | null>,
+  envs: Ref<AppEnvironnement[]>,
   language: Ref<string>
 ) {
 
@@ -49,7 +49,7 @@ useCodeMirror(
 
   const compartment = new Compartment();
 
-  const reconfigure = (envs: Ref<AppEnvironnement | null>) => {
+  const reconfigure = (envs: Ref<AppEnvironnement[]>) => {
     editor.value?.dispatch({
       effects: compartment.reconfigure([
         cursorTooltipField(envs),

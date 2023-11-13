@@ -1,4 +1,4 @@
-import {RestRequestParameters} from "src/models/model";
+import {IRestCollection, RestRequest, RestRequestParameters} from 'src/models/model';
 
 /**
  * For verify type
@@ -12,6 +12,10 @@ export const useTypeVerify = function() {
   const isRestRequestParameters = (values: any) : values is RestRequestParameters[] => {
     return !(typeof(values) == 'string');
   }
+
+  const isRestRequest = (value: any) : value is RestRequest => !('isCollection' in value);
+
+  const isRestCollection = (value: any) : value is IRestCollection => ('isCollection' in value);
 
   const hasStatusCode = (value?: any) : value is {statusCode: number} => {
     return (value && 'statusCode' in value);
@@ -27,7 +31,9 @@ export const useTypeVerify = function() {
   return {
     isRestRequestParameters,
     hasStatusCode,
-    hasMetaResponse
+    hasMetaResponse,
+    isRestRequest,
+    isRestCollection
   }
 
 }

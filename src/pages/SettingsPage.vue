@@ -1,8 +1,9 @@
 <template>
-  <div>
-    Paramètres
-  </div>
-
+  <q-page class="" >
+    <div>
+      Paramètres
+    </div>
+  </q-page>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';

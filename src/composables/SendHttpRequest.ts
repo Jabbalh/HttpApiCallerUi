@@ -6,17 +6,16 @@ import axios, {
   AxiosResponse,
   AxiosResponseHeaders
 } from 'axios';
-import useJson from "src/composables/Json";
-import useParseEnv from "src/composables/parseEnv";
-import {useEnvStore} from "stores/EnvStore";
+import useJson from 'src/composables/Json';
+import useParseEnv from 'src/composables/parseEnv';
 import cloneDeep from 'lodash/cloneDeep';
 import * as E from 'fp-ts/Either';
 import {RestResponse} from 'src/models/types/RestResponse';
 import {map} from 'lodash';
 import {RawAxiosResponseHeaders} from 'axios';
 import {LANGUAGE} from 'src/models/Constantes';
-import {useTypeVerify} from "src/composables/TypeVerify";
-import {RestRequestBody} from "src/models/types/RestRequestBody";
+import {useTypeVerify} from 'src/composables/TypeVerify';
+import {RestRequestBody} from 'src/models/types/RestRequestBody';
 
 /**
  * Permet d'envoyer une requete Http
@@ -26,16 +25,18 @@ const useSendHttpRequest = function() {
     // Request clone
     const cloneRequest = cloneDeep(request);
 
-    const envApp = useEnvStore();
-    const envs = envApp.Current?.values ?? [];
-    const { parseEnv } = useParseEnv();
-
+    const { computedEnv, parseEnv } = useParseEnv();
+    const envs = computedEnv();
+    const finalEnv: AppEnvitonnementValue[] = [];
+    for (const item of envs){
+      finalEnv.push(...item.values);
+    }
     const param: AxiosRequestConfig = {
-      url: parseEnv(cloneRequest.url, envApp.Current?.values),
+      url: parseEnv(cloneRequest.url, finalEnv),
       method: cloneRequest.method.toLowerCase(),
-      headers: ensureHeader(cloneRequest.header, cloneRequest.body.language, envs),
-      params: ensureParameter(cloneRequest.parameter, envs),
-      data: ensureBody(cloneRequest.body, envs)
+      headers: ensureHeader(cloneRequest.header, cloneRequest.body.language, finalEnv),
+      params: ensureParameter(cloneRequest.parameter, finalEnv),
+      data: ensureBody(cloneRequest.body, finalEnv)
     };
 
     return effectiveRunRequest(param);
@@ -61,7 +62,7 @@ const effectiveRunRequest = async (request: AxiosRequestConfig) => {
     const res = await axiosRequest.request(request);
     const end = new Date().getTime();
     const result = successRequest(res);
-    console.log("download", download);
+    console.log('download', download);
     if (hasMetaResponse(result)){
       result.meta.responseDuration = end - start;
       result.meta.responseSize = download;
