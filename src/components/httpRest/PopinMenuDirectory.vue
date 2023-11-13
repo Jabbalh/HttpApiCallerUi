@@ -20,13 +20,13 @@ import {PropType} from 'vue';
 import {useI18n} from 'vue-i18n';
 import useRequestUtils from 'src/composables/RequestUtils';
 import {useAppStore} from 'stores/appStore';
-import RestCollection from 'src/models/RestCollection';
+import {IRestCollection} from "src/models/model";
 
 const i18n = useI18n();
 
 const props = defineProps({
   data: {
-    type: Object as PropType<RestCollection>,
+    type: Object as PropType<IRestCollection>,
     required: true
   }
 });

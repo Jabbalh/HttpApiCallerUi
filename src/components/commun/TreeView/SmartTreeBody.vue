@@ -5,9 +5,11 @@
   </div>
   <q-icon name="more_vert" class="rest-collection-tree-node-menu" >
     <q-popup-proxy >
-      <component
-        :is="isRestCollection(node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"
-        :data="node"/>
+      <PopinMenuDirectory :data="node" v-if="isRestCollection(node)" />
+      <PopinMenuRequest v-model="node" v-else />
+<!--      <component-->
+<!--        :is="isRestCollection(node) ? 'PopinMenuDirectory' : 'PopinMenuRequest'"-->
+<!--        :data="node"/>-->
     </q-popup-proxy>
   </q-icon>
 
@@ -17,6 +19,11 @@
   import {useTypeVerify} from 'src/composables/TypeVerify';
   import {IRestCollection, RestRequest} from 'src/models/model';
   import {useAppStore} from 'stores/appStore';
+  import {defineComponent} from "vue";
+  import PopinMenuDirectory from "components/httpRest/PopinMenuDirectory.vue";
+  import PopinMenuRequest from "components/httpRest/PopinMenuRequest.vue";
+
+  defineComponent({PopinMenuDirectory, PopinMenuRequest});
 
   defineProps<{
     node: CollectionTreeView
