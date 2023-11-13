@@ -9,14 +9,16 @@ import RestCollection from 'src/models/RestCollection';
 export interface IAppStore {
   restCollection: IRestCollection[],
   openedRestRequest: (RestRequest | IRestCollection)[],
-  activeRestRequest?: RestRequest | IRestCollection
+  activeRestRequest?: RestRequest | IRestCollection,
+  histories: RestRequest[]
 }
 export const useAppStore = defineStore('app', {
   state: (): IAppStore => {
     return {
       restCollection: [],
       openedRestRequest: [],
-      activeRestRequest: undefined
+      activeRestRequest: undefined,
+      histories: []
     }
   },
   actions: {
