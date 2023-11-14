@@ -4,19 +4,25 @@
     <span>{{node.name}}</span>
   </div>
   <q-icon name="more_vert" class="rest-collection-tree-node-menu" >
-    <q-popup-proxy >
-      <PopinMenuDirectory :data="node" v-if="isRestCollection(node)" @updateNode="updateNode" />
-      <PopinMenuRequest :data="node" v-else @updateNode="updateNode"/>
+    <q-popup-proxy v-model="openMenu">
+      <PopinMenuDirectory
+          :data="node"
+          v-if="isRestCollection(node)"
+          @updateNode="updateNode"
+          @onClickAction="onClickAction"/>
+      <PopinMenuRequest
+          v-else
+          :data="node"
+          @updateNode="updateNode"/>
     </q-popup-proxy>
   </q-icon>
-
 </template>
 <script lang="ts" setup>
   import {CollectionTreeView} from 'src/composables/treeViewCollection';
   import {useTypeVerify} from 'src/composables/TypeVerify';
   import {IRestCollection, RestRequest} from 'src/models/model';
   import {useAppStore} from 'stores/appStore';
-  import {defineComponent} from 'vue';
+  import {defineComponent, ref} from 'vue';
   import PopinMenuDirectory from 'components/httpRest/PopinMenuDirectory.vue';
   import PopinMenuRequest from 'components/httpRest/PopinMenuRequest.vue';
 
@@ -24,7 +30,7 @@
   defineProps<{ node: CollectionTreeView }>();
   const appStore = useAppStore();
   const {isRestRequest, isRestCollection} = useTypeVerify();
-
+  const openMenu = ref(false);
   const openItem = (x: RestRequest | IRestCollection) => {
     x.isOpen = true;
     appStore.openRequest(x);
@@ -37,5 +43,5 @@
     }
   }
 
-
+  const onClickAction = () => openMenu.value = false;
 </script>

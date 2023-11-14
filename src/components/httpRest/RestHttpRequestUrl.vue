@@ -13,6 +13,7 @@
       <SingleLineInput
         class="q-mt-sm"
         :editable="true"
+        :placeholder="i18n.t('REST.URL_REQUETE_PLACEHOLDER')"
         v-model="activeRestRequest.url"
         @update:modelValue="updateSaveAttribute(activeRestRequest)"
       />

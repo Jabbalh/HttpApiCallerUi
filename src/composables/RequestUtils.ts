@@ -24,7 +24,6 @@ const useRequestUtils = function() {
       }).onOk((x: string) => {
         if (request){
           request.name = x;
-          console.log("request", request);
           r(request);
         } else {
           r(appStore.addRestRequest(x, isSaved ?? false));
@@ -61,6 +60,7 @@ const useRequestUtils = function() {
     addRequest,
     addFolder,
     findCollectionById,
+    findParentCollectionByIdCollection,
     findParentCollectionById,
     useSaveRestRequest,
     useCloseRequest,
@@ -99,7 +99,7 @@ function useCloseRequest() {
 function useSaveRestRequest(){
   const q$ = useQuasar();
   const i18n$ = useI18n();
-  const save = (value: RestRequest, collection: IRestCollection[]) => {
+  const saveRequestToCollection = (value: RestRequest, collection: IRestCollection[]) => {
     return new Promise<E.Either<boolean, boolean>>(r => {
       const parent = findParentCollectionById(collection, value.id);
       if (parent){
@@ -127,23 +127,41 @@ function useSaveRestRequest(){
             parent.requests.push(value);
             r(E.right(true));
           } else {
-            r(E.right(false));
+            r(E.left(false));
           }
         }).onCancel(() => r(E.left(true)))
       }
     });
   };
 
+  const saveCollection = (value: IRestCollection, values: IRestCollection[]) => {
+    const parent = findParentCollectionByIdCollection(values, value.id);
+    if (parent){
+      const origin = parent.childs.find(x => x.id == value.id);
+      if (origin){
+        const indexOrigin = parent.childs.indexOf(origin);
+        value.isSaved = true;
+        parent.childs[indexOrigin] = value;
+        return E.left(true);
+      }
+    }
+    return E.right(false);
+  }
+
   const isRestRequest = function (value: any): value is RestRequest {
     return !('isCollection' in value);
   }
 
-  const saveRequest = async (value?: RestRequest): Promise<void> => {
+  const saveRequest = async (value?: RestRequest | IRestCollection): Promise<void> => {
     const appStore = useAppStore();
     const activeRequest = useActiveRequest()
     const request = value ?? activeRequest.activeRequest.value;
-    if (request && !request.isSaved && isRestRequest(request)){
-      const result = await save(request, appStore.restCollection);
+    if (request && !request.isSaved){
+      const result =
+          isRestRequest(request)
+              ? await saveRequestToCollection(request, appStore.restCollection)
+              : saveCollection(request, appStore.restCollection);
+
       if (E.isRight(result)){
         if (result.right){
           q$.notify({
@@ -178,6 +196,17 @@ export function findCollectionById(collections: IRestCollection[], id: string) :
       return item;
     } else {
       return findCollectionById(item.childs, id);
+    }
+  }
+  return null;
+}
+
+export function findParentCollectionByIdCollection(collections: IRestCollection[], id: string): IRestCollection | null{
+  for (const item of collections){
+    if (item.childs.some(x => x.id == id)){
+      return item;
+    } else {
+      return findParentCollectionByIdCollection(item.childs, id);
     }
   }
   return null;

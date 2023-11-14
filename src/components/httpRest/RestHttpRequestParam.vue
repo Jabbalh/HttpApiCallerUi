@@ -44,7 +44,7 @@
       />
     </q-tab-panel>
     <q-tab-panel name="AUTH">
-      <RestHttpRequestAuth v-model="activeRestRequest.authorization" />
+      <RestHttpRequestAuth v-model="activeRestRequest.authorization" @updateRequest="onUpdate" />
     </q-tab-panel>
     <q-tab-panel name="PREREQUEST">
       Prerequest

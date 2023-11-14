@@ -8,6 +8,7 @@
         <q-select
           :options="OPTIONS_AUTH"
           v-model="dataModel.type"
+          @update:modelValue="onUpdate"
           outlined
           dense
           emit-value
@@ -20,7 +21,7 @@
     </div>
     <div style="overflow: auto;height: calc(100% - 50px); ">
       <div >
-        <component :is="authComponent" v-model="dataModel" />
+        <component :is="authComponent" v-model="dataModel" @updateRequest="emit('updateRequest')" />
       </div>
     </div>
   </div>
@@ -31,8 +32,8 @@ import {KEY_AUTH, OPTIONS_AUTH} from 'src/models/Constantes';
 import {useVModel} from '@vueuse/core/index';
 import {RestRequestAuth} from 'src/models/model';
 import {defaultAuth} from 'src/helpers/DefaultTypeUtils';
-import {computed, defineComponent} from "vue";
-import AuthBasic from "./auth/AuthBasic.vue";
+import {computed, defineComponent} from 'vue';
+import AuthBasic from './auth/AuthBasic.vue';
 import AuthApiKey from './auth/AuthApiKey.vue';
 import AuthBearer from './auth/AuthBearer.vue';
 import AuthNone from './auth/AuthNone.vue';
@@ -40,7 +41,7 @@ import AuthOauth from './auth/AuthOauth.vue';
 
 defineComponent({AuthBasic, AuthApiKey, AuthBearer, AuthNone, AuthOauth})
 const props = defineProps<{ modelValue: RestRequestAuth }>();
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'updateRequest']);
 const dataModel = useVModel(props, 'modelValue', emit);
 
 if (!props.modelValue) {
@@ -58,7 +59,9 @@ const authComponent = computed(() => {
     case KEY_AUTH.OAUTH2: return AuthOauth;
     default: return AuthNone;
   }
-})
+});
+
+const onUpdate = () => emit('updateRequest');
 
 </script>
 <style lang='scss' scoped>

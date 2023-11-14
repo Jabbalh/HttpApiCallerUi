@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import {uid} from 'quasar';
 import {LANGUAGE} from 'src/models/Constantes';
 import RestCollection from 'src/models/RestCollection';
-import {defaultAuth} from "src/helpers/DefaultTypeUtils";
+import {defaultAuth} from 'src/helpers/DefaultTypeUtils';
 
 export interface IAppStore {
   restCollection: IRestCollection[],
@@ -48,6 +48,8 @@ export const useAppStore = defineStore('app', {
       remove(this.openedRestRequest, (x: RestRequest | IRestCollection) => x.id == value.id);
       if (this.openedRestRequest.length > 0){
         this.activeRestRequest = this.openedRestRequest[this.openedRestRequest.length -1];
+      } else {
+        this.activeRestRequest = undefined;
       }
     },
     addRestRequest(value: string, isSaved?: boolean){
@@ -72,7 +74,7 @@ export const useAppStore = defineStore('app', {
       this.activeRestRequest = this.cloneAndAddToOpenedRequest(request);
       return request;
     },
-    addCollection(value: string){
+    addCollection(value: string): IRestCollection{
       return new RestCollection({
         id: uid(),
         name: value,
@@ -84,7 +86,6 @@ export const useAppStore = defineStore('app', {
         isSaved: true,
         isCollection: true,
         childs: [],
-
       });
     },
     addRequestOnCollection(request: RestRequest, collection: IRestCollection){
@@ -101,7 +102,7 @@ export const useAppStore = defineStore('app', {
     saveRequest(value: RestRequest){
       console.log('saveRequest', value);
     },
-    updateSaveAttribute(value: RestRequest, saveAttribute: boolean){
+    updateSaveAttribute(value: RestRequest | IRestCollection, saveAttribute: boolean){
       value.isSaved = saveAttribute;
 
     }

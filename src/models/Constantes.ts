@@ -45,6 +45,9 @@ export enum KEY_AUTH {
 
 }
 
+export const API_KEY_HEADERS = 'Headers';
+export const API_KEY_QUERY_PARAMS = 'Query params';
+
 export const OPTIONS_AUTH = [
   { value: KEY_AUTH.NONE, label:'None' },
   { value: KEY_AUTH.BASIC, label:'Basic Auth' },

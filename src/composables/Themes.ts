@@ -9,6 +9,7 @@ const useTheme = function() {
     setCssVar('panel-border', '#0000001E');
     setCssVar('panel-color-font', '#000000FF');
     setCssVar('cancel-color', '#262626');
+    setCssVar('label-color', '#000000FF');
     q$.dark.set(false);
     q$.localStorage.set('theme', 'default');
   }
@@ -18,6 +19,7 @@ const useTheme = function() {
     setCssVar('panel-border', '#5D5D5D66');
     setCssVar('panel-color-font', '#FFFFFFFF');
     setCssVar('cancel-color', '#FFFFFF');
+    setCssVar('label-color', '#ABB2BFFF')
     q$.dark.set(true);
     q$.localStorage.set('theme', 'dark');
   }

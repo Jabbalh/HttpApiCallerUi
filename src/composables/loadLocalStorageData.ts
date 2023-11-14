@@ -6,6 +6,7 @@ import useRequestUtils from 'src/composables/RequestUtils';
 import {LANGUAGE} from 'src/models/Constantes';
 import {watch} from 'vue';
 import RestCollection from 'src/models/RestCollection';
+import {defaultAuth} from 'src/helpers/DefaultTypeUtils';
 
 export const useLoadDataCollection = function() {
   const q$ = useQuasar();
@@ -64,7 +65,6 @@ function parseData(state: string){
     }
   }
   data.openedRestRequest = openCollection;
-  console.log(data);
   return data as any;
 }
 
@@ -92,6 +92,7 @@ const mockCollection = [{
   isActive: false,
   id: uid(),
   name: 'Ma collection',
+  authorization: defaultAuth,
   isSaved: true,
   childs: [],
   requests: [
@@ -104,6 +105,7 @@ const mockCollection = [{
       isSaved: true,
       isActive: false,
       parameter: [],
+      authorization: defaultAuth,
       header: [],
       body: {
         body: '',
@@ -120,6 +122,7 @@ const mockCollection = [{
       isActive: false,
       isSaved: true,
       parameter: [],
+      authorization: defaultAuth,
       header: [],
       body: {
         body: '',
