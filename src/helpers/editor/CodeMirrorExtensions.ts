@@ -75,6 +75,7 @@ export const basicSetup = [
 
 export const basicSetupSingleLine = [
   ...basicSetup,
+  EditorView.contentAttributes.of({ 'data-enable-grammarly': 'false' }),
   EditorState.transactionFilter.of(tr => { return tr.newDoc.lines > 1 ? [] : [tr] })
 ];
 

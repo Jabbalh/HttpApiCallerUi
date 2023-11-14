@@ -29,12 +29,14 @@ const props = withDefaults(
   defineProps<{
     modelValue: string,
     editable?: boolean,
-    suggestionSource?: string[]
+    suggestionSource?: string[],
+    placeholder: string
   }>(),
   {
     modelValue: '',
     editable: true,
-    suggestionSource: undefined
+    suggestionSource: undefined,
+    placeholder: ''
   });
 const showSuggestionPopover = ref(false);
 const { computedEnv } = useParseEnv();
@@ -67,7 +69,8 @@ const editor = useCodeMirror(
   props.editable,
   true,
   envs,
-  lang
+  lang,
+  props.placeholder
 );
 
 /**

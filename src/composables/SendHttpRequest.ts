@@ -1,10 +1,17 @@
-import {AppEnvitonnementValue, RestRequest, RestRequestParameters} from 'src/models/model';
+import {
+  AppEnvitonnementValue,
+  IRestCollection,
+  RestRequest,
+  RestRequestAuth,
+  RestRequestParameters
+} from 'src/models/model';
 import axios, {
   AxiosError,
   AxiosHeaders,
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosResponseHeaders
+  AxiosResponseHeaders,
+  RawAxiosResponseHeaders
 } from 'axios';
 import useJson from 'src/composables/Json';
 import useParseEnv from 'src/composables/parseEnv';
@@ -12,18 +19,23 @@ import cloneDeep from 'lodash/cloneDeep';
 import * as E from 'fp-ts/Either';
 import {RestResponse} from 'src/models/types/RestResponse';
 import {map} from 'lodash';
-import {RawAxiosResponseHeaders} from 'axios';
-import {LANGUAGE} from 'src/models/Constantes';
+import {API_KEY_HEADERS, API_KEY_QUERY_PARAMS, KEY_AUTH, LANGUAGE} from 'src/models/Constantes';
 import {useTypeVerify} from 'src/composables/TypeVerify';
 import {RestRequestBody} from 'src/models/types/RestRequestBody';
+import {useAppStore} from 'stores/appStore';
+import {defaultAuth} from 'src/helpers/DefaultTypeUtils';
+import useRequestUtils from 'src/composables/RequestUtils';
 
 /**
  * Permet d'envoyer une requete Http
  */
 const useSendHttpRequest = function() {
+  const appStore = useAppStore();
+  const { findParentCollectionById, findParentCollectionByIdCollection } = useRequestUtils();
   const sendRequest = async (request: RestRequest) => {
     // Request clone
     const cloneRequest = cloneDeep(request);
+    const authorization = findFirstAuthorization(cloneRequest.id, appStore.restCollection, true, cloneRequest.authorization) ?? defaultAuth;
 
     const { computedEnv, parseEnv } = useParseEnv();
     const envs = computedEnv();
@@ -34,15 +46,30 @@ const useSendHttpRequest = function() {
     const param: AxiosRequestConfig = {
       url: parseEnv(cloneRequest.url, finalEnv),
       method: cloneRequest.method.toLowerCase(),
-      headers: ensureHeader(cloneRequest.header, cloneRequest.body.language, finalEnv),
-      params: ensureParameter(cloneRequest.parameter, finalEnv),
+      headers: ensureAuth(ensureHeader(cloneRequest.header, cloneRequest.body.language, finalEnv), authorization, finalEnv),
+      params: ensureAuthQueryParams(ensureParameter(cloneRequest.parameter, finalEnv), authorization, finalEnv),
       data: ensureBody(cloneRequest.body, finalEnv)
     };
 
     return effectiveRunRequest(param);
   }
+
+  const findFirstAuthorization = (requestId: string, values: IRestCollection[], findByRequestId: boolean, auth?: RestRequestAuth): RestRequestAuth | undefined => {
+    if (auth && auth.type != KEY_AUTH.NONE){
+      return auth;
+    }
+    const parent = findByRequestId ? findParentCollectionById(values, requestId) : findParentCollectionByIdCollection(values, requestId);
+
+    if (parent){
+      return findFirstAuthorization(parent.id, values, false, parent.authorization);
+    }
+    return undefined;
+  }
+
   return { sendRequest }
 }
+
+
 
 /**
  * Lance la requète et traite le résultat
@@ -62,7 +89,6 @@ const effectiveRunRequest = async (request: AxiosRequestConfig) => {
     const res = await axiosRequest.request(request);
     const end = new Date().getTime();
     const result = successRequest(res);
-    console.log('download', download);
     if (hasMetaResponse(result)){
       result.meta.responseDuration = end - start;
       result.meta.responseSize = download;
@@ -224,6 +250,91 @@ const ensureParameter = (values: RestRequestParameters[], envs?: AppEnvitonnemen
       parseEnv(item.entry.value, envs));
   }
   return params;
+}
+
+/**
+ * Check for Authorization
+ * @param headers: Request headers
+ * @param auth: Auth params
+ * @param envs: envs variables
+ */
+const ensureAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  switch (auth.type){
+    case KEY_AUTH.BASIC:
+      populateBasicAuth(headers, auth, envs);
+      break;
+    case KEY_AUTH.BEARER:
+      populateBearerAuth(headers, auth, envs);
+      break;
+    case KEY_AUTH.APIKEY:
+      populateApiKeyAuth(headers, auth, envs);
+      break;
+    case KEY_AUTH.OAUTH2:
+      populateOauthAuth(headers, auth, envs);
+      break;
+  }
+  return headers;
+}
+
+/**
+ * Check for Auth ApiKey QueryParams
+ * @param params: Request params
+ * @param auth: Auth params
+ * @param envs: env variable
+ */
+const ensureAuthQueryParams = (params: URLSearchParams, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  if (auth.type == KEY_AUTH.APIKEY && auth.passBy == API_KEY_QUERY_PARAMS){
+    params.append(parseEnv(auth.key, envs), parseEnv(auth.value, envs));
+  }
+  return params;
+}
+
+/**
+ * Check for Basic Authorization
+ * @param headers: Request headers
+ * @param auth: Auth params
+ * @param envs: envs variables
+ */
+const populateBasicAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  const base64  = btoa(parseEnv(auth.key, envs) +':' + parseEnv(auth.value, envs));
+  headers['Authorization'] = `Basic ${base64}`;
+}
+
+/**
+ * Check for Bearer Authorization
+ * @param headers: Request headers
+ * @param auth: Auth params
+ * @param envs: envs variables
+ */
+const populateBearerAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  headers['Authorization'] = `Bearer ${parseEnv(auth.token, envs)}`;
+}
+
+/**
+ * Check for ApiKey header Authorization
+ * @param headers: Request headers
+ * @param auth: Auth params
+ * @param envs: envs variables
+ */
+const populateApiKeyAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  if (auth.passBy == API_KEY_HEADERS){
+    headers[parseEnv(auth.key, envs)] = parseEnv(auth.value, envs);
+  }
+}
+
+/**
+ * Check for Oauth Authorization
+ * @param headers: Request headers
+ * @param auth: Auth params
+ * @param envs: envs variables
+ */
+const populateOauthAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+  const { parseEnv } = useParseEnv();
+  headers[parseEnv(auth.key, envs)] = parseEnv(auth.value, envs);
 }
 
 /**
