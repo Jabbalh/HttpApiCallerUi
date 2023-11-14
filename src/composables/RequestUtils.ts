@@ -1,10 +1,11 @@
 import {useI18n} from 'vue-i18n';
 import {useQuasar} from 'quasar';
-import {useAppStore} from 'stores/appStore';
+import {useAppStore} from 'src/stores/appStore';
 import {IRestCollection, RestRequest} from 'src/models/model';
 import useActiveRequest from 'src/composables/ActiveRequest';
 import PopinSaveRequest from 'components/collection/PopinSaveRequest.vue';
 import * as E from 'fp-ts/Either';
+import usePopin from "src/composables/PopinUtils";
 
 const useRequestUtils = function() {
   const i18n = useI18n();
@@ -70,19 +71,17 @@ const useRequestUtils = function() {
 
 function useCloseRequest() {
   const appStore = useAppStore();
-  const q$ = useQuasar();
-  const i18n = useI18n();
   const { saveRequest } = useSaveRestRequest();
-  const closeRequest = (value: RestRequest) => {
+  const popinUtils = usePopin();
+  const closeRequest = async (value: RestRequest) => {
     if (value && !value.isSaved){
-      q$.dialog({
-        title: i18n.t('REST.REQUEST_NOT_SAVED_TITLE'),
-        message: i18n.t('REST.REQUEST_NOT_SAVED_MESSAGE'),
-        cancel: true
-      }).onOk(() => {
-        saveRequest(value);
-        appStore.closeRequest(value);
-      }).onCancel(() => appStore.closeRequest(value));
+      const result = await popinUtils.openPopinConfirmation(
+        'REST.REQUEST_NOT_SAVED_TITLE',
+        'REST.REQUEST_NOT_SAVED_MESSAGE');
+      if (result){
+        await saveRequest(value);
+      }
+      appStore.closeRequest(value);
     } else {
       appStore.closeRequest(value);
     }

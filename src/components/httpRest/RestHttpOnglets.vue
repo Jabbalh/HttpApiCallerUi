@@ -20,15 +20,15 @@
            >
       <SmartTab :label="item.name" :method="item.method" :id="item.id" @onClose="closeRequest(item)" :saved="item.isSaved" />
     </q-tab>
-    <div class="rest-http-onglet rest-http-onglet-action">
-      <q-btn round color="primary" icon="add" size="md" class="q-ml-md" flat @click="addNewRequest"/>
+    <div class="rest-http-onglet rest-http-onglet-action" style="min-width: auto">
+      <q-btn color="primary" icon="add" size="md" class="" flat @click="addNewRequest"/>
     </div>
   </q-tabs>
 </template>
 <script lang="ts">
 import {computed, defineComponent } from 'vue';
 import SmartTab from 'components/commun/SmartTab.vue';
-import {useAppStore} from 'stores/appStore';
+import {useAppStore} from 'src/stores/appStore';
 import {mapWritableState} from 'pinia';
 import useRequestUtils from 'src/composables/RequestUtils';
 

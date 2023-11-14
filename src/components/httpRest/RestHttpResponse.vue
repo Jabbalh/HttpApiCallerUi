@@ -25,7 +25,7 @@
     <div v-else-if="hasError" class="q-mt-xl" >
       <div class="flex items-center justify-center" style="flex-direction: column">
         <q-icon name="running_with_errors"
-                style="font-size: 6rem; flex-direction: column; display: inline-flex"
+                style="font-size: 4rem; flex-direction: column; display: inline-flex"
                 class="text-red-12"/>
         <span class="font-semibold text-center q-mt-md text-grey">
             Erreur lors de l'exécution de la requète ({{ statusCode }})
