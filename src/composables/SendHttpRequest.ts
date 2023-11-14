@@ -31,6 +31,7 @@ import useRequestUtils from 'src/composables/RequestUtils';
  */
 const useSendHttpRequest = function() {
   const appStore = useAppStore();
+  const { findParentCollectionById, findParentCollectionByIdCollection } = useRequestUtils();
   const sendRequest = async (request: RestRequest) => {
     // Request clone
     const cloneRequest = cloneDeep(request);
@@ -52,21 +53,23 @@ const useSendHttpRequest = function() {
 
     return effectiveRunRequest(param);
   }
+
+  const findFirstAuthorization = (requestId: string, values: IRestCollection[], findByRequestId: boolean, auth?: RestRequestAuth): RestRequestAuth | undefined => {
+    if (auth && auth.type != KEY_AUTH.NONE){
+      return auth;
+    }
+    const parent = findByRequestId ? findParentCollectionById(values, requestId) : findParentCollectionByIdCollection(values, requestId);
+
+    if (parent){
+      return findFirstAuthorization(parent.id, values, false, parent.authorization);
+    }
+    return undefined;
+  }
+
   return { sendRequest }
 }
 
-const findFirstAuthorization = (requestId: string, values: IRestCollection[], findByRequestId: boolean, auth?: RestRequestAuth): RestRequestAuth | undefined => {
-  if (auth && auth.type != KEY_AUTH.NONE){
-    return auth;
-  }
-  const { findParentCollectionById, findParentCollectionByIdCollection } = useRequestUtils();
-  const parent = findByRequestId ? findParentCollectionById(values, requestId) : findParentCollectionByIdCollection(values, requestId);
 
-  if (parent){
-    return findFirstAuthorization(parent.id, values, false, parent.authorization);
-  }
-  return undefined;
-}
 
 /**
  * Lance la requète et traite le résultat
