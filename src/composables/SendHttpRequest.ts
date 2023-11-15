@@ -211,7 +211,7 @@ const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => 
     const { isRestRequestParameters } = useTypeVerify()
 
     if (isRestRequestParameters(value.body)){
-      return ensureMultiPartForm(value.body);
+      return ensureMultiPartForm(value.body, value.language, envs);
     } else if (value.language != LANGUAGE.nothing){
       return parseEnv(value.body, envs);
     }
@@ -224,8 +224,8 @@ const ensureBody = (value?: RestRequestBody, envs?: AppEnvitonnementValue[]) => 
  * @param values
  * @param envs
  */
-const ensureMultiPartForm = (values: RestRequestParameters[], envs?: AppEnvitonnementValue[]) => {
-  const params = new FormData();
+const ensureMultiPartForm = (values: RestRequestParameters[], language: string, envs?: AppEnvitonnementValue[]) => {
+  const params:  URLSearchParams | FormData = language == LANGUAGE.multiPartFormData ?  new FormData() : new URLSearchParams();
   const { parseEnv } = useParseEnv();
   for (const item of values.filter((x => x.entry.active))){
     params.append(
@@ -349,7 +349,6 @@ const ensureHeader = (values: RestRequestParameters[], language: string, envs?: 
   for (const item of values.filter((x => x.entry.active && x.entry.key))){
     headers[parseEnv(item.entry.key, envs)] = parseEnv(item.entry.value, envs);
   }
-
   if (language != LANGUAGE.nothing){
     headers['Content-type'] = language;
   }
