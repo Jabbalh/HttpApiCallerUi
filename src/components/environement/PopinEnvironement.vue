@@ -7,7 +7,7 @@
                 </div>
             </q-card-section>
             <q-card-section>
-                <q-input v-model="cloneEnv.name" outlined dense />
+                <q-input v-model="cloneEnv.name" outlined dense :disable="isGlobal" />
             </q-card-section>
             <q-separator inset class="q-mt-md q-mb-md" />
             <q-card-section class="parameter">
