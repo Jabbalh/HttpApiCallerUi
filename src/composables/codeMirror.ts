@@ -24,6 +24,7 @@ import { xmlLanguage} from '@codemirror/lang-xml';
 import {LANGUAGE} from 'src/models/Constantes';
 import {html} from '@codemirror/legacy-modes/mode/xml';
 import {StreamLanguage} from '@codemirror/language';
+import {javascriptLanguage} from "@codemirror/lang-javascript";
 
 
 export function
@@ -65,6 +66,7 @@ useCodeMirror(
       case LANGUAGE.applicationJson: return jsonLanguage;
       case LANGUAGE.applicationXml : return xmlLanguage;
       case LANGUAGE.textHtml: return StreamLanguage.define(html);
+      case LANGUAGE.javascript: return javascriptLanguage;
     }
     return [];
   }

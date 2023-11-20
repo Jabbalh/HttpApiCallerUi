@@ -35,6 +35,7 @@
     "lodash.remove": "^4.7.0",
     "pinia": "^2.0.11",
     "quasar": "^2.14.0",
+    "quickjs-emscripten": "^0.23.0",
     "rxjs": "^7.8.1",
     "thememirror": "^2.0.1",
     "vue": "3",

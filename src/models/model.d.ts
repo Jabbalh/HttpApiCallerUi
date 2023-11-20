@@ -29,6 +29,8 @@ export interface RestRequest {
   header: RestRequestParameters[],
   authorization: RestRequestAuth,
   body: RestRequestBody,
+  beforeRequest?: string,
+  testRequest?: string,
   response?: RestResponse
 }
 
