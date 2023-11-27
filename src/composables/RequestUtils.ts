@@ -194,7 +194,10 @@ export function findCollectionById(collections: IRestCollection[], id: string) :
     if (item.id == id){
       return item;
     } else {
-      return findCollectionById(item.childs, id);
+      const find = findCollectionById(item.childs, id);
+      if (find) {
+        return find
+      }
     }
   }
   return null;
@@ -205,7 +208,10 @@ export function findParentCollectionByIdCollection(collections: IRestCollection[
     if (item.childs.some(x => x.id == id)){
       return item;
     } else {
-      return findParentCollectionByIdCollection(item.childs, id);
+      const find = findParentCollectionByIdCollection(item.childs, id);
+      if (find){
+        return find;
+      }
     }
   }
   return null;
@@ -222,7 +228,10 @@ function findParentCollectionById(collections: IRestCollection[], id: string) : 
     if (item.requests.some(x => x.id == id)){
       return item;
     } else if (item.childs.length > 0){
-      return findParentCollectionById(item.childs, id);
+      const find = findParentCollectionById(item.childs, id);
+      if (find){
+        return find;
+      }
     }
   }
   return null;
@@ -240,7 +249,10 @@ function findRequestById(collections: IRestCollection[], id: string): RestReques
     if (request){
       return request;
     } else {
-      return findRequestById(item.childs, id);
+      const find = findRequestById(item.childs, id);
+      if (find) {
+        return find;
+      }
     }
   }
   return null;

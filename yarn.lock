@@ -334,7 +334,7 @@
 
 "@quasar/app-vite@^1.7.0":
   version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@quasar/app-vite/-/app-vite-1.7.0.tgz#7108adcda4fddd18b6122425169cf9efde5de05d"
+  resolved "https://registry.npmjs.org/@quasar/app-vite/-/app-vite-1.7.0.tgz"
   integrity sha512-GF8jjjG0WI5ngMjGRwEEKFTbMN0vyQywLcumpoPvPJG87b87enrMBTy1Fr3AKcZS7a4wq3g2+46UUzpo60S8ZA==
   dependencies:
     "@quasar/render-ssr-error" "^1.0.1"
@@ -374,7 +374,7 @@
 
 "@quasar/cli@^2.3.0":
   version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@quasar/cli/-/cli-2.3.0.tgz#34283f29de85c32075441e6e932ac217ee064f2e"
+  resolved "https://registry.npmjs.org/@quasar/cli/-/cli-2.3.0.tgz"
   integrity sha512-DNFDemicj3jXe5+Ib+5w9Bwj1U3yoHQkqn0bU/qysIl/p0MmGA1yqOfUF0V4fw/5or1dfCvStIA/oZxUcC+2pQ==
   dependencies:
     "@quasar/ssl-certificate" "^1.0.0"
@@ -395,7 +395,7 @@
 
 "@quasar/extras@^1.16.8":
   version "1.16.8"
-  resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.16.8.tgz#be93a0e2d465425f1d85e9fc9a09096bf2845aaf"
+  resolved "https://registry.npmjs.org/@quasar/extras/-/extras-1.16.8.tgz"
   integrity sha512-mNSwQ6wkIVoAemhYdLm9q/FVqLHmVONZgCYdLLeqpakKNsR0r/zHQnCngzdDaXI7veYEvE0uW1gJa1wdQsxXxA==
 
 "@quasar/render-ssr-error@^1.0.1":
@@ -2492,7 +2492,7 @@ ignore@^5.2.0:
 
 immutable@^4.0.0:
   version "4.3.4"
-  resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.3.4.tgz#2e07b33837b4bb7662f288c244d1ced1ef65a78f"
+  resolved "https://registry.npmjs.org/immutable/-/immutable-4.3.4.tgz"
   integrity sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==
 
 import-fresh@^3.2.1:
@@ -3355,7 +3355,7 @@ qs@6.11.0:
 
 quasar@^2.14.0:
   version "2.14.0"
-  resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.14.0.tgz#6e7ea25ad5108f3f20164c295bf32e721ffe3def"
+  resolved "https://registry.npmjs.org/quasar/-/quasar-2.14.0.tgz"
   integrity sha512-hxaQ/yd/qNGgpUrww4fQRSpklKnZN90HXhmhmPE5h+yFCcXreU+JgM3m/Mf6Qv7lMNQZQkYipgZ5Ja41DYkVUQ==
 
 queue-microtask@^1.2.2:
@@ -3376,6 +3376,11 @@ quickjs-emscripten-sync@^1.5.2:
 quickjs-emscripten@^0.23.0:
   version "0.23.0"
   resolved "https://registry.yarnpkg.com/quickjs-emscripten/-/quickjs-emscripten-0.23.0.tgz#94f412d0ee5f3021fc12ddf6c0b00bd8ce0d28b9"
+  integrity sha512-CIP+NDRYDDqbT3cTiN8Bon1wsZ7IgISVYCJHYsPc86oxszpepVMPXFfttyQgn1u1okg1HPnCnM7Xv1LrCO/VmQ==
+
+quickjs-emscripten@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.npmjs.org/quickjs-emscripten/-/quickjs-emscripten-0.23.0.tgz"
   integrity sha512-CIP+NDRYDDqbT3cTiN8Bon1wsZ7IgISVYCJHYsPc86oxszpepVMPXFfttyQgn1u1okg1HPnCnM7Xv1LrCO/VmQ==
 
 randombytes@^2.1.0:
@@ -3599,7 +3604,7 @@ safe-buffer@5.2.1, safe-buffer@^5.1.0, safe-buffer@~5.2.0:
 
 sass@^1.33.0:
   version "1.69.5"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.69.5.tgz#23e18d1c757a35f2e52cc81871060b9ad653dfde"
+  resolved "https://registry.npmjs.org/sass/-/sass-1.69.5.tgz"
   integrity sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"

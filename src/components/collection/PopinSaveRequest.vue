@@ -42,6 +42,7 @@ import {IRestCollection, RestRequest} from 'src/models/model';
 import {ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import RestCollection from 'src/models/RestCollection';
+import {defaultAuth} from "src/helpers/DefaultTypeUtils";
 
 const props = defineProps<{
   collection: IRestCollection[],
@@ -80,6 +81,7 @@ const addChild = (values: IRestCollection[]): IRestCollection[] => {
       name: x.name,
       childs: addChild(x.childs),
       requests: [],
+      authorization : defaultAuth,
       isLocal: true,
       isSaved: true,
       isCollection: true,
@@ -94,6 +96,7 @@ const directories = props.collection.map(x => {
     name: x.name,
     childs: addChild(x.childs),
     requests: [],
+    authorization: defaultAuth,
     isLocal: true,
     isSaved: true,
     isCollection: true,
