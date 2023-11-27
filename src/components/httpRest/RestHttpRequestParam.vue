@@ -50,7 +50,7 @@
       Prerequest
     </q-tab-panel>
     <q-tab-panel name="TESTS">
-      <RestHttpRequestTest />
+      <RestHttpRequestTest v-model="activeRestRequest.testRequest" @updateRequest="onUpdate" />
     </q-tab-panel>
   </q-tab-panels>
   <!--  </div>-->
