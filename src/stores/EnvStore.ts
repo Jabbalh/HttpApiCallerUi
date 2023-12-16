@@ -29,8 +29,15 @@ export const useEnvStore = defineStore('env', {
         }
       }
 
+    },
+    deleteEnvironnement(value: AppEnvironnement) {
+      const index = this.AppEnvironnement.indexOf(value)
+      this.AppEnvironnement.splice(index, 1);
+
 
     }
 
   }
-});
+
+}
+);

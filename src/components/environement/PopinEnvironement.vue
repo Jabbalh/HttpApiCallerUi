@@ -7,7 +7,7 @@
                 </div>
             </q-card-section>
             <q-card-section>
-                <q-input v-model="cloneEnv.name" outlined dense :disable="isGlobal" />
+                <q-input ref="inputPopin" v-model="cloneEnv.name" outlined dense :disable="isGlobal" autofocus />
             </q-card-section>
             <q-separator inset class="q-mt-md q-mb-md" />
             <q-card-section class="parameter">
@@ -15,6 +15,7 @@
                     @delete-all="onDeleteAll" />
             </q-card-section>
             <q-separator inset class="q-mt-md q-mb-md" />
+
             <q-card-actions align="right" class="row q-ma-md">
                 <q-btn color="primary" label="OK" @click="onOKClick" />
                 <q-btn color="primary" label="Cancel" @click="onDialogCancel" />
@@ -29,13 +30,11 @@ import cloneDeep from 'lodash/cloneDeep';
 import { uid, useDialogPluginComponent } from 'quasar'
 import { AppEnvironnement, RestRequestParameters } from 'src/models/model';
 import RestHttpRequestParamValues from "../httpRest/RestHttpRequestParamValues.vue";
-import { maxBy, remove } from "lodash";
-
+import { maxBy, method, remove } from "lodash";
 const props = defineProps<{
     environement?: AppEnvironnement,
     isGlobal: boolean
 }>();
-
 defineEmits([
     // REQUIRED; need to specify some events that your
     // component will emit through useDialogPluginComponent()

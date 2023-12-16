@@ -11,13 +11,15 @@
     <q-separator inset class="q-mt-md q-mb-md" />
     <div class="row">
         <q-list class="full-width">
-            <q-item clickable v-for="(item, index) in environements" :key="index" @click="editEnv(item)">
-
+            <q-item clickable v-for="(item, index) in environements" :key="index" draggable="true">
                 <q-item-section avatar>
                     <q-icon color="primary" name="list" />
                 </q-item-section>
 
-                <q-item-section>{{ item.name }}</q-item-section>
+                <q-item-section @dblclick="editEnv(item)">{{ item.name }}</q-item-section>
+                <q-item-section>
+                    <q-btn icon="delete" color="primary" @click="deleteEnv(item)" />
+                </q-item-section>
             </q-item>
 
 
@@ -34,8 +36,7 @@ import PopinEnvironement from './PopinEnvironement.vue';
 const envStore = useEnvStore();
 const q$ = useQuasar();
 const environements = computed(() => envStore.AppEnvironnement);
-
-
+const deleteEnv = (value: AppEnvironnement) => { envStore.deleteEnvironnement(value) }
 const globalEdit = async () => {
     const result = await openPopin(true, envStore.Global ?? {
         name: "Global",

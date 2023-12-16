@@ -1,52 +1,36 @@
 <template>
   <div style="position: relative;height: 100%; overflow: hidden">
-    <div class="row rest-parameter-title sticky-tabs top-tertiary" >
+    <div class="row rest-parameter-title sticky-tabs top-tertiary">
       <div class="rest-parametre-titre">{{ libelleTitle }}</div>
       <div class="rest-parametre-width-icon">
         <span class="material-icons cursor-pointer rest-parameter-icon text-primary" @click="addParameter">add</span>
-        <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteAllParameter">delete</span>
+        <span class="material-icons cursor-pointer rest-parameter-icon text-negative"
+          @click="deleteAllParameter">delete</span>
       </div>
     </div>
-    <draggable
-      style="overflow: auto; height: calc(100% - 30px);"
-      v-model="workingParams"
-      item-key="id"
-      animation="250"
-      handle=".draggable-handle"
-      draggable=".draggable-content"
-      ghost-class="cursor-move"
-      chosen-class="bg-shadow-panel"
-      drag-class="cursor-grabbing"
-    >
+    <draggable style="overflow: auto; height: calc(100% - 30px);" v-model="workingParams" item-key="id" animation="250"
+      handle=".draggable-handle" draggable=".draggable-content" ghost-class="cursor-move" chosen-class="bg-shadow-panel"
+      drag-class="cursor-grabbing">
       <template #item="{ element }">
         <div class="row rest-parameter-container draggable-content">
           <div class="rest-parameter-drag draggable-handle">
             <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
           </div>
           <div class="rest-parameter-key-value">
-            <SingleLineInput
-              v-model="element.entry.key"
-              @update:modelValue="onUpdate"
-              :place-holder="libelleKey(element)"
-              :suggestion-source="baseHeaders"
-              :editable="true" />
+            <SingleLineInput v-model="element.entry.key" @update:modelValue="onUpdate" :place-holder="libelleKey(element)"
+              :suggestion-source="baseHeaders" :editable="true" />
           </div>
           <div class="rest-parameter-key-value">
-            <SingleLineInput
-              v-model="element.entry.value"
-              @update:modelValue="onUpdate"
-              :place-holder="libelleValue(element)"
-              :editable="true" />
+            <SingleLineInput v-model="element.entry.value" @update:modelValue="onUpdate"
+              :place-holder="libelleValue(element)" :editable="true" />
           </div>
           <div class="rest-parametre-width-icon">
-            <span
-              class="material-icons cursor-pointer rest-parameter-icon"
-              @click="toogleActive(element.entry)"
-              :class="element.entry.active ? 'text-positive' : 'text-negative'"
-            >
-              {{activeBouton(element.entry.active)}}
+            <span class="material-icons cursor-pointer rest-parameter-icon" @click="toogleActive(element.entry)"
+              :class="element.entry.active ? 'text-positive' : 'text-negative'">
+              {{ activeBouton(element.entry.active) }}
             </span>
-            <span class="material-icons cursor-pointer rest-parameter-icon text-negative" @click="deleteParameter(element)">
+            <span class="material-icons cursor-pointer rest-parameter-icon text-negative"
+              @click="deleteParameter(element)">
               delete
             </span>
           </div>
@@ -57,14 +41,14 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, onMounted} from 'vue';
+import { computed, onMounted } from 'vue';
 import draggable from 'vuedraggable-es'
 import SingleLineInput from 'components/commun/SingleLineInput.vue';
-import {useI18n} from "vue-i18n";
-import {RestRequestParameters} from "src/models/model";
-import {commonHeaders} from 'src/models/HeaderConstantes';
+import { useI18n } from "vue-i18n";
+import { RestRequestParameters } from "src/models/model";
+import { commonHeaders } from 'src/models/HeaderConstantes';
 
-const props = defineProps<{ modelValue: RestRequestParameters[], isHeader: boolean  }>();
+const props = defineProps<{ modelValue: RestRequestParameters[], isHeader: boolean }>();
 const emit = defineEmits(['update:modelValue', 'add', 'delete', 'deleteAll', 'updateRequest']);
 
 const workingParams = computed({
@@ -87,9 +71,9 @@ const deleteParameter = (value: RestRequestParameters) => { emit('delete', value
 const onUpdate = () => { emit('updateRequest'); }
 const deleteAllParameter = () => { emit('deleteAll'); }
 const activeBouton = (value: boolean) => value ? 'radio_button_checked' : 'radio_button_unchecked';
-const toogleActive = (value: {active: boolean}) => value.active = !value.active;
+const toogleActive = (value: { active: boolean }) => value.active = !value.active;
 onMounted(() => {
-  if (!workingParams.value || workingParams.value.length == 0){
+  if (!workingParams.value || workingParams.value.length == 0) {
     addParameter();
   }
 })
@@ -99,10 +83,11 @@ onMounted(() => {
 .rest-parameter-title {
   padding-left: 16px;
   margin-bottom: 8px;
-  color:$color-secondary;
+  color: $color-secondary;
   font-size: 12px;
   font-weight: 600;
 }
+
 .rest-parameter-container {
   background-color: transparent;
   font-size: 0.8rem;
@@ -112,10 +97,12 @@ onMounted(() => {
   border-left-color: var(--q-panel-border);
   border-top: 1px solid;
   border-top-color: var(--q-panel-border);
+
   &:nth-last-child(1) {
     border-bottom: 1px solid;
     border-bottom-color: var(--q-panel-border);
   }
+
   padding-bottom: 6px;
   padding-top: 6px;
 }
@@ -129,9 +116,11 @@ onMounted(() => {
 .rest-parametre-titre {
   width: calc(100% - 64px);
 }
+
 .rest-parameter-drag {
   width: 30px;
 }
+
 .rest-parameter-key-value {
   width: calc(50% - 32px - 15px);
   border-left: 1px solid;
@@ -142,7 +131,4 @@ onMounted(() => {
 .rest-parametre-width-icon {
   width: 64px;
 }
-
-
-
 </style>
