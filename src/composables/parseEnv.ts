@@ -1,3 +1,5 @@
+import {RestRequestParameters} from "src/models/model";
+
 export const ENV_REGEXT = /<<([^>]*)>>/g;
 
 const useParseEnv = function() {
@@ -7,9 +9,9 @@ const useParseEnv = function() {
    * @param value
    * @param envs
    */
-  const parseEnv = (value: string, envs: {key: string, value: string}[] | undefined ) => {
+  const parseEnv = (value: string, envs: RestRequestParameters[] | undefined ) => {
     return decodeURI(encodeURI(value)).replace(ENV_REGEXT,(v, k) => {
-      return envs?.find(x => x.key == k)?.value ?? ''
+      return envs?.find(x => x.entry.key == k)?.entry.value ?? ''
     });
   }
   return {

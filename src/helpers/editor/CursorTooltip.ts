@@ -27,11 +27,11 @@ export const cursorTooltipField = (aggregateEnvs: Ref<AppEnvironnement | null>) 
 
       const parsedEnvKey = text.slice(start - from, end - from)
 
-      const tooltipEnv = aggregateEnvs.value?.values.find((env) => env.key === parsedEnvKey)
+      const tooltipEnv = aggregateEnvs.value?.values.find((env) => env.entry.key === parsedEnvKey)
 
       const envName = aggregateEnvs?.value?.name ?? 'Choose an Environment'
 
-      const envValue = tooltipEnv?.value ?? 'Not found'
+      const envValue = tooltipEnv?.entry.value ?? 'Not found'
 
       const envTypeIcon = `<span class='inline-flex items-center justify-center my-1'></span>`
 

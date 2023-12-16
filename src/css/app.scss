@@ -12,20 +12,32 @@
   overflow-wrap: anywhere;
 }
 
-.cursor-grabbing { cursor: grabbing; }
-.cursor-move { cursor: move; }
-.cursor-drag { cursor: grab; }
+.cursor-grabbing {
+  cursor: grabbing;
+}
+
+.cursor-move {
+  cursor: move;
+}
+
+.cursor-drag {
+  cursor: grab;
+}
 
 .bg-shadow-panel {
-  background-color: var(--q-panel-secondary)!important;
+  background-color: var(--q-panel-secondary) !important;
 }
 
 body {
   color: var(--q-panel-color-font);
   font-size: 12px;
-  .q-tab__label, .q-btn, .q-field{
+
+  .q-tab__label,
+  .q-btn,
+  .q-field {
     font-size: 12px;
   }
+
   .q-toolbar__title {
     font-size: 14px;
     font-weight: bold;
@@ -35,14 +47,16 @@ body {
 
 .environnement-not-found {
   background-color: #a80000;
-  &:hover{
+
+  &:hover {
     cursor: help;
   }
 }
 
 .environnement-found {
   background-color: #7c3aed;
-  &:hover{
+
+  &:hover {
     cursor: help;
   }
 }
@@ -61,9 +75,15 @@ body {
 }
 
 .bg-cancel {
-  background-color: var(--q-panel-secondary)!important;
+  background-color: var(--q-panel-secondary) !important;
 }
 
 .text-cancel {
-  color: var(--q-cancel-color)!important;
+  color: var(--q-cancel-color) !important;
+}
+
+.hover-text {
+  &:hover {
+    color: #8f1ca3;
+  }
 }

@@ -1,19 +1,19 @@
-import {uid, useQuasar} from 'quasar';
-import {IAppStore, useAppStore} from 'src/stores/appStore';
-import {useEnvStore} from 'src/stores/EnvStore';
-import {RestRequest} from 'src/models/model';
+import { uid, useQuasar } from 'quasar';
+import { IAppStore, useAppStore } from 'src/stores/appStore';
+import { useEnvStore } from 'src/stores/EnvStore';
+import { RestRequest } from 'src/models/model';
 import useRequestUtils from 'src/composables/RequestUtils';
-import {LANGUAGE} from 'src/models/Constantes';
-import {watch} from 'vue';
+import { LANGUAGE } from 'src/models/Constantes';
+import { watch } from 'vue';
 
-export const useLoadDataCollection = function() {
+export const useLoadDataCollection = function () {
   const q$ = useQuasar();
   const appStore = useAppStore();
   const envStore = useEnvStore();
 
   watch(appStore.$state,
     (state) => {
-      localStorage.setItem('REST_STATE',JSON.stringify(state));
+      localStorage.setItem('REST_STATE', JSON.stringify(state));
     },
     {
       deep: true
@@ -21,15 +21,15 @@ export const useLoadDataCollection = function() {
   )
 
   watch(envStore.$state, state => {
-    localStorage.setItem('REST_ENV',JSON.stringify(state));
-  },{
+    localStorage.setItem('REST_ENV', JSON.stringify(state));
+  }, {
     deep: true
   });
 
-  const load = () => {
-    if (q$.localStorage.has('REST_STATE')){
+  const loadCollection = () => {
+    if (q$.localStorage.has('REST_STATE')) {
       const state = q$.localStorage.getItem<string>('REST_STATE');
-      if (state){
+      if (state) {
         appStore.$patch(parseData(state));
         return true;
       }
@@ -37,23 +37,37 @@ export const useLoadDataCollection = function() {
     return false;
   }
 
+  const loadEnvironement = () => {
+    if (q$.localStorage.has('REST_ENV')) {
+      const state = q$.localStorage.getItem<string>('REST_ENV');
+      if (state) {
+        envStore.$patch(JSON.parse(state));
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+
   return {
-    load,
+    loadCollection,
+    loadEnvironement,
     mockCollection,
     mockEnv
   }
 }
 
-function parseData(state: string){
+function parseData(state: string) {
   const data: IAppStore = JSON.parse(state);
-  const openCollection:RestRequest[] = [];
+  const openCollection: RestRequest[] = [];
   const requestUtils = useRequestUtils();
 
-  for (const item of data.openedRestRequest){
+  for (const item of data.openedRestRequest) {
     const request = requestUtils.findRequestById(data.restCollection, item.id);
     if (request) {
       openCollection.push(request);
-      if (request.id == data.activeRestRequest?.id){
+      if (request.id == data.activeRestRequest?.id) {
         data.activeRestRequest = request;
       }
     } else {
@@ -74,7 +88,7 @@ const mockCollection = [{
   requests: [
     {
       id: uid(),
-      name:'Requete 1',
+      name: 'Requete 1',
       method: 'GET',
       url: 'https://echo.hoppscotch.io',
       isOpen: true,
@@ -89,7 +103,7 @@ const mockCollection = [{
     },
     {
       id: uid(),
-      name:'Requete 2',
+      name: 'Requete 2',
       method: 'POST',
       url: 'https://test.fr',
       isOpen: false,
@@ -109,18 +123,31 @@ const mockEnv = {
   AppEnvironnement: [
     {
       name: 'DEV',
+      id: uid(),
       values: [
-        { key: 'user',  value: 'toto dev',  active: true },
-        { key:'id',  value:'id dev', active: true },
-        { key: 'rootUrl',  value: 'http://',  active: true }
+        {
+          id: 1,
+          entry: { key: 'user', value: 'toto dev', active: true },
+        },
+        {
+          id: 2,
+          entry: { key: 'id', value: 'id dev', active: true },
+        }
       ]
     },
     {
       name: 'PROD',
+      id: uid(),
       values: [
-        { key: 'user',  value: 'toto prod',  active: true },
-        { key: 'rootUrl',  value: 'http://',  active: true }
+        {
+          id: 1,
+          entry: { key: 'user', value: 'toto dev', active: true },
+        },
+        {
+          id: 2,
+          entry: { key: 'id', value: 'id dev', active: true },
+        }
       ]
-    }
+    },
   ]
 };
