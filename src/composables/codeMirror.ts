@@ -3,14 +3,15 @@ import useTheme from 'src/composables/Themes';
 import {
   EditorView,
   keymap,
+  placeholder as placeholderExt,
   ViewPlugin,
   ViewUpdate
 } from '@codemirror/view';
 import {Compartment, EditorState } from '@codemirror/state';
 import {defaultKeymap} from '@codemirror/commands';
 import {espresso} from 'thememirror';
-import {AppEnvironnement } from 'src/models/model';
-import {oneDark} from "components/commun/apiCallerDarkTheme";
+import {AppEnvironnement} from 'src/models/model';
+import {oneDark} from 'components/commun/apiCallerDarkTheme';
 import {
   basicSetupArea,
   basicSetupSingleLine,
@@ -31,8 +32,9 @@ useCodeMirror(
   value: Ref<string | undefined>,
   editable: boolean,
   singleLine: boolean,
-  envs: Ref<AppEnvironnement | null>,
-  language: Ref<string>
+  envs: Ref<AppEnvironnement[]>,
+  language: Ref<string>,
+  placeholder: string
 ) {
 
   // Thème managment
@@ -49,7 +51,7 @@ useCodeMirror(
 
   const compartment = new Compartment();
 
-  const reconfigure = (envs: Ref<AppEnvironnement | null>) => {
+  const reconfigure = (envs: Ref<AppEnvironnement[]>) => {
     editor.value?.dispatch({
       effects: compartment.reconfigure([
         cursorTooltipField(envs),
@@ -75,6 +77,7 @@ useCodeMirror(
     const baseSetup = singleLine ? basicSetupSingleLine : basicSetupArea;
     const extensions = [
       ...baseSetup,
+      placeholderExt(placeholder),
       themeConfig.of(codeMirrorTheme.value),
       EditorState.readOnly.of(!editable),
       compartment.of([

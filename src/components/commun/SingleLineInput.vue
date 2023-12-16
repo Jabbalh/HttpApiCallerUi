@@ -21,24 +21,26 @@
 </template>
 <script lang="ts" setup>
 import {computed, ref, watch, withDefaults} from 'vue';
-import { useCodeMirror } from "src/composables/codeMirror";
-import {useEnvStore} from "stores/EnvStore";
-import { onClickOutside } from "@vueuse/core"
+import { useCodeMirror } from 'src/composables/codeMirror';
+import { onClickOutside } from '@vueuse/core'
+import useParseEnv from 'src/composables/parseEnv';
 
 const props = withDefaults(
   defineProps<{
     modelValue: string,
     editable?: boolean,
-    suggestionSource?: string[]
+    suggestionSource?: string[],
+    placeholder: string
   }>(),
   {
     modelValue: '',
     editable: true,
-    suggestionSource: undefined
+    suggestionSource: undefined,
+    placeholder: ''
   });
 const showSuggestionPopover = ref(false);
-const appEnv = useEnvStore();
-const envs = computed(() => appEnv.Current);
+const { computedEnv } = useParseEnv();
+const envs = computed(() => computedEnv());
 const emit = defineEmits(['update:modelValue']);
 
 /**
@@ -67,7 +69,8 @@ const editor = useCodeMirror(
   props.editable,
   true,
   envs,
-  lang
+  lang,
+  props.placeholder
 );
 
 /**
@@ -104,19 +107,19 @@ const selectSuggestion = (sug: string) => {
  */
 onClickOutside(autocomplete, () => showSuggestionPopover.value = false);
 
-const scrollActiveElIntoView = () => {
-  const suggestionsMenuEl = suggestionsMenu.value
-  if (suggestionsMenuEl) {
-    const activeSuggestionEl = suggestionsMenuEl.querySelector(".active")
-    if (activeSuggestionEl) {
-      activeSuggestionEl.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "start",
-      })
-    }
-  }
-}
+// const scrollActiveElIntoView = () => {
+//   const suggestionsMenuEl = suggestionsMenu.value
+//   if (suggestionsMenuEl) {
+//     const activeSuggestionEl = suggestionsMenuEl.querySelector(".active")
+//     if (activeSuggestionEl) {
+//       activeSuggestionEl.scrollIntoView({
+//         behavior: "smooth",
+//         block: "center",
+//         inline: "start",
+//       })
+//     }
+//   }
+// }
 
 /**
  * Watch env to reconfigure editor for Highlight and Tooltip

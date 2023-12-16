@@ -17,12 +17,12 @@
             <span class="material-icons rest-parameter-icon cursor-drag">menu</span>
           </div>
           <div class="rest-parameter-key-value">
-            <SingleLineInput v-model="element.entry.key" @update:modelValue="onUpdate" :place-holder="libelleKey(element)"
+            <SingleLineInput v-model="element.entry.key" @update:modelValue="onUpdate" :placeholder="libelleKey(element)"
               :suggestion-source="baseHeaders" :editable="true" />
           </div>
           <div class="rest-parameter-key-value">
             <SingleLineInput v-model="element.entry.value" @update:modelValue="onUpdate"
-              :place-holder="libelleValue(element)" :editable="true" />
+              :placeholder="libelleValue(element)" :editable="true" />
           </div>
           <div class="rest-parametre-width-icon">
             <span class="material-icons cursor-pointer rest-parameter-icon" @click="toogleActive(element.entry)"

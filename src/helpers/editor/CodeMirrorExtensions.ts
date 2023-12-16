@@ -5,19 +5,19 @@ import {
   highlightActiveLine,
   highlightActiveLineGutter,
   highlightSpecialChars, keymap, lineNumbers, rectangularSelection
-} from "@codemirror/view";
+} from '@codemirror/view';
 import {
   bracketMatching,
   defaultHighlightStyle,
   foldGutter, foldKeymap,
   indentOnInput,
   syntaxHighlighting
-} from "@codemirror/language";
-import {defaultKeymap, history, historyKeymap, indentLess, insertTab} from "@codemirror/commands";
-import {EditorState} from "@codemirror/state";
-import {autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap} from "@codemirror/autocomplete";
-import {highlightSelectionMatches, search, searchKeymap} from "@codemirror/search";
-import {lintKeymap} from "@codemirror/lint";
+} from '@codemirror/language';
+import {defaultKeymap, history, historyKeymap, indentLess, insertTab} from '@codemirror/commands';
+import {EditorState} from '@codemirror/state';
+import {autocompletion, closeBrackets, closeBracketsKeymap, completionKeymap} from '@codemirror/autocomplete';
+import {highlightSelectionMatches, search, searchKeymap} from '@codemirror/search';
+import {lintKeymap} from '@codemirror/lint';
 
 export const manageKeyMap = (singleLine: boolean) => {
   return singleLine
@@ -75,6 +75,7 @@ export const basicSetup = [
 
 export const basicSetupSingleLine = [
   ...basicSetup,
+  EditorView.contentAttributes.of({ 'data-enable-grammarly': 'false' }),
   EditorState.transactionFilter.of(tr => { return tr.newDoc.lines > 1 ? [] : [tr] })
 ];
 

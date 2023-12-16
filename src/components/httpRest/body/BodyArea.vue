@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts" setup>
-import AreaInput from "components/commun/AreaInput.vue";
-import {useVModel} from "@vueuse/core";
-import {RestRequest, RestRequestParameters} from "src/models/model";
-import {useAppStore} from "stores/appStore";
-import {ref} from "vue";
+import AreaInput from 'components/commun/AreaInput.vue';
+import {useVModel} from '@vueuse/core';
+import {RestRequest, RestRequestParameters} from 'src/models/model';
+import {useAppStore} from 'stores/appStore';
+import {ref} from 'vue';
 
 const props = defineProps<{
   modelValue: RestRequestParameters[] |  string,

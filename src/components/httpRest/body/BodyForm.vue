@@ -9,12 +9,12 @@
   />
 </template>
 <script lang="ts" setup>
-import {RestRequest, RestRequestParameters} from "src/models/model";
-import {useVModel} from "@vueuse/core/index";
-import {useAppStore} from "stores/appStore";
-import RestHttpRequestParamValues from "components/httpRest/RestHttpRequestParamValues.vue";
-import remove from "lodash/remove";
-import maxBy from "lodash/maxBy";
+import {RestRequest, RestRequestParameters} from 'src/models/model';
+import {useVModel} from '@vueuse/core/index';
+import {useAppStore} from 'stores/appStore';
+import RestHttpRequestParamValues from 'components/httpRest/RestHttpRequestParamValues.vue';
+import remove from 'lodash/remove';
+import maxBy from 'lodash/maxBy';
 
 const props = defineProps<{
   modelValue: RestRequestParameters[] |  string,
