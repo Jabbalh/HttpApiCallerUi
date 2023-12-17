@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { AppEnvironnement } from 'src/models/model';
+import {uid} from "quasar";
 
 export interface IEnvStore {
   Global: AppEnvironnement;
@@ -10,7 +11,11 @@ export interface IEnvStore {
 export const useEnvStore = defineStore('env', {
   state: (): IEnvStore => {
     return {
-      Global: [],
+      Global: {
+        name: 'Global',
+        id: uid(),
+        values: []
+      },
       AppEnvironnement: [],
       Current: null
     }
