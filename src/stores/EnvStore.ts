@@ -38,11 +38,57 @@ export const useEnvStore = defineStore('env', {
     deleteEnvironnement(value: AppEnvironnement) {
       const index = this.AppEnvironnement.indexOf(value)
       this.AppEnvironnement.splice(index, 1);
-
-
+    },
+    /**
+     * Modification ou ajout d'une variable d'environnement
+     * @param key
+     * @param value
+     */
+    addEnvValue: function (key: string, value: string) {
+      if (this.Current) {
+        const env = this.Current.values.find(x => x.entry.key == key);
+        if (env){
+          env.entry.value = value;
+        } else {
+          this.Current.values.push({
+            entry : {
+              key: key,
+              value: value,
+              active: true
+            },
+            id: 0
+          });
+        }
+      }
+    },
+    /**
+     * Renvoi la valeur d'une variable d'environnement
+     * @param key
+     */
+    getEnvValue: function(key: string) {
+      if (this.Current) {
+        return this.Current.values.find(x => x.entry.key == key)?.entry.value ?? "";
+      }
+      return "";
+    },
+    setGlovalEnvValue: function(key: string, value: string) {
+      const env = this.Global.values.find(x => x.entry.key == key);
+      if (env) {
+        env.entry.value = value;
+      } else {
+        this.Global.values.push({
+          entry: {
+            key: key,
+            value: value,
+            active: true
+          },
+          id: 0
+        });
+      }
+    },
+    getGlobalValue: function(key: string){
+      return this.Global.values.find(x => x.entry.key == key)?.entry.value ?? "";
     }
 
   }
-
-}
-);
+});

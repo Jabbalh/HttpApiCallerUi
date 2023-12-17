@@ -5,7 +5,8 @@
       <AreaInput
         v-model="responseBody"
         :editable="false"
-        :language="language" />
+        :language="language"
+        placeholder=""/>
 
     </div>
     <div v-else-if="isLoading">

@@ -29,6 +29,8 @@ export interface RestRequest {
   header: RestRequestParameters[],
   authorization: RestRequestAuth,
   body: RestRequestBody,
+  beforeRequest?: string,
+  testRequest?: string,
   response?: RestResponse
 }
 
@@ -41,7 +43,19 @@ export interface RestRequestParameters {
   }
 }
 
-
+export interface RestRequestAuth
+{
+  type: KEY_AUTH,
+  token: string,
+  key: string,
+  value: string, passBy: string
+  openIdConfig: string,
+  authorizationUrl: string,
+  accessTokenUrl: string,
+  clientId: string,
+  clientSecret: string,
+  scope: string
+}
 
 export interface AppEnvironnement {
   id: string,

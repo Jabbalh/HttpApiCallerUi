@@ -24,6 +24,8 @@ import { xmlLanguage} from '@codemirror/lang-xml';
 import {LANGUAGE} from 'src/models/Constantes';
 import {html} from '@codemirror/legacy-modes/mode/xml';
 import {StreamLanguage} from '@codemirror/language';
+import {javascriptLanguage} from "@codemirror/lang-javascript";
+import {CompletionContext} from "@codemirror/autocomplete";
 
 
 export function
@@ -65,8 +67,23 @@ useCodeMirror(
       case LANGUAGE.applicationJson: return jsonLanguage;
       case LANGUAGE.applicationXml : return xmlLanguage;
       case LANGUAGE.textHtml: return StreamLanguage.define(html);
+      case LANGUAGE.javascript: return javascriptLanguage;
     }
     return [];
+  }
+
+  const completeTestDoc = (context: CompletionContext) => {
+    const word = context.matchBefore(/\w*/)
+    if (word && word.from == word.to && !context.explicit)
+      return null
+    return {
+      from: word?.from,
+      options: [
+        {label: "hac", type: "keyword"},
+        {label: "hello", type: "variable", info: "(World)"},
+        {label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro"}
+      ]
+    }
   }
 
   /**
@@ -109,6 +126,12 @@ useCodeMirror(
       languageConfig.of(obtainLanguage(language.value)),
       EditorView.contentAttributes.of({ 'data-enable-grammarly': 'false' }),
     ];
+
+    if (language.value == LANGUAGE.javascript){
+      extensions.push(javascriptLanguage.data.of({
+        autocomplete: completeTestDoc
+      }))
+    }
     // Code mirror editor create
     editor.value = new EditorView({
       parent: el,
