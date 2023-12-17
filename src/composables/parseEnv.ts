@@ -1,5 +1,5 @@
 import { useEnvStore } from 'stores/EnvStore';
-import { AppEnvironnement } from 'src/models/model';
+import {AppEnvironnement, RestRequestParameters} from 'src/models/model';
 
 export const ENV_REGEXT = /<<([^>]*)>>/g;
 
