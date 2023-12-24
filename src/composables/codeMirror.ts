@@ -74,15 +74,33 @@ useCodeMirror(
 
   const completeTestDoc = (context: CompletionContext) => {
     const word = context.matchBefore(/\w*/)
-    if (word && word.from == word.to && !context.explicit)
-      return null
-    return {
-      from: word?.from,
-      options: [
-        {label: "hac", type: "keyword"},
-        {label: "hello", type: "variable", info: "(World)"},
-        {label: "magic", type: "text", apply: "⠁⭒*.✩.*⭒⠁", detail: "macro"}
-      ]
+    if (word && word.from == word.to && !context.explicit) {
+      const hac = captureHac(context);
+      return hac ?? null;
+    } else {
+      const hac = captureHac(context);
+      return hac ?? {
+        from: word?.from,
+        options: [
+          {label: "hac", type: "keyword"},
+        ]
+      }
+    }
+  }
+
+  const captureHac = (context: CompletionContext) => {
+    const hac = context.matchBefore(/hac\..*/);
+    if (hac){
+      return {
+        from: hac.from,
+        options: [
+          { label: "hac.setEnv", type: "text", apply: "hac.setEnv('key', 'value');", detail: "macro"},
+          { label: "hac.getEnv", type: "text", apply: "hac.getEnv('key');", detail: "macro"},
+          { label: "hac.setGlobalEnv", type: "text", apply: "hac.setGlobalEnv('key', 'value');", detail: "macro"},
+          { label: "hac.getGlobalEnv", type: "text", apply: "hac.getGlobalEnv('key');", detail: "macro"},
+          { label: "hac.response", type: "keyword" },
+        ]
+      }
     }
   }
 
