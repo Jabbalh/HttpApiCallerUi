@@ -33,7 +33,7 @@ export default defineComponent({
   setup(){
     const envStore = useEnvStore();
     const options = computed(() => envStore.AppEnvironnement);
-    const envModel = ref<AppEnvironnement>();
+    const envModel = ref<AppEnvironnement | undefined>(envStore.Current ?? undefined);
     const updateEnv = (value: AppEnvironnement) => {
       const item: AppEnvironnement | undefined = options.value.find(x => x.name == value.name);
       if (item){

@@ -30,7 +30,11 @@ export const useEnvStore = defineStore('env', {
       if (result) {
         const index = this.AppEnvironnement.indexOf(result);
         if (index >= 0) {
-          this.AppEnvironnement[index] = newValue
+          this.AppEnvironnement[index] = newValue;
+          // Traitement du courant
+          if (this.Current && this.Current.id == newValue.id){
+            this.Current = newValue;
+          }
         }
       }
 
@@ -58,6 +62,11 @@ export const useEnvStore = defineStore('env', {
             },
             id: 0
           });
+        }
+        // On modifie aussi la liste des environnements
+        const copy = this.AppEnvironnement.find(x => x.name == this.Current!.name);
+        if (copy){
+          this.AppEnvironnement[this.AppEnvironnement.indexOf(copy)] = this.Current;
         }
       }
     },
