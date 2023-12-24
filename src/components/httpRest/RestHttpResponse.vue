@@ -51,9 +51,7 @@ export default defineComponent({
   setup(){
     const appStore = useAppStore();
     const { hasStatusCode } = useTypeVerify();
-    // @ts-ignore : il s'agit une RestRequest
     const response = computed(() => appStore.activeRestRequest?.response);
-    // @ts-ignore : il s'agit une RestRequest
     const responseBody = computed(() => appStore.activeRestRequest?.response?.body ?? '');
     const hasResponse = computed(() => {
       if (response.value){
