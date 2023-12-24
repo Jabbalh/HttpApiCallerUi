@@ -9,9 +9,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import {useVModel} from "@vueuse/core";
-  import AreaInput from "components/commun/AreaInput.vue";
-  import {LANGUAGE} from "src/models/Constantes";
+  import {useVModel} from '@vueuse/core';
+  import AreaInput from 'components/commun/AreaInput.vue';
+  import {LANGUAGE} from 'src/models/Constantes';
 
   const props = withDefaults(defineProps<{modelValue: string}>(), {modelValue: ''});
   const emit = defineEmits<{

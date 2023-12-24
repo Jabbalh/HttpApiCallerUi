@@ -43,7 +43,7 @@ import {computed, defineComponent} from 'vue';
 import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {LANGUAGE} from 'src/models/Constantes';
-import {useTypeVerify} from "src/composables/TypeVerify";
+import {useTypeVerify} from 'src/composables/TypeVerify';
 
 export default defineComponent({
   name:'RestHttpResponse',
@@ -51,8 +51,9 @@ export default defineComponent({
   setup(){
     const appStore = useAppStore();
     const { hasStatusCode } = useTypeVerify();
-
+    // @ts-ignore : il s'agit une RestRequest
     const response = computed(() => appStore.activeRestRequest?.response);
+    // @ts-ignore : il s'agit une RestRequest
     const responseBody = computed(() => appStore.activeRestRequest?.response?.body ?? '');
     const hasResponse = computed(() => {
       if (response.value){

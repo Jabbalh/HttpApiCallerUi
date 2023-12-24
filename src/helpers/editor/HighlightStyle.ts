@@ -30,7 +30,6 @@ const getMatchDecorator = (aggregateEnvs: Ref<AppEnvironnement[]>) =>
   });
 
 function checkEnv(env: string, aggregateEnvs: Ref<AppEnvironnement[]>) {
-  console.log("aggregateEnvs", aggregateEnvs)
   const envObj = aggregateEnvs.value.find(x => x.values.some(y => y.entry.key == env.slice(2, -2)));
   const className = envObj ? 'environnement-found' : 'environnement-not-found';
   return Decoration.mark({

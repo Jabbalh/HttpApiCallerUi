@@ -66,7 +66,7 @@ import maxBy from 'lodash/maxBy';
 import {RestRequest, RestRequestParameters} from 'src/models/model';
 import remove from 'lodash/remove';
 import RestHttpRequestAuth from 'components/httpRest/RestHttpRequestAuth.vue';
-import RestHttpRequestTest from "components/httpRest/RestHttpRequestTest.vue";
+import RestHttpRequestTest from 'components/httpRest/RestHttpRequestTest.vue';
 
 export default defineComponent({
   name: 'RestHttpRequestParam',

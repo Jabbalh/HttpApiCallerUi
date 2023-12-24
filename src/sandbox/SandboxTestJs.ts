@@ -1,7 +1,7 @@
-import * as qjs from "quickjs-emscripten"
+import * as qjs from 'quickjs-emscripten';
 import {Arena } from 'quickjs-emscripten-sync';
-import {AxiosResponse} from "axios";
-import {useEnvStore} from "stores/EnvStore";
+import {AxiosResponse} from 'axios';
+import {useEnvStore} from 'stores/EnvStore';
 //import {jsonToVm} from "src/sandbox/MarshalObject";
 //import * as E from "fp-ts/Either";
 

@@ -30,7 +30,6 @@ let tmpData = (typeof props.modelValue == 'string') ? Array.of<RestRequestParame
 }) : props.modelValue;
 
 const addParametre = () => {
-  console.log("addParametre")
   if (tmpData) {
     const last = maxBy(tmpData, x => x.id);
     tmpData.push({
