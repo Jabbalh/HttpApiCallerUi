@@ -11,7 +11,7 @@ import {Compartment, EditorState } from '@codemirror/state';
 import {defaultKeymap} from '@codemirror/commands';
 import {espresso} from 'thememirror';
 import {AppEnvironnement} from 'src/models/model';
-import {oneDark} from 'components/commun/apiCallerDarkTheme';
+import {oneDark} from 'src/components/commun/apiCallerDarkTheme';
 import {
   basicSetupArea,
   basicSetupSingleLine,
