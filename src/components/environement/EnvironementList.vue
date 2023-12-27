@@ -13,12 +13,12 @@
         <q-list class="full-width">
             <q-item clickable v-for="(item, index) in environements" :key="index" draggable="true">
                 <q-item-section avatar>
-                    <q-icon color="primary" name="list" />
+                    <q-icon name="list" color="accent" />
                 </q-item-section>
 
-                <q-item-section @dblclick="editEnv(item)">{{ item.name }}</q-item-section>
+                <q-item-section @click="editEnv(item)">{{ item.name }}</q-item-section>
                 <q-item-section>
-                    <q-btn icon="delete" color="primary" @click="deleteEnv(item)" />
+                    <q-btn icon="delete" flat class="delete_btn" color="negative" z-index @click="deleteEnv(item)" />
                 </q-item-section>
             </q-item>
 
@@ -79,3 +79,10 @@ const openPopin = (isGlobal: boolean, value?: AppEnvironnement) => {
 
 }
 </script>
+<style>
+.delete_btn {
+    width: 5%;
+    left: 50%;
+
+}
+</style>

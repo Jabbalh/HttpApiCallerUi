@@ -7,7 +7,8 @@
                 </div>
             </q-card-section>
             <q-card-section>
-                <q-input ref="inputPopin" v-model="cloneEnv.name" outlined dense :disable="isGlobal" autofocus />
+                <q-input ref="inputPopin" v-model="cloneEnv.name" outlined dense :disable="isGlobal" autofocus
+                    @keyup.enter="onOKClick" />
             </q-card-section>
             <q-separator inset class="q-mt-md q-mb-md" />
             <q-card-section class="parameter">
@@ -17,8 +18,8 @@
             <q-separator inset class="q-mt-md q-mb-md" />
 
             <q-card-actions align="right" class="row q-ma-md">
-                <q-btn color="primary" label="OK" @click="onOKClick" />
-                <q-btn color="primary" label="Cancel" @click="onDialogCancel" />
+                <q-btn class="p_cancel__btn" label="ANNULER" @click="onDialogCancel" />
+                <q-btn class="p_ok_btn" label="SAUVEGARDER" @click="onOKClick" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -92,5 +93,15 @@ const onDeleteAll = () => cloneEnv.value.values = []
 .parameter {
     position: relative;
     height: calc(100% - 250px);
+}
+
+.p_ok_btn {
+    background-color: #8f1ca3;
+    width: auto;
+}
+
+.p_cancel__btn {
+    background-color: #313131;
+    width: 20%;
 }
 </style>

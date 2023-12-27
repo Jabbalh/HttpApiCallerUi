@@ -13,7 +13,7 @@ export default {
     ADD_REQUEST_PLACEHOLDER: 'Nom de la requète',
     ADD_FOLDER_PLACEHOLDER: 'Nom du dossier',
     URL_REQUETE_PLACEHOLDER: 'Url de la requète',
-    REQUEST_NOT_SAVED_TITLE:'Vous avez des modifications',
+    REQUEST_NOT_SAVED_TITLE: 'Vous avez des modifications',
     REQUEST_NOT_SAVED_MESSAGE: 'Voulez-vous sauvegarder vos modifications ?',
     BUTTON_SEND: 'Envoyer',
     BUTTON_SAVE: 'Sauvegarder',
