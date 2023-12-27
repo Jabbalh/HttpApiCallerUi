@@ -5,7 +5,8 @@
       <AreaInput
         v-model="responseBody"
         :editable="false"
-        :language="language" />
+        :language="language"
+        placeholder=""/>
 
     </div>
     <div v-else-if="isLoading">
@@ -42,7 +43,7 @@ import {computed, defineComponent} from 'vue';
 import AreaInput from '../commun/AreaInput.vue';
 import {useAppStore} from 'stores/appStore';
 import {LANGUAGE} from 'src/models/Constantes';
-import {useTypeVerify} from "src/composables/TypeVerify";
+import {useTypeVerify} from 'src/composables/TypeVerify';
 
 export default defineComponent({
   name:'RestHttpResponse',
@@ -50,7 +51,6 @@ export default defineComponent({
   setup(){
     const appStore = useAppStore();
     const { hasStatusCode } = useTypeVerify();
-
     const response = computed(() => appStore.activeRestRequest?.response);
     const responseBody = computed(() => appStore.activeRestRequest?.response?.body ?? '');
     const hasResponse = computed(() => {

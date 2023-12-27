@@ -50,7 +50,7 @@
       Prerequest
     </q-tab-panel>
     <q-tab-panel name="TESTS">
-      Tests
+      <RestHttpRequestTest v-model="activeRestRequest.testRequest" @updateRequest="onUpdate" />
     </q-tab-panel>
   </q-tab-panels>
   <!--  </div>-->
@@ -66,10 +66,11 @@ import maxBy from 'lodash/maxBy';
 import {RestRequest, RestRequestParameters} from 'src/models/model';
 import remove from 'lodash/remove';
 import RestHttpRequestAuth from 'components/httpRest/RestHttpRequestAuth.vue';
+import RestHttpRequestTest from 'components/httpRest/RestHttpRequestTest.vue';
 
 export default defineComponent({
   name: 'RestHttpRequestParam',
-  components: {RestHttpRequestAuth, RestHttpRequestParamValues,RestHttpRequestBody  },
+  components: {RestHttpRequestTest, RestHttpRequestAuth, RestHttpRequestParamValues,RestHttpRequestBody  },
   setup(){
     const appState = useAppStore();
     return {

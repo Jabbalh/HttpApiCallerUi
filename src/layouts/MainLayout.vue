@@ -54,6 +54,7 @@
 import {computed, defineComponent, ref} from 'vue';
 import {useQuasar} from 'quasar';
 import useTheme from 'src/composables/Themes';
+import {useRouter} from "vue-router";
 
 export default defineComponent({
   name: 'MainLayout',
@@ -66,6 +67,13 @@ export default defineComponent({
     const quasar = useQuasar();
     const theme = useTheme();
     theme.initTheme();
+
+    const router = useRouter();
+    if (router.currentRoute.value.path == '/'){
+      router.replace('rest');
+    }
+    console.log(router);
+
     //quasar.dark.toggle();
     const toogleDarkMode = () => {
       if (quasar.dark.isActive ){

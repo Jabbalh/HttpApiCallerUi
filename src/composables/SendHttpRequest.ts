@@ -1,5 +1,4 @@
 import {
-  AppEnvitonnementValue,
   IRestCollection,
   RestRequest,
   RestRequestAuth,
@@ -25,6 +24,8 @@ import { RestRequestBody } from 'src/models/types/RestRequestBody';
 import { useAppStore } from 'stores/appStore';
 import { defaultAuth } from 'src/helpers/DefaultTypeUtils';
 import useRequestUtils from 'src/composables/RequestUtils';
+import { runSandbox } from 'src/sandbox/SandboxTestJs';
+
 
 /**
  * Permet d'envoyer une requete Http
@@ -39,7 +40,7 @@ const useSendHttpRequest = function () {
 
     const { computedEnv, parseEnv } = useParseEnv();
     const envs = computedEnv();
-    const finalEnv: AppEnvitonnementValue[] = [];
+    const finalEnv: RestRequestParameters[] = [];
     for (const item of envs) {
       finalEnv.push(...item.values);
     }
@@ -51,7 +52,7 @@ const useSendHttpRequest = function () {
       data: ensureBody(cloneRequest.body, finalEnv)
     };
 
-    return effectiveRunRequest(param);
+    return effectiveRunRequest(param, request.testRequest ?? '');
   }
 
   const findFirstAuthorization = (requestId: string, values: IRestCollection[], findByRequestId: boolean, auth?: RestRequestAuth): RestRequestAuth | undefined => {
@@ -74,8 +75,9 @@ const useSendHttpRequest = function () {
 /**
  * Lance la requète et traite le résultat
  * @param request
+ * @param testScript
  */
-const effectiveRunRequest = async (request: AxiosRequestConfig) => {
+const effectiveRunRequest = async (request: AxiosRequestConfig, testScript: string) => {
   try {
     const { hasMetaResponse } = useTypeVerify();
     const start = new Date().getTime();
@@ -93,6 +95,9 @@ const effectiveRunRequest = async (request: AxiosRequestConfig) => {
       result.meta.responseDuration = end - start;
       result.meta.responseSize = download;
     }
+
+    runSandbox(testScript ?? '', res);
+
     return E.right(result);
 
   } catch (error: any) {
@@ -210,9 +215,9 @@ const ensureBody = (value?: RestRequestBody, envs?: RestRequestParameters[]) => 
     const { parseEnv } = useParseEnv();
     const { isRestRequestParameters } = useTypeVerify()
 
-    if (isRestRequestParameters(value.body)) {
-      return ensureMultiPartForm(value.body);
-    } else if (value.language != LANGUAGE.nothing) {
+    if (isRestRequestParameters(value.body)){
+      return ensureMultiPartForm(value.body, value.language, envs);
+    } else if (value.language != LANGUAGE.nothing){
       return parseEnv(value.body, envs);
     }
   }
@@ -222,10 +227,11 @@ const ensureBody = (value?: RestRequestBody, envs?: RestRequestParameters[]) => 
 /**
  * Vérification et traitement des paramètres
  * @param values
+ * @param language
  * @param envs
  */
-const ensureMultiPartForm = (values: RestRequestParameters[], envs?: RestRequestParameters[]) => {
-  const params = new FormData();
+const ensureMultiPartForm = (values: RestRequestParameters[], language: string, envs?: RestRequestParameters[]) => {
+  const params:  URLSearchParams | FormData = language == LANGUAGE.multiPartFormData ?  new FormData() : new URLSearchParams();
   const { parseEnv } = useParseEnv();
   for (const item of values.filter((x => x.entry.active))) {
     params.append(
@@ -254,11 +260,11 @@ const ensureParameter = (values: RestRequestParameters[], envs?: RestRequestPara
 
 /**
  * Check for Authorization
- * @param headers: Request headers
- * @param auth: Auth params
- * @param envs: envs variables
+ * @param headers
+ * @param auth
+ * @param envs
  */
-const ensureAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const ensureAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   switch (auth.type) {
     case KEY_AUTH.BASIC:
       populateBasicAuth(headers, auth, envs);
@@ -278,11 +284,11 @@ const ensureAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvi
 
 /**
  * Check for Auth ApiKey QueryParams
- * @param params: Request params
- * @param auth: Auth params
- * @param envs: env variable
+ * @param params
+ * @param auth
+ * @param envs
  */
-const ensureAuthQueryParams = (params: URLSearchParams, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const ensureAuthQueryParams = (params: URLSearchParams, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   if (auth.type == KEY_AUTH.APIKEY && auth.passBy == API_KEY_QUERY_PARAMS) {
     params.append(parseEnv(auth.key, envs), parseEnv(auth.value, envs));
@@ -292,11 +298,11 @@ const ensureAuthQueryParams = (params: URLSearchParams, auth: RestRequestAuth, e
 
 /**
  * Check for Basic Authorization
- * @param headers: Request headers
- * @param auth: Auth params
- * @param envs: envs variables
+ * @param headers
+ * @param auth
+ * @param envs
  */
-const populateBasicAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const populateBasicAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   const base64 = btoa(parseEnv(auth.key, envs) + ':' + parseEnv(auth.value, envs));
   headers['Authorization'] = `Basic ${base64}`;
@@ -304,22 +310,22 @@ const populateBasicAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: 
 
 /**
  * Check for Bearer Authorization
- * @param headers: Request headers
- * @param auth: Auth params
- * @param envs: envs variables
+ * @param headers
+ * @param auth
+ * @param envs
  */
-const populateBearerAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const populateBearerAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   headers['Authorization'] = `Bearer ${parseEnv(auth.token, envs)}`;
 }
 
 /**
  * Check for ApiKey header Authorization
- * @param headers: Request headers
- * @param auth: Auth params
- * @param envs: envs variables
+ * @param headers
+ * @param auth
+ * @param envs
  */
-const populateApiKeyAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const populateApiKeyAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   if (auth.passBy == API_KEY_HEADERS) {
     headers[parseEnv(auth.key, envs)] = parseEnv(auth.value, envs);
@@ -328,11 +334,11 @@ const populateApiKeyAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?:
 
 /**
  * Check for Oauth Authorization
- * @param headers: Request headers
- * @param auth: Auth params
- * @param envs: envs variables
+ * @param headers
+ * @param auth
+ * @param envs
  */
-const populateOauthAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: AppEnvitonnementValue[]) => {
+const populateOauthAuth = (headers: AxiosHeaders, auth: RestRequestAuth, envs?: RestRequestParameters[]) => {
   const { parseEnv } = useParseEnv();
   headers[parseEnv(auth.key, envs)] = parseEnv(auth.value, envs);
 }
@@ -349,8 +355,7 @@ const ensureHeader = (values: RestRequestParameters[], language: string, envs?: 
   for (const item of values.filter((x => x.entry.active && x.entry.key))) {
     headers[parseEnv(item.entry.key, envs)] = parseEnv(item.entry.value, envs);
   }
-
-  if (language != LANGUAGE.nothing) {
+  if (language != LANGUAGE.nothing){
     headers['Content-type'] = language;
   }
   return headers;

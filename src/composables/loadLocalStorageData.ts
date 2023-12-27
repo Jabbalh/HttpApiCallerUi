@@ -180,8 +180,12 @@ const mockEnv = {
   ],
   Global: {
     name: 'Global',
+    id: uid(),
     values: [
-      { key: 'superuser', value: 'Nicolas', active: true },
+      {
+        id: 1,
+        entry: { key: 'test', value: 'global test', active: true },
+      },
     ]
   }
 };

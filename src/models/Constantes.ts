@@ -16,7 +16,8 @@ export const LANGUAGE = {
   applicationFormUrlEncoded: 'application/x-www-form-urlencoded',
   multiPartFormData: 'multipart/form-data',
   textPlain: 'text/plain',
-  textHtml: 'test/html'
+  textHtml: 'test/html',
+  javascript: 'application/Javascript'
 }
 
 export const OPTIONS_LANGUAGE = [

@@ -9,11 +9,17 @@ import {computed, ref, watch} from 'vue';
 import { useCodeMirror } from 'src/composables/codeMirror';
 import useParseEnv from 'src/composables/parseEnv';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   modelValue: string,
   editable: boolean,
-  language: string
-}>();
+  language: string,
+  placeholder: string
+}>(), {
+  editable: true,
+  language: '',
+  modelValue: '',
+  placeholder: ''
+});
 
 const { computedEnv } = useParseEnv();
 const envs = computed(() => computedEnv());
@@ -35,7 +41,8 @@ const editor = useCodeMirror(
   props.editable,
   false,
   envs,
-  lang
+  lang,
+  props.placeholder
 );
 
 watch(envs, () => {
