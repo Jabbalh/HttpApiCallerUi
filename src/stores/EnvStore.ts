@@ -3,7 +3,7 @@ import { AppEnvironnement } from 'src/models/model';
 import { uid } from "quasar";
 
 export interface IEnvStore {
-  Global: AppEnvironnement | null;
+  Global: AppEnvironnement;
   AppEnvironnement: AppEnvironnement[];
   Current: AppEnvironnement | null;
 }
