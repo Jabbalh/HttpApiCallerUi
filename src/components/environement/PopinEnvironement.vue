@@ -18,8 +18,8 @@
             <q-separator inset class="q-mt-md q-mb-md" />
 
             <q-card-actions align="right" class="row q-ma-md">
-                <q-btn class="p_cancel__btn" label="ANNULER" @click="onDialogCancel" />
-                <q-btn class="p_ok_btn" label="SAUVEGARDER" @click="onOKClick" />
+                <q-btn class="p_cancel__btn" :label="i18n.t('ENV.POPIN_CANCEL')" @click="onDialogCancel" />
+                <q-btn class="p_ok_btn" :label="i18n.t('ENV.POPIN_SAVE')" @click="onOKClick" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -32,6 +32,7 @@ import { uid, useDialogPluginComponent } from 'quasar'
 import { AppEnvironnement, RestRequestParameters } from 'src/models/model';
 import RestHttpRequestParamValues from "../httpRest/RestHttpRequestParamValues.vue";
 import { maxBy, method, remove } from "lodash";
+import { useI18n } from "vue-i18n";
 const props = defineProps<{
     environement?: AppEnvironnement,
     isGlobal: boolean
@@ -41,6 +42,8 @@ defineEmits([
     // component will emit through useDialogPluginComponent()
     ...useDialogPluginComponent.emits
 ])
+
+const i18n = useI18n();
 
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } = useDialogPluginComponent()
 

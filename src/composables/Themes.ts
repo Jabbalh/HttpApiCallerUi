@@ -1,8 +1,8 @@
-import {setCssVar, useQuasar} from 'quasar'
+import { setCssVar, useQuasar } from 'quasar'
 
-const useTheme = function() {
+const useTheme = function () {
   const q$ = useQuasar();
-  const defaultTheme = function() {
+  const defaultTheme = function () {
     // src/css/quasar.variables.sass
     setCssVar('panel-secondary', '#F9F9F9');
     setCssVar('panel-primary', '#FFFFFF');
@@ -27,11 +27,11 @@ const useTheme = function() {
   const chooseTheme = new Map<string, () => void>(
     [
       ['default', defaultTheme],
-      ['dark', darkTheme ]
+      ['dark', darkTheme]
     ]
   );
 
-  const initTheme = function() {
+  const initTheme = function () {
     const quasar = useQuasar();
     const th = quasar.localStorage.getItem<string>('theme') ?? 'default';
     console.log('th', th);
@@ -40,6 +40,7 @@ const useTheme = function() {
   }
 
   const isDark = () => q$.dark.isActive;
+
 
   return {
     initTheme,

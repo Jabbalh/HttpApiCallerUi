@@ -33,6 +33,10 @@ import { AppEnvironnement } from 'src/models/model';
 import { useEnvStore } from 'src/stores/EnvStore';
 import { computed } from 'vue';
 import PopinEnvironement from './PopinEnvironement.vue';
+import { useI18n } from 'vue-i18n';
+
+const i18n = useI18n();
+
 const envStore = useEnvStore();
 const q$ = useQuasar();
 const environements = computed(() => envStore.AppEnvironnement);

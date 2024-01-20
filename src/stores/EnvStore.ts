@@ -93,6 +93,7 @@ export const useEnvStore = defineStore('env', {
           },
           id: 0
         });
+
       }
     },
     getGlobalValue: function (key: string) {

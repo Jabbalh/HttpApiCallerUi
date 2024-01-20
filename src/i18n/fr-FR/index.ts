@@ -49,6 +49,11 @@ export default {
     AUTH_APIKEY_KEY: 'Key',
     AUTH_APIKEY_VALUE: 'Value',
     AUTH_NO_AUTH_LABEL: 'Cette requète ne possède pas d\'authentification'
+  },
+
+  ENV: {
+    POPIN_SAVE: 'SAUVEGARDER',
+    POPIN_CANCEL: 'ANNULER',
   }
 
 }
