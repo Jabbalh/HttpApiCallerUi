@@ -40,8 +40,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import { useRouter } from "vue-router";
+import useTheme from 'src/composables/Themes';
+import { useQuasar } from 'quasar';
 
 export default defineComponent({
   name: 'MainLayout',
@@ -51,6 +53,18 @@ export default defineComponent({
   },
 
   setup() {
+    const quasar = useQuasar();
+    const theme = useTheme();
+    theme.initTheme();
+
+    //quasar.dark.toggle();
+    const toogleDarkMode = () => {
+      if (quasar.dark.isActive) {
+        theme.defaultTheme();
+      } else {
+        theme.darkTheme();
+      }
+    };
 
     const router = useRouter();
     if (router.currentRoute.value.path == '/') {
@@ -61,7 +75,10 @@ export default defineComponent({
 
     return {
       menuLeft: ref(true),
-      selectedMainTab: ref('REST')
+      selectedMainTab: ref('REST'),
+      bgClass: computed(() => quasar.dark.isActive ? 'bg-dark' : 'bg-white'),
+      iconMode: computed(() => quasar.dark.isActive ? 'light_mode' : 'dark_mode'),
+      toogleDarkMode,
     }
   }
 });

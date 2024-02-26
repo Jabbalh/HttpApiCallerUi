@@ -7,8 +7,8 @@
                 </div>
             </q-card-section>
             <q-card-section>
-                <q-input ref="inputPopin" v-model="cloneEnv.name" outlined dense :disable="isGlobal" autofocus
-                    @keyup.enter="onOKClick" />
+                <q-input ref="inputPopin" color="accent" v-model="cloneEnv.name" outlined dense :disable="isGlobal"
+                    autofocus @keyup.enter="onOKClick" />
             </q-card-section>
             <q-separator inset class="q-mt-md q-mb-md" />
             <q-card-section class="parameter">
@@ -19,7 +19,7 @@
 
             <q-card-actions align="right" class="row q-ma-md">
                 <q-btn class="p_cancel__btn" :label="i18n.t('ENV.POPIN_CANCEL')" @click="onDialogCancel" />
-                <q-btn class="p_ok_btn" :label="i18n.t('ENV.POPIN_SAVE')" @click="onOKClick" />
+                <q-btn class="p_ok_btn" :label="i18n.t('ENV.POPIN_SAVE')" color="accent" @click="onOKClick" />
             </q-card-actions>
         </q-card>
     </q-dialog>
@@ -31,7 +31,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { uid, useDialogPluginComponent } from 'quasar'
 import { AppEnvironnement, RestRequestParameters } from 'src/models/model';
 import RestHttpRequestParamValues from "../httpRest/RestHttpRequestParamValues.vue";
-import { maxBy, method, remove } from "lodash";
+import { maxBy, remove } from "lodash";
 import { useI18n } from "vue-i18n";
 const props = defineProps<{
     environement?: AppEnvironnement,
@@ -95,16 +95,16 @@ const onDeleteAll = () => cloneEnv.value.values = []
 
 .parameter {
     position: relative;
-    height: calc(100% - 250px);
+    height: calc(100% - 350px);
 }
 
 .p_ok_btn {
-    background-color: #8f1ca3;
     width: auto;
 }
 
 .p_cancel__btn {
-    background-color: #313131;
+    background-color: var(--q-panel-secondary);
+    color: var(--q-panel-color-font);
     width: 20%;
 }
 </style>

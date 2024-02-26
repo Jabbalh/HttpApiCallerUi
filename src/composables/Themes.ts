@@ -24,6 +24,10 @@ const useTheme = function () {
     q$.localStorage.set('theme', 'dark');
   }
 
+  const updateAccent = (value: string) => {
+    q$.localStorage.set('theme-accent', value);
+  }
+
   const chooseTheme = new Map<string, () => void>(
     [
       ['default', defaultTheme],
@@ -39,16 +43,20 @@ const useTheme = function () {
     exec();
   }
 
+
+
   const isDark = () => q$.dark.isActive;
 
 
   return {
+    updateAccent,
     initTheme,
     defaultTheme,
     darkTheme,
     isDark
   }
 }
+
 
 
 

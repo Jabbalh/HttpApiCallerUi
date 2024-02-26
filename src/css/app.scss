@@ -95,6 +95,6 @@ body {
 
 .hover-text {
   &:hover {
-    color: $accent;
+    color: var(--q-accent);
   }
 }
