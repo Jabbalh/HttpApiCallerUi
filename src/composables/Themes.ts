@@ -38,9 +38,11 @@ const useTheme = function () {
   const initTheme = function () {
     const quasar = useQuasar();
     const th = quasar.localStorage.getItem<string>('theme') ?? 'default';
+    const color = quasar.localStorage.getItem<string>('theme-accent') ?? '#8f1ca3'
     console.log('th', th);
-    const exec = chooseTheme.get(th) ?? defaultTheme;
-    exec();
+    const exec_th = chooseTheme.get(th) ?? defaultTheme;
+    setCssVar('accent', color);
+    exec_th();
   }
 
 

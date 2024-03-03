@@ -5,14 +5,13 @@
       <q-icon name="settings" />
     </div>
     <div class="theme">Thèmes</div>
+    <q-separator inset class="q-mt-md q-mb-md" />
     <div class="wrapper">
-      <q-separator inset class="q-mt-md q-mb-md" />
       <div>
         <div class="dark_mode_btn">
           <q-toggle v-model="menu" label="dark mode" @click="toogleDarkMode" />
         </div>
       </div>
-      <q-separator inset class="q-mt-md q-mb-md" />
       <div>
         <div class="q-pa-md color_btn">
           <q-btn label="Couleur principale" color="accent" icon-right="colorize">
@@ -23,6 +22,7 @@
         </div>
       </div>
     </div>
+    <q-separator inset class="q-mt-md q-mb-md" />
   </q-page>
 </template>
 <script lang="ts">
@@ -45,7 +45,6 @@ export default defineComponent({
     };
 
     const hex = ref(quasar.localStorage.getItem<string>('theme-accent') ?? '#8f1ca3');
-    setCssVar('accent', hex.value);
     watch(hex, newValue => {
       theme.updateAccent(newValue);
       setCssVar('accent', hex.value);
